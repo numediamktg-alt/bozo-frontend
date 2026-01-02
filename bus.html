@@ -262,6 +262,9 @@
     <script>
         const API_BASE = 'https://bozo-oracle-production.up.railway.app';
         
+        // Global natal bandwidth for personalized meters
+        let userNatal = {h5: 10, h7: 10, h10: 10};
+        
         async function getReading(question, email) {
             const res = await fetch(`${API_BASE}/api/reading`, {
                 method: 'POST', headers: {'Content-Type': 'application/json'},
@@ -304,7 +307,8 @@
                 if (!status.has_birth_data) {
                     showBirthDataForm(container, email);
                 } else {
-                    showSubscriberDashboard(container, email, status.archetype);
+                    // Pass full status including natal bandwidth for personalized meters
+                    showSubscriberDashboard(container, email, status);
                 }
             } catch (e) { showLoginForm(container); }
         }
@@ -395,12 +399,21 @@
             });
         }
 
-        async function showSubscriberDashboard(container, email, archetype) {
+        async function showSubscriberDashboard(container, email, status) {
+            const archetype = status.archetype || 'NAVIGATOR';
+            
+            // Store natal bandwidth globally for personalized meters
+            userNatal = {
+                h5: status.natal_h5 || 10,
+                h7: status.natal_h7 || 10,
+                h10: status.natal_h10 || 10
+            };
+            
             // Load conditions immediately
             let conditionsHtml = '';
             try {
                 const c = await fetch(`${API_BASE}/api/conditions`).then(r => r.json());
-                conditionsHtml = renderConditions(c);
+                conditionsHtml = renderConditions(c, userNatal);
             } catch(e) {}
 
             // Archetype Setup
@@ -458,7 +471,7 @@
             });
         }
 
-        function renderConditions(c) {
+        function renderConditions(c, natal = {h5: 10, h7: 10, h10: 10}) {
             // The Daily Hook Logic
             let hook = { title: "Good Morning, Starshine.", text: "The signal is steady. Chop wood, carry water." };
             if (c.h5_gain > 1.04 && c.h10_gain > 1.04) hook = { title: "⚡ Powerhouse Day", text: "High Creativity + Discipline. Stop thinking, start BUILDING." };
@@ -466,7 +479,21 @@
             else if (c.h5_gain > 1.05) hook = { title: "🎨 The Muse is Loud", text: "Big creative energy. Capture ideas now, edit later." };
             else if (c.h10_gain > 1.05) hook = { title: "🔨 Hammer Time", text: "Obstacles are small today. Grind, finish, and close loops." };
 
-            const getW = (v) => Math.max(5, Math.min(100, (v - 0.85) / (1.15 - 0.85) * 100));
+            // Personalized meter calculation
+            // Sensitivity = how much this harmonic affects YOU (based on natal bandwidth)
+            const avgNatal = 10;
+            const sens = {
+                h5: Math.max(0.5, natal.h5 / avgNatal),
+                h7: Math.max(0.5, natal.h7 / avgNatal),
+                h10: Math.max(0.5, natal.h10 / avgNatal)
+            };
+            
+            // Width calculation: 50% = average (1.0), amplified by personal sensitivity
+            const getW = (gain, sensitivity) => {
+                const basePercent = (gain - 0.85) / (1.15 - 0.85) * 100;
+                const amplified = 50 + (basePercent - 50) * sensitivity;
+                return Math.max(5, Math.min(100, amplified));
+            };
 
             return `
                 <div class="daily-hook-card">
@@ -474,38 +501,38 @@
                     <div class="daily-hook-text">${hook.text}</div>
                 </div>
                 <div class="conditions-card">
-                    <h3 class="conditions-title">📡 Transmission Levels</h3>
+                    <h3 class="conditions-title">📡 Your Transmission Levels</h3>
                     
                     <div style="margin-bottom: 25px;">
                         <div class="meter-label-group">
                             <div><span class="meter-icon">🎨</span> <span class="meter-name">Creative Flow</span></div>
-                            <span class="meter-value">${c.h5_gain.toFixed(2)}x</span>
+                            <span class="meter-value">${Math.round(getW(c.h5_gain, sens.h5))}%</span>
                         </div>
                         <div class="meter-container">
                             <div class="baseline-marker"></div><div class="baseline-text">Avg</div>
-                            <div class="meter-fill" style="width: ${getW(c.h5_gain)}%; background-color: var(--orange);"></div>
+                            <div class="meter-fill" style="width: ${getW(c.h5_gain, sens.h5)}%; background-color: var(--orange);"></div>
                         </div>
                     </div>
 
                     <div style="margin-bottom: 25px;">
                         <div class="meter-label-group">
                             <div><span class="meter-icon">👁️</span> <span class="meter-name">Intuition</span></div>
-                            <span class="meter-value">${c.h7_gain.toFixed(2)}x</span>
+                            <span class="meter-value">${Math.round(getW(c.h7_gain, sens.h7))}%</span>
                         </div>
                         <div class="meter-container">
                             <div class="baseline-marker"></div><div class="baseline-text">Avg</div>
-                            <div class="meter-fill" style="width: ${getW(c.h7_gain)}%; background-color: var(--purple);"></div>
+                            <div class="meter-fill" style="width: ${getW(c.h7_gain, sens.h7)}%; background-color: var(--purple);"></div>
                         </div>
                     </div>
 
                     <div>
                         <div class="meter-label-group">
                             <div><span class="meter-icon">🔨</span> <span class="meter-name">Power / Drive</span></div>
-                            <span class="meter-value">${c.h10_gain.toFixed(2)}x</span>
+                            <span class="meter-value">${Math.round(getW(c.h10_gain, sens.h10))}%</span>
                         </div>
                         <div class="meter-container">
                             <div class="baseline-marker"></div><div class="baseline-text">Avg</div>
-                            <div class="meter-fill" style="width: ${getW(c.h10_gain)}%; background-color: var(--green);"></div>
+                            <div class="meter-fill" style="width: ${getW(c.h10_gain, sens.h10)}%; background-color: var(--green);"></div>
                         </div>
                     </div>
                 </div>`;
@@ -524,7 +551,7 @@
                         <div class="interpretation-text">${r.interpretation.replace(/\n/g, '<br>')}</div>
                     </div>`;
             }
-            if (r.conditions) html += renderConditions(r.conditions);
+            if (r.conditions) html += renderConditions(r.conditions, userNatal);
             return html;
         }
 
