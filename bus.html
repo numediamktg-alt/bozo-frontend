@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>On the Bus | Bozo on the Bus</title>
+    <meta name="description" content="Your personalized oracle dashboard. Daily readings tuned to your frequency.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #FF6B35;
+            --red: #D64045;
+            --yellow: #F9DC5C;
+            --blue: #3185FC;
+            --light-blue: #5EB1BF;
+            --green: #45B69C;
+            --purple: #7B2D8E;
+            --cream: #FFF8E7;
+            --dark: #2D3142;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--cream) 0%, #FFE4B5 50%, #FFDAB9 100%);
+            min-height: 100vh;
+            color: var(--dark);
+        }
+        
+        /* HEADER & HERO */
+        .header {
+            background: linear-gradient(180deg, var(--blue) 0%, var(--light-blue) 100%);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--orange);
+            position: relative;
+        }
+        .logo {
+            font-family: 'Pacifico', cursive;
+            font-size: 2.5rem;
+            color: var(--yellow);
+            text-shadow: 3px 3px 0 var(--orange);
+            text-decoration: none;
+        }
+        .nav-links { margin-top: 10px; }
+        .nav-links a { color: white; margin: 0 15px; text-decoration: none; font-weight: 600; }
+        
+        /* RESPONSIVE LAYOUT */
+        .main-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            align-items: flex-start;
+        }
+        
+        .bus-hero {
+            flex: 0 0 350px;
+            position: sticky;
+            top: 20px;
+        }
+        .bus-hero img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            border: 4px solid var(--orange);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+        
+        .main-content {
+            flex: 1;
+            max-width: 700px;
+        }
+        
+        /* Mobile: stack vertically */
+        @media (max-width: 900px) {
+            .main-wrapper {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+            .bus-hero {
+                flex: none;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+                position: static;
+            }
+            .main-content {
+                max-width: 100%;
+            }
+        }
+
+        /* CARDS */
+        .welcome-card, .login-card, .birth-form-card {
+            background: white; border-radius: 20px; padding: 30px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 3px solid var(--orange);
+            margin-bottom: 30px;
+        }
+        
+        /* LICENSE CARD (The Potential) */
+        .license-card {
+            background: #fff;
+            border: 2px solid var(--dark);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .license-photo {
+            width: 80px; height: 80px;
+            background: var(--cream);
+            border: 2px solid var(--dark);
+            border-radius: 10px;
+            margin-right: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 2.5rem;
+        }
+        .license-info h3 { font-family: 'Pacifico', cursive; margin-bottom: 5px; font-size: 1.5rem; }
+        .license-class {
+            font-weight: 700; text-transform: uppercase; font-size: 0.9rem;
+            padding: 2px 8px; border-radius: 4px; display: inline-block;
+        }
+        .license-quote { font-style: italic; font-size: 0.9rem; color: #666; margin-top: 5px; }
+
+        /* DAILY HOOK & METERS */
+        .daily-hook-card {
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 100%);
+            border-radius: 20px; padding: 25px; margin-bottom: 25px;
+            border: 3px solid var(--orange); color: white; text-align: center;
+        }
+        .daily-hook-title { font-family: 'Pacifico', cursive; font-size: 1.8rem; color: var(--yellow); margin-bottom: 10px; }
+        .daily-hook-text { font-size: 1.2rem; line-height: 1.5; color: #eee; }
+
+        .conditions-card { background: white; border-radius: 20px; padding: 25px; border: 3px solid var(--purple); }
+        .conditions-title { font-family: 'Pacifico', cursive; color: var(--purple); text-align: center; margin-bottom: 20px; }
+
+        .meter-container {
+            background: #eee; height: 16px; border-radius: 10px;
+            margin-top: 15px; position: relative; overflow: visible;
+        }
+        .baseline-marker {
+            position: absolute; left: 50%; top: -5px; bottom: -5px;
+            border-left: 2px dashed #888; z-index: 5;
+        }
+        .baseline-text {
+            position: absolute; left: 50%; top: -20px; transform: translateX(-50%);
+            font-size: 0.7rem; color: #888; font-weight: 700; text-transform: uppercase;
+        }
+        .meter-fill {
+            height: 100%; border-radius: 10px; transition: width 1s ease-out;
+            background-image: linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px);
+            background-size: 4px 100%;
+        }
+        .meter-label-group { display: flex; justify-content: space-between; align-items: flex-end; }
+        .meter-icon { font-size: 1.2rem; margin-right: 5px; }
+        .meter-name { font-weight: 700; color: var(--purple); font-size: 0.9rem; }
+
+        /* FORMS & INPUTS */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; }
+        .question-textarea {
+            width: 100%; padding: 20px; border: 3px solid var(--light-blue);
+            border-radius: 15px; font-family: 'Quicksand', sans-serif; min-height: 120px;
+        }
+        .submit-btn {
+            width: 100%; padding: 18px 40px;
+            background: linear-gradient(135deg, var(--orange) 0%, var(--red) 100%);
+            color: white; border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: 700; cursor: pointer;
+        }
+        .form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        select, input {
+            width: 100%; padding: 12px; border-radius: 10px; border: 2px solid #ddd;
+            font-family: 'Quicksand', sans-serif; font-size: 1rem;
+        }
+        .welcome-title {
+            font-family: 'Pacifico', cursive;
+            font-size: 2rem;
+            color: var(--orange);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .email-input {
+            width: 100%;
+            padding: 15px;
+            border: 3px solid var(--light-blue);
+            border-radius: 15px;
+            font-size: 1.1rem;
+        }
+
+        /* READING RESULT */
+        .oracle-card {
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFF5D6 100%);
+            border-radius: 20px; padding: 30px; margin-bottom: 25px; border: 3px solid var(--yellow);
+        }
+        .quote { font-family: 'Caveat', cursive; font-size: 1.8rem; text-align: center; margin: 20px 0; }
+        .meta { text-align: center; color: #666; font-size: 0.9rem; }
+        .resonance { background: var(--yellow); padding: 2px 8px; border-radius: 10px; margin-left: 10px; }
+        
+        .interpretation-card {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
+            border-radius: 20px; padding: 25px; margin-bottom: 25px; color: white;
+        }
+        .driver-header { display: flex; align-items: center; margin-bottom: 15px; }
+        .driver-avatar { font-size: 2.5rem; margin-right: 15px; }
+        .driver-name { font-family: 'Pacifico', cursive; font-size: 1.3rem; }
+        .interpretation-text { line-height: 1.7; font-size: 1.05rem; }
+        
+        .footer-links { margin-top: 30px; text-align: center; }
+        .footer-links a { color: var(--blue); margin: 0 10px; }
+        
+        .loading { text-align: center; padding: 40px; }
+        .loading-spinner {
+            width: 60px; height: 60px; border: 4px solid var(--cream);
+            border-top-color: var(--orange); border-radius: 50%;
+            animation: spin 1s linear infinite; margin: 0 auto 20px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        
+        .site-footer {
+            text-align: center;
+            padding: 30px;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">Bozo on the Bus</a>
+        <nav class="nav-links"><a href="index.html">Home</a><a href="ask.html">Free Oracle</a></nav>
+    </header>
+    
+    <div class="main-wrapper">
+        <div class="bus-hero">
+            <img src="images/bozo-bus.png" alt="Bozo driving the psychedelic bus" onerror="this.style.display='none'">
+        </div>
+        <main class="main-content">
+            <div id="bus-content">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <p class="loading-text">Tuning your frequency...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <footer class="site-footer">
+        <strong>ThisOldHippie.com</strong><br>© 2025 Charles P. Jones
+    </footer>
+    
+    <script>
+        const API_BASE = 'https://bozo-oracle-production.up.railway.app';
+        
+        async function getReading(question, email) {
+            const res = await fetch(`${API_BASE}/api/reading`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ question, email })
+            });
+            if (!res.ok) throw new Error('Failed'); return res.json();
+        }
+        async function getUserStatus(email) {
+            const res = await fetch(`${API_BASE}/api/user_status/${encodeURIComponent(email)}`);
+            if (!res.ok) {
+                if (res.status === 404) return { is_active: false };
+                throw new Error('Failed');
+            }
+            return res.json();
+        }
+        async function updateUser(data) {
+            await fetch(`${API_BASE}/api/user`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+        }
+        async function createPortal(email) {
+            const res = await fetch(`${API_BASE}/api/portal`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email })
+            });
+            return res.json();
+        }
+
+        async function initBusPage() {
+            const container = document.getElementById('bus-content');
+            const email = localStorage.getItem('bozo_email');
+            if (!email) { showLoginForm(container); return; }
+            
+            try {
+                const status = await getUserStatus(email);
+                if (!status.is_active) {
+                    localStorage.removeItem('bozo_email'); showLoginForm(container); return;
+                }
+                if (!status.has_birth_data) {
+                    showBirthDataForm(container, email);
+                } else {
+                    showSubscriberDashboard(container, email, status.archetype);
+                }
+            } catch (e) { showLoginForm(container); }
+        }
+
+        function showLoginForm(container) {
+            container.innerHTML = `
+                <div class="login-card">
+                    <h2 class="welcome-title">Climb Aboard! ✌️</h2>
+                    <form id="login-form">
+                        <input type="email" class="email-input" placeholder="your@email.com" required>
+                        <button type="submit" class="submit-btn" style="margin-top:15px">Get On The Bus</button>
+                    </form>
+                </div>`;
+            document.getElementById('login-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = e.target.querySelector('input').value.trim().toLowerCase();
+                if (email) { localStorage.setItem('bozo_email', email); initBusPage(); }
+            });
+        }
+
+        function showBirthDataForm(container, email) {
+            // Dropdown helpers
+            const range = (start, end) => Array.from({length: end-start+1}, (_, i) => start+i);
+            
+            container.innerHTML = `
+                <div class="birth-form-card">
+                    <h2 class="welcome-title">Set Your Frequency 🌟</h2>
+                    <p style="text-align:center; color:#666; margin-bottom:20px;">We need your arrival time to tune the engine.</p>
+                    <form id="birth-form">
+                        <div class="form-group">
+                            <label>What should we call you?</label>
+                            <input type="text" name="name" placeholder="Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Date of Birth</label>
+                            <div class="form-row" style="grid-template-columns: 2fr 1fr 1fr;">
+                                <select name="birth_month" required>
+                                    <option value="" disabled selected>Month</option>
+                                    <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+                                    <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+                                    <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+                                    <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                                </select>
+                                <input type="number" name="birth_day" placeholder="Day" min="1" max="31" required>
+                                <input type="number" name="birth_year" placeholder="Year" min="1900" max="2025" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Time (Local)</label>
+                            <div class="form-row" style="grid-template-columns: 1fr 1fr 1fr;">
+                                <select name="birth_hour" required>
+                                    <option value="" disabled selected>Hr</option>
+                                    ${range(1, 12).map(h => `<option value="${h}">${h}</option>`).join('')}
+                                </select>
+                                <select name="birth_minute" required>
+                                    <option value="0">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
+                                    ${range(1, 59).map(m => `<option value="${m}">${m < 10 ? '0'+m : m}</option>`).join('')}
+                                </select>
+                                <select name="birth_ampm" required>
+                                    <option value="AM">AM</option><option value="PM">PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" name="birth_location" placeholder="City, State" required>
+                        </div>
+                        <button type="submit" class="submit-btn">Save & Start Engine</button>
+                    </form>
+                </div>`;
+
+            document.getElementById('birth-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const f = e.target;
+                let h = parseInt(f.birth_hour.value);
+                if (f.birth_ampm.value === 'PM' && h !== 12) h += 12;
+                if (f.birth_ampm.value === 'AM' && h === 12) h = 0;
+                const decimalTime = h + (parseInt(f.birth_minute.value)/60);
+                
+                try {
+                    await updateUser({
+                        email, name: f.name.value,
+                        birth_year: parseInt(f.birth_year.value), birth_month: parseInt(f.birth_month.value), birth_day: parseInt(f.birth_day.value),
+                        birth_hour: decimalTime, birth_latitude: 40.7, birth_longitude: -74.0
+                    });
+                    initBusPage();
+                } catch(err) { alert('Error saving data'); }
+            });
+        }
+
+        async function showSubscriberDashboard(container, email, archetype) {
+            // Load conditions immediately
+            let conditionsHtml = '';
+            try {
+                const c = await fetch(`${API_BASE}/api/conditions`).then(r => r.json());
+                conditionsHtml = renderConditions(c);
+            } catch(e) {}
+
+            // Archetype Setup
+            const types = {
+                'CREATOR':   { icon: '🎨', color: 'var(--orange)', title: 'THE CREATOR', quote: 'Born to turn thin air into reality.' },
+                'SEER':      { icon: '👁️', color: 'var(--purple)', title: 'THE SEER',    quote: 'Logic is too slow for you.' },
+                'ARCHITECT': { icon: '🔨', color: 'var(--green)',  title: 'THE ARCHITECT', quote: 'You see the structure inside the mess.' },
+                'NAVIGATOR': { icon: '🚌', color: 'var(--blue)',   title: 'THE NAVIGATOR', quote: 'You can drive on any road.' }
+            };
+            const myClass = types[archetype] || types['NAVIGATOR'];
+
+            container.innerHTML = `
+                <div class="license-card" style="border-color: ${myClass.color};">
+                    <div class="license-photo" style="border-color: ${myClass.color}; color: ${myClass.color};">${myClass.icon}</div>
+                    <div class="license-info">
+                        <h3 style="color: ${myClass.color};">Cosmic License</h3>
+                        <div class="license-class" style="background: ${myClass.color}; color: white;">CLASS: ${myClass.title}</div>
+                        <div class="license-quote">"${myClass.quote}"</div>
+                    </div>
+                </div>
+
+                <div class="welcome-card">
+                    <h2 class="welcome-title">Welcome Aboard! ☮️</h2>
+                    <form id="reading-form" class="question-form">
+                        <textarea class="question-textarea" id="question" placeholder="Ask The Driver anything... What's on your mind today?" rows="4"></textarea>
+                        <button type="submit" class="submit-btn">Get My Reading 🔮</button>
+                    </form>
+                    <div id="reading-result" class="reading-result">${conditionsHtml}</div>
+                    <div class="footer-links">
+                        <a href="#" id="manage-sub">Subscription</a> | <a href="#" id="logout">Log Out</a>
+                    </div>
+                </div>`;
+                
+            document.getElementById('reading-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const q = document.getElementById('question').value.trim();
+                if(!q) return;
+                
+                const resDiv = document.getElementById('reading-result');
+                resDiv.innerHTML = `<div class="loading"><div class="loading-spinner"></div><p class="loading-text">Consulting the cosmos...</p></div>`;
+                
+                try {
+                    const reading = await getReading(q, email);
+                    resDiv.innerHTML = renderReading(reading);
+                } catch(e) { resDiv.innerHTML = `<p style="text-align:center; color:red;">The bus hit a bump. Try again.</p>`; }
+            });
+
+            document.getElementById('manage-sub').addEventListener('click', async (e) => {
+                e.preventDefault();
+                const p = await createPortal(email);
+                window.location.href = p.portal_url;
+            });
+            document.getElementById('logout').addEventListener('click', () => {
+                localStorage.removeItem('bozo_email'); location.reload();
+            });
+        }
+
+        function renderConditions(c) {
+            // The Daily Hook Logic
+            let hook = { title: "Good Morning, Starshine.", text: "The signal is steady. Chop wood, carry water." };
+            if (c.h5_gain > 1.04 && c.h10_gain > 1.04) hook = { title: "⚡ Powerhouse Day", text: "High Creativity + Discipline. Stop thinking, start BUILDING." };
+            else if (c.h7_gain > 1.05) hook = { title: "👁️ The Veil is Thin", text: "Insight is peaking. Trust your gut over the spreadsheet." };
+            else if (c.h5_gain > 1.05) hook = { title: "🎨 The Muse is Loud", text: "Big creative energy. Capture ideas now, edit later." };
+            else if (c.h10_gain > 1.05) hook = { title: "🔨 Hammer Time", text: "Obstacles are small today. Grind, finish, and close loops." };
+
+            const getW = (v) => Math.max(5, Math.min(100, (v - 0.85) / (1.15 - 0.85) * 100));
+
+            return `
+                <div class="daily-hook-card">
+                    <div class="daily-hook-title">${hook.title}</div>
+                    <div class="daily-hook-text">${hook.text}</div>
+                </div>
+                <div class="conditions-card">
+                    <h3 class="conditions-title">📡 Transmission Levels</h3>
+                    
+                    <div style="margin-bottom: 25px;">
+                        <div class="meter-label-group">
+                            <div><span class="meter-icon">🎨</span> <span class="meter-name">Creative Flow</span></div>
+                            <span class="meter-value">${c.h5_gain.toFixed(2)}x</span>
+                        </div>
+                        <div class="meter-container">
+                            <div class="baseline-marker"></div><div class="baseline-text">Avg</div>
+                            <div class="meter-fill" style="width: ${getW(c.h5_gain)}%; background-color: var(--orange);"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 25px;">
+                        <div class="meter-label-group">
+                            <div><span class="meter-icon">👁️</span> <span class="meter-name">Intuition</span></div>
+                            <span class="meter-value">${c.h7_gain.toFixed(2)}x</span>
+                        </div>
+                        <div class="meter-container">
+                            <div class="baseline-marker"></div><div class="baseline-text">Avg</div>
+                            <div class="meter-fill" style="width: ${getW(c.h7_gain)}%; background-color: var(--purple);"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="meter-label-group">
+                            <div><span class="meter-icon">🔨</span> <span class="meter-name">Power / Drive</span></div>
+                            <span class="meter-value">${c.h10_gain.toFixed(2)}x</span>
+                        </div>
+                        <div class="meter-container">
+                            <div class="baseline-marker"></div><div class="baseline-text">Avg</div>
+                            <div class="meter-fill" style="width: ${getW(c.h10_gain)}%; background-color: var(--green);"></div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+
+        function renderReading(r) {
+            let html = `
+                <div class="oracle-card">
+                    <div class="quote">"${r.quote}"</div>
+                    <div class="meta">Written ${r.quote_date} <span class="resonance">${Math.round(r.similarity*100)}% resonance</span></div>
+                </div>`;
+            if (r.interpretation) {
+                html += `
+                    <div class="interpretation-card">
+                        <div class="driver-header"><div class="driver-avatar">🤡</div><div class="driver-name">The Driver Says...</div></div>
+                        <div class="interpretation-text">${r.interpretation.replace(/\n/g, '<br>')}</div>
+                    </div>`;
+            }
+            if (r.conditions) html += renderConditions(r.conditions);
+            return html;
+        }
+
+        document.addEventListener('DOMContentLoaded', initBusPage);
+    </script>
+</body>
+</html>

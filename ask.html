@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask the Driver | Bozo on the Bus</title>
+    <meta name="description" content="Ask the oracle. Get wisdom matched to this exact cosmic moment.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="index.html" class="logo">BOZO ON THE BUS</a>
+            <nav class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="bus.html">Get on the Bus</a>
+            </nav>
+        </div>
+    </header>
+    
+    <main style="min-height: 80vh; padding: 60px 24px;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 48px;">
+                <h1 style="color: var(--gold); font-size: 2.5rem; margin-bottom: 16px;">Ask the Driver</h1>
+                <p style="color: var(--text-muted); font-size: 1.1rem;">
+                    The bus pulled up. What's on your mind?
+                </p>
+            </div>
+            
+            <div style="max-width: 600px; margin: 0 auto;">
+                <form id="ask-form">
+                    <div class="form-group">
+                        <textarea name="question" rows="4" 
+                                  placeholder="Type your question here... What are you wrestling with? What decision are you facing? What would you ask a wise stranger on a bus?"
+                                  required></textarea>
+                    </div>
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn btn-primary">
+                            Ask the Oracle
+                        </button>
+                    </div>
+                </form>
+                
+                <div id="reading-result" style="margin-top: 48px;"></div>
+                
+                <div style="margin-top: 60px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
+                    <p style="color: var(--text-muted); margin-bottom: 16px;">
+                        Want personalized readings based on YOUR cosmic frequency?
+                    </p>
+                    <a href="bus.html" class="btn btn-secondary">Get on the Bus — $10/mo</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p class="copyright">
+            <strong>ThisOldHippie.com</strong><br>
+            © 2025 Charles P. Jones
+        </p>
+    </footer>
+    
+    <script src="js/app.js"></script>
+</body>
+</html>
