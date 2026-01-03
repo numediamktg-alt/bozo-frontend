@@ -283,34 +283,6 @@
             </div>
             
             <button class="btn-secondary" onclick="logout()" style="margin-top: 10px;">Logout</button>
-            
-            <!-- Quote Editor Modal -->
-            <div id="quote-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;">
-                <div style="max-width: 700px; margin: 50px auto; background: #1a1a2e; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 30px;">
-                    <h2 style="color: #d4af37; margin-bottom: 20px;">✏️ Edit Quote #<span id="edit-quote-id"></span></h2>
-                    
-                    <div style="margin-bottom: 15px;">
-                        <label style="display: block; margin-bottom: 5px; color: #888;">Quote Text</label>
-                        <textarea id="edit-quote-text" rows="5" style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; resize: vertical;"></textarea>
-                    </div>
-                    
-                    <div style="display: flex; gap: 15px; margin-bottom: 20px;">
-                        <div style="flex: 1;">
-                            <label style="display: block; margin-bottom: 5px; color: #888;">Date Written</label>
-                            <input type="date" id="edit-quote-date" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
-                        </div>
-                        <div style="flex: 1;">
-                            <label style="display: block; margin-bottom: 5px; color: #888;">Time (optional)</label>
-                            <input type="time" id="edit-quote-time" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
-                        </div>
-                    </div>
-                    
-                    <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                        <button onclick="closeQuoteModal()" class="btn-secondary">Cancel</button>
-                        <button onclick="saveQuoteEdit()" class="btn">Save Changes</button>
-                    </div>
-                </div>
-            </div>
         </div>
         
         <!-- Quote Editor Panel (separate from main admin) -->
@@ -349,6 +321,34 @@
                     <div id="quote-pagination" style="display: flex; justify-content: center; gap: 10px; margin-top: 20px;">
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quote Editor Modal (must be outside panels to show properly) -->
+    <div id="quote-modal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.8); z-index: 1000; overflow-y: auto;">
+        <div style="max-width: 700px; margin: 50px auto; background: #1a1a2e; border: 1px solid rgba(255,255,255,0.2); border-radius: 12px; padding: 30px;">
+            <h2 style="color: #d4af37; margin-bottom: 20px;">✏️ Edit Quote #<span id="edit-quote-id"></span></h2>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; color: #888;">Quote Text</label>
+                <textarea id="edit-quote-text" rows="5" style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; resize: vertical;"></textarea>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 5px; color: #888;">Date Written</label>
+                    <input type="date" id="edit-quote-date" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                </div>
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 5px; color: #888;">Time (optional)</label>
+                    <input type="time" id="edit-quote-time" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button onclick="closeQuoteModal()" class="btn-secondary">Cancel</button>
+                <button onclick="saveQuoteEdit()" class="btn">Save Changes</button>
             </div>
         </div>
     </div>
