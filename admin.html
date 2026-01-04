@@ -229,19 +229,53 @@
                                 <option value="Charles Paul Jones">Charles Paul Jones</option>
                             </select>
                         </div>
-                        <div class="field" style="flex: 1; min-width: 150px;">
+                    </div>
+                    
+                    <!-- Date Entry (Bulletproof) -->
+                    <div style="display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: flex-end;">
+                        <div class="field">
                             <label>Date Written (sticky)</label>
-                            <input type="date" id="quote-date" required style="width: 100%;">
+                            <div style="display: flex; gap: 8px;">
+                                <select id="quote-month" required style="padding: 10px; min-width: 120px;">
+                                    <option value="" disabled selected>Month</option>
+                                    <option value="01">January</option><option value="02">February</option><option value="03">March</option>
+                                    <option value="04">April</option><option value="05">May</option><option value="06">June</option>
+                                    <option value="07">July</option><option value="08">August</option><option value="09">September</option>
+                                    <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                                </select>
+                                <input type="number" id="quote-day" placeholder="Day" min="1" max="31" required style="width: 70px; padding: 10px;">
+                                <input type="number" id="quote-year" placeholder="Year" min="1900" max="2030" required style="width: 90px; padding: 10px;">
+                            </div>
                         </div>
-                        <div class="field" style="width: 120px;">
-                            <label>Time (optional)</label>
-                            <input type="time" id="quote-time" placeholder="HH:MM" style="width: 100%;">
+                        
+                        <!-- Time Entry (Optional, Bulletproof) -->
+                        <div class="field">
+                            <label>Time (optional - for high-fidelity)</label>
+                            <div style="display: flex; gap: 8px;">
+                                <select id="quote-hour" style="padding: 10px; min-width: 65px;">
+                                    <option value="">--</option>
+                                    <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                                    <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                                    <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                                    <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                                </select>
+                                <select id="quote-minute" style="padding: 10px; min-width: 65px;">
+                                    <option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
+                                    <option value="05">05</option><option value="10">10</option><option value="20">20</option><option value="25">25</option>
+                                    <option value="35">35</option><option value="40">40</option><option value="50">50</option><option value="55">55</option>
+                                </select>
+                                <select id="quote-ampm" style="padding: 10px; min-width: 65px;">
+                                    <option value="AM">AM</option><option value="PM">PM</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="field" style="width: 80px;">
+                        
+                        <div class="field">
                             <label>ID (auto)</label>
-                            <input type="number" id="quote-id" placeholder="Auto" style="width: 100%;">
+                            <input type="number" id="quote-id" placeholder="Auto" style="width: 80px; padding: 10px;">
                         </div>
                     </div>
+                    
                     <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
                         <div class="field" style="flex: 1; min-width: 250px;">
                             <label>Location (sticky)</label>
@@ -397,14 +431,42 @@
                 </div>
             </div>
             
-            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
-                <div style="flex: 1;">
-                    <label style="display: block; margin-bottom: 5px; color: #888;">Date Written</label>
-                    <input type="date" id="edit-quote-date" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+            <!-- Date Entry (Bulletproof) -->
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; color: #888;">Date Written</label>
+                <div style="display: flex; gap: 8px;">
+                    <select id="edit-quote-month" required style="padding: 10px; min-width: 120px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                        <option value="" disabled selected>Month</option>
+                        <option value="01">January</option><option value="02">February</option><option value="03">March</option>
+                        <option value="04">April</option><option value="05">May</option><option value="06">June</option>
+                        <option value="07">July</option><option value="08">August</option><option value="09">September</option>
+                        <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                    </select>
+                    <input type="number" id="edit-quote-day" placeholder="Day" min="1" max="31" required style="width: 70px; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                    <input type="number" id="edit-quote-year" placeholder="Year" min="1900" max="2030" required style="width: 90px; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
                 </div>
-                <div style="flex: 1;">
-                    <label style="display: block; margin-bottom: 5px; color: #888;">Time (optional)</label>
-                    <input type="time" id="edit-quote-time" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+            </div>
+            
+            <!-- Time Entry (Optional, Bulletproof) -->
+            <div style="margin-bottom: 15px;">
+                <label style="display: block; margin-bottom: 5px; color: #888;">Time (optional - for high-fidelity)</label>
+                <div style="display: flex; gap: 8px;">
+                    <select id="edit-quote-hour" style="padding: 10px; min-width: 65px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                        <option value="">--</option>
+                        <option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                        <option value="4">4</option><option value="5">5</option><option value="6">6</option>
+                        <option value="7">7</option><option value="8">8</option><option value="9">9</option>
+                        <option value="10">10</option><option value="11">11</option><option value="12">12</option>
+                    </select>
+                    <select id="edit-quote-minute" style="padding: 10px; min-width: 65px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                        <option value="00">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
+                        <option value="05">05</option><option value="10">10</option><option value="20">20</option><option value="25">25</option>
+                        <option value="35">35</option><option value="40">40</option><option value="50">50</option><option value="55">55</option>
+                    </select>
+                    <select id="edit-quote-ampm" style="padding: 10px; min-width: 65px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                        <option value="AM">AM</option><option value="PM">PM</option>
+                    </select>
+                    <button type="button" onclick="clearEditTime()" class="btn-small btn-secondary" style="padding: 10px;">Clear Time</button>
                 </div>
             </div>
             
@@ -555,13 +617,23 @@
         function clearQuoteForm() {
             document.getElementById('quote-text').value = '';
             document.getElementById('quote-contributor').value = 'Charles Paul Jones';
-            document.getElementById('quote-date').value = '';
-            document.getElementById('quote-time').value = '';
+            document.getElementById('quote-month').value = '';
+            document.getElementById('quote-day').value = '';
+            document.getElementById('quote-year').value = '';
+            document.getElementById('quote-hour').value = '';
+            document.getElementById('quote-minute').value = '00';
+            document.getElementById('quote-ampm').value = 'AM';
             document.getElementById('quote-id').value = '';
             document.getElementById('quote-location').value = '';
             document.getElementById('quote-latitude').value = '';
             document.getElementById('quote-longitude').value = '';
             document.getElementById('quote-notes').value = '';
+        }
+        
+        function clearEditTime() {
+            document.getElementById('edit-quote-hour').value = '';
+            document.getElementById('edit-quote-minute').value = '00';
+            document.getElementById('edit-quote-ampm').value = 'AM';
         }
         
         // =====================================================================
@@ -710,8 +782,48 @@
                 
                 document.getElementById('edit-quote-id').textContent = id;
                 document.getElementById('edit-quote-text').value = q.text;
-                document.getElementById('edit-quote-date').value = q.date;
-                document.getElementById('edit-quote-time').value = q.time || '';
+                
+                // Parse date (YYYY-MM-DD) into dropdowns
+                if (q.date) {
+                    var dateParts = q.date.split('-');
+                    document.getElementById('edit-quote-year').value = dateParts[0];
+                    document.getElementById('edit-quote-month').value = dateParts[1];
+                    document.getElementById('edit-quote-day').value = parseInt(dateParts[2]);
+                }
+                
+                // Parse time into dropdowns (handles "HH:MM" or "H:MM AM/PM")
+                if (q.time) {
+                    var timeStr = q.time.trim().toUpperCase();
+                    var hour, minute, ampm;
+                    
+                    if (timeStr.includes('AM') || timeStr.includes('PM')) {
+                        // Format: "H:MM AM" or "HH:MM PM"
+                        ampm = timeStr.includes('PM') ? 'PM' : 'AM';
+                        var timePart = timeStr.replace('AM', '').replace('PM', '').trim();
+                        var tParts = timePart.split(':');
+                        hour = parseInt(tParts[0]);
+                        minute = tParts[1] || '00';
+                    } else {
+                        // Format: "HH:MM" (24-hour)
+                        var tParts = timeStr.split(':');
+                        var h24 = parseInt(tParts[0]);
+                        minute = tParts[1] || '00';
+                        if (h24 === 0) { hour = 12; ampm = 'AM'; }
+                        else if (h24 < 12) { hour = h24; ampm = 'AM'; }
+                        else if (h24 === 12) { hour = 12; ampm = 'PM'; }
+                        else { hour = h24 - 12; ampm = 'PM'; }
+                    }
+                    
+                    document.getElementById('edit-quote-hour').value = hour;
+                    document.getElementById('edit-quote-minute').value = minute.toString().padStart(2, '0');
+                    document.getElementById('edit-quote-ampm').value = ampm;
+                } else {
+                    // No time - clear fields
+                    document.getElementById('edit-quote-hour').value = '';
+                    document.getElementById('edit-quote-minute').value = '00';
+                    document.getElementById('edit-quote-ampm').value = 'AM';
+                }
+                
                 document.getElementById('edit-quote-speaker').value = q.speaker || 'Charles Paul Jones';
                 document.getElementById('edit-quote-location').value = q.location || '';
                 document.getElementById('edit-quote-latitude').value = q.latitude || '';
@@ -733,18 +845,34 @@
             if (!editingQuoteId) return;
             
             var text = document.getElementById('edit-quote-text').value.trim();
-            var date = document.getElementById('edit-quote-date').value;
-            var time = document.getElementById('edit-quote-time').value || null;
+            
+            // Build date from dropdowns (YYYY-MM-DD)
+            var year = document.getElementById('edit-quote-year').value;
+            var month = document.getElementById('edit-quote-month').value;
+            var day = document.getElementById('edit-quote-day').value;
+            
+            if (!text || !year || !month || !day) {
+                alert('Text and date are required');
+                return;
+            }
+            
+            var date = year + '-' + month + '-' + day.toString().padStart(2, '0');
+            
+            // Build time from dropdowns (H:MM AM/PM format)
+            var hour = document.getElementById('edit-quote-hour').value;
+            var minute = document.getElementById('edit-quote-minute').value;
+            var ampm = document.getElementById('edit-quote-ampm').value;
+            var time = null;
+            
+            if (hour) {
+                time = hour + ':' + minute + ' ' + ampm;
+            }
+            
             var speaker = document.getElementById('edit-quote-speaker').value;
             var location = document.getElementById('edit-quote-location').value.trim();
             var latitude = document.getElementById('edit-quote-latitude').value || null;
             var longitude = document.getElementById('edit-quote-longitude').value || null;
             var notes = document.getElementById('edit-quote-notes').value.trim();
-            
-            if (!text || !date) {
-                alert('Text and date are required');
-                return;
-            }
             
             try {
                 var res = await fetch(API_BASE + '/api/admin/quote/' + editingQuoteId + '?secret=' + encodeURIComponent(apiSecret), {
@@ -916,8 +1044,32 @@
             e.preventDefault();
             var text = document.getElementById('quote-text').value;
             var contributor = document.getElementById('quote-contributor').value;
-            var quoteDate = document.getElementById('quote-date').value;
-            var quoteTime = document.getElementById('quote-time').value || null;
+            
+            // Build date from dropdowns (YYYY-MM-DD)
+            var year = document.getElementById('quote-year').value;
+            var month = document.getElementById('quote-month').value;
+            var day = document.getElementById('quote-day').value;
+            
+            if (!text || !year || !month || !day) {
+                var msg = document.getElementById('message');
+                msg.className = 'message error';
+                msg.textContent = 'Quote text and date are required';
+                msg.style.display = 'block';
+                return;
+            }
+            
+            var quoteDate = year + '-' + month + '-' + day.toString().padStart(2, '0');
+            
+            // Build time from dropdowns (H:MM AM/PM format) - optional
+            var hour = document.getElementById('quote-hour').value;
+            var minute = document.getElementById('quote-minute').value;
+            var ampm = document.getElementById('quote-ampm').value;
+            var quoteTime = null;
+            
+            if (hour) {
+                quoteTime = hour + ':' + minute + ' ' + ampm;
+            }
+            
             var quoteId = document.getElementById('quote-id').value;
             var location = document.getElementById('quote-location').value.trim() || 'Fort Marcy Park, Santa Fe, NM';
             var latitude = document.getElementById('quote-latitude').value || 35.6956;
@@ -957,7 +1109,9 @@
                     
                     // Clear NON-sticky fields only (text, time, id)
                     document.getElementById('quote-text').value = '';
-                    document.getElementById('quote-time').value = '';
+                    document.getElementById('quote-hour').value = '';
+                    document.getElementById('quote-minute').value = '00';
+                    document.getElementById('quote-ampm').value = 'AM';
                     document.getElementById('quote-id').value = '';
                     // Sticky fields (contributor, date, location, notes) are preserved
                     
