@@ -192,6 +192,28 @@
                 </form>
             </div>
             
+            <!-- Contributor Manager -->
+            <div class="card">
+                <h2>👥 Quote Contributors</h2>
+                <div style="margin-bottom: 15px;">
+                    <div style="display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap;">
+                        <div class="field">
+                            <label>Name</label>
+                            <input type="text" id="new-contributor-name" placeholder="e.g., Martin Luther King Jr." style="width: 250px;">
+                        </div>
+                        <div class="field">
+                            <label>Default Location (optional)</label>
+                            <input type="text" id="new-contributor-location" placeholder="e.g., Atlanta, GA" style="width: 200px;">
+                        </div>
+                        <button onclick="addContributor()" class="btn-small">Add Contributor</button>
+                    </div>
+                </div>
+                <div id="contributors-list" style="display: flex; flex-wrap: wrap; gap: 8px;">
+                    <span style="color: #888;">Loading...</span>
+                </div>
+                <div id="contributor-message" class="message"></div>
+            </div>
+            
             <!-- Add Quote -->
             <div class="card">
                 <h2>📜 Add New Quote</h2>
@@ -200,24 +222,51 @@
                         <label>Quote Text</label>
                         <textarea id="quote-text" placeholder="Your wisdom..." rows="3" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; resize: vertical;" required></textarea>
                     </div>
-                    <div style="display: flex; gap: 15px; margin-top: 10px;">
-                        <div class="field" style="flex: 1;">
-                            <label>Date Written</label>
+                    <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
+                        <div class="field" style="flex: 1; min-width: 200px;">
+                            <label>Contributor (sticky)</label>
+                            <select id="quote-contributor" style="width: 100%; padding: 10px;">
+                                <option value="Charles Paul Jones">Charles Paul Jones</option>
+                            </select>
+                        </div>
+                        <div class="field" style="flex: 1; min-width: 150px;">
+                            <label>Date Written (sticky)</label>
                             <input type="date" id="quote-date" required style="width: 100%;">
                         </div>
-                        <div class="field" style="flex: 1;">
+                        <div class="field" style="width: 120px;">
                             <label>Time (optional)</label>
                             <input type="time" id="quote-time" placeholder="HH:MM" style="width: 100%;">
                         </div>
-                        <div class="field" style="width: 100px;">
-                            <label>ID (optional)</label>
+                        <div class="field" style="width: 80px;">
+                            <label>ID (auto)</label>
                             <input type="number" id="quote-id" placeholder="Auto" style="width: 100%;">
                         </div>
                     </div>
+                    <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
+                        <div class="field" style="flex: 1; min-width: 250px;">
+                            <label>Location (sticky)</label>
+                            <input type="text" id="quote-location" placeholder="Fort Marcy Park, Santa Fe, NM" style="width: 100%;">
+                        </div>
+                        <div class="field" style="width: 100px;">
+                            <label>Latitude</label>
+                            <input type="number" step="0.0001" id="quote-latitude" placeholder="35.6956" style="width: 100%;">
+                        </div>
+                        <div class="field" style="width: 100px;">
+                            <label>Longitude</label>
+                            <input type="number" step="0.0001" id="quote-longitude" placeholder="-105.9345" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div class="field" style="margin-top: 10px;">
+                        <label>Notes for AI (sticky) - e.g., "March on Washington speech", "Watergate press conference"</label>
+                        <input type="text" id="quote-notes" placeholder="Context for the AI interpretation..." style="width: 100%;">
+                    </div>
                     <p style="font-size: 12px; color: #888; margin: 10px 0;">
-                        💡 Leave ID blank for auto-assign, or enter a specific ID (e.g., 46) when splitting merged quotes.
+                        💡 <strong>Sticky fields</strong> (Contributor, Date, Location, Notes) persist after adding a quote for faster bulk entry.
                     </p>
-                    <button type="submit">Add Quote</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button type="submit">Add Quote</button>
+                        <button type="button" onclick="clearQuoteForm()" class="btn-secondary">Clear Form</button>
+                    </div>
                 </form>
             </div>
             
@@ -339,7 +388,16 @@
                 <textarea id="edit-quote-text" rows="5" style="width: 100%; padding: 12px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff; font-size: 14px; resize: vertical;"></textarea>
             </div>
             
-            <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 5px; color: #888;">Contributor</label>
+                    <select id="edit-quote-speaker" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                        <option value="Charles Paul Jones">Charles Paul Jones</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
                 <div style="flex: 1;">
                     <label style="display: block; margin-bottom: 5px; color: #888;">Date Written</label>
                     <input type="date" id="edit-quote-date" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
@@ -348,6 +406,26 @@
                     <label style="display: block; margin-bottom: 5px; color: #888;">Time (optional)</label>
                     <input type="time" id="edit-quote-time" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
                 </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                <div style="flex: 2;">
+                    <label style="display: block; margin-bottom: 5px; color: #888;">Location</label>
+                    <input type="text" id="edit-quote-location" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                </div>
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 5px; color: #888;">Latitude</label>
+                    <input type="number" step="0.0001" id="edit-quote-latitude" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                </div>
+                <div style="flex: 1;">
+                    <label style="display: block; margin-bottom: 5px; color: #888;">Longitude</label>
+                    <input type="number" step="0.0001" id="edit-quote-longitude" style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 20px;">
+                <label style="display: block; margin-bottom: 5px; color: #888;">Notes for AI</label>
+                <input type="text" id="edit-quote-notes" placeholder="Context for the AI interpretation..." style="width: 100%; padding: 10px; border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; background: rgba(0,0,0,0.3); color: #fff;">
             </div>
             
             <div style="display: flex; gap: 10px; justify-content: flex-end;">
@@ -363,11 +441,132 @@
         let currentQuotePage = 1;
         let currentQuoteSearch = '';
         let editingQuoteId = null;
+        let contributors = [];
         
         // Known issues for flagging
         const KNOWN_ISSUES = {
             // All issues resolved - January 3, 2026
         };
+        
+        // =====================================================================
+        // CONTRIBUTOR MANAGEMENT
+        // =====================================================================
+        
+        async function loadContributors() {
+            try {
+                var res = await fetch(API_BASE + '/api/admin/contributors?secret=' + encodeURIComponent(apiSecret));
+                if (!res.ok) throw new Error('Failed to load contributors');
+                var data = await res.json();
+                contributors = data.contributors || [];
+                renderContributors();
+                populateContributorDropdowns();
+            } catch (e) {
+                console.error('Error loading contributors:', e);
+            }
+        }
+        
+        function renderContributors() {
+            var list = document.getElementById('contributors-list');
+            if (!contributors.length) {
+                list.innerHTML = '<span style="color: #888;">No contributors</span>';
+                return;
+            }
+            var html = contributors.map(function(c) {
+                var isPrimary = c.name === 'Charles Paul Jones';
+                return '<span style="background: ' + (isPrimary ? 'rgba(212,175,55,0.3)' : 'rgba(255,255,255,0.1)') + '; padding: 6px 12px; border-radius: 20px; display: inline-flex; align-items: center; gap: 8px;">' +
+                    '<span>' + escapeHtml(c.name) + '</span>' +
+                    (isPrimary ? '' : '<button onclick="deleteContributor(\'' + escapeHtml(c.name) + '\')" style="background: none; border: none; color: #e74c3c; cursor: pointer; padding: 0; font-size: 14px;">×</button>') +
+                    '</span>';
+            }).join('');
+            list.innerHTML = html;
+        }
+        
+        function populateContributorDropdowns() {
+            var options = contributors.map(function(c) {
+                return '<option value="' + escapeHtml(c.name) + '">' + escapeHtml(c.name) + '</option>';
+            }).join('');
+            
+            document.getElementById('quote-contributor').innerHTML = options;
+            document.getElementById('edit-quote-speaker').innerHTML = options;
+        }
+        
+        async function addContributor() {
+            var name = document.getElementById('new-contributor-name').value.trim();
+            var location = document.getElementById('new-contributor-location').value.trim();
+            
+            if (!name) {
+                alert('Contributor name required');
+                return;
+            }
+            
+            try {
+                var res = await fetch(API_BASE + '/api/admin/contributor?secret=' + encodeURIComponent(apiSecret), {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name: name, default_location: location })
+                });
+                
+                if (!res.ok) {
+                    var err = await res.json();
+                    throw new Error(err.detail || 'Failed to add');
+                }
+                
+                document.getElementById('new-contributor-name').value = '';
+                document.getElementById('new-contributor-location').value = '';
+                loadContributors();
+                showContributorMessage('Added: ' + name, 'success');
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        }
+        
+        async function deleteContributor(name) {
+            if (!confirm('Delete contributor "' + name + '"?')) return;
+            
+            try {
+                var res = await fetch(API_BASE + '/api/admin/contributor/' + encodeURIComponent(name) + '?secret=' + encodeURIComponent(apiSecret), {
+                    method: 'DELETE'
+                });
+                
+                if (!res.ok) {
+                    var err = await res.json();
+                    throw new Error(err.detail || 'Failed to delete');
+                }
+                
+                loadContributors();
+                showContributorMessage('Deleted: ' + name, 'success');
+            } catch (e) {
+                alert('Error: ' + e.message);
+            }
+        }
+        
+        function showContributorMessage(text, type) {
+            var msg = document.getElementById('contributor-message');
+            msg.className = 'message ' + type;
+            msg.textContent = text;
+            msg.style.display = 'block';
+            setTimeout(function() { msg.style.display = 'none'; }, 3000);
+        }
+        
+        // =====================================================================
+        // CLEAR FORM FUNCTION
+        // =====================================================================
+        
+        function clearQuoteForm() {
+            document.getElementById('quote-text').value = '';
+            document.getElementById('quote-contributor').value = 'Charles Paul Jones';
+            document.getElementById('quote-date').value = '';
+            document.getElementById('quote-time').value = '';
+            document.getElementById('quote-id').value = '';
+            document.getElementById('quote-location').value = '';
+            document.getElementById('quote-latitude').value = '';
+            document.getElementById('quote-longitude').value = '';
+            document.getElementById('quote-notes').value = '';
+        }
+        
+        // =====================================================================
+        // QUOTE EDITOR FUNCTIONS
+        // =====================================================================
         
         function showQuoteEditor() {
             document.getElementById('admin-panel').style.display = 'none';
@@ -513,6 +712,11 @@
                 document.getElementById('edit-quote-text').value = q.text;
                 document.getElementById('edit-quote-date').value = q.date;
                 document.getElementById('edit-quote-time').value = q.time || '';
+                document.getElementById('edit-quote-speaker').value = q.speaker || 'Charles Paul Jones';
+                document.getElementById('edit-quote-location').value = q.location || '';
+                document.getElementById('edit-quote-latitude').value = q.latitude || '';
+                document.getElementById('edit-quote-longitude').value = q.longitude || '';
+                document.getElementById('edit-quote-notes').value = q.notes || '';
                 
                 document.getElementById('quote-modal').style.display = 'block';
             } catch (e) {
@@ -531,6 +735,11 @@
             var text = document.getElementById('edit-quote-text').value.trim();
             var date = document.getElementById('edit-quote-date').value;
             var time = document.getElementById('edit-quote-time').value || null;
+            var speaker = document.getElementById('edit-quote-speaker').value;
+            var location = document.getElementById('edit-quote-location').value.trim();
+            var latitude = document.getElementById('edit-quote-latitude').value || null;
+            var longitude = document.getElementById('edit-quote-longitude').value || null;
+            var notes = document.getElementById('edit-quote-notes').value.trim();
             
             if (!text || !date) {
                 alert('Text and date are required');
@@ -541,7 +750,16 @@
                 var res = await fetch(API_BASE + '/api/admin/quote/' + editingQuoteId + '?secret=' + encodeURIComponent(apiSecret), {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ text: text, date: date, time: time })
+                    body: JSON.stringify({ 
+                        text: text, 
+                        date: date, 
+                        time: time,
+                        speaker: speaker,
+                        location: location,
+                        latitude: latitude ? parseFloat(latitude) : null,
+                        longitude: longitude ? parseFloat(longitude) : null,
+                        notes: notes
+                    })
                 });
                 
                 if (!res.ok) {
@@ -602,6 +820,7 @@
                     document.getElementById('login-box').classList.remove('active');
                     document.getElementById('admin-panel').classList.add('active');
                     loadData();
+                    loadContributors();
                 } else {
                     errDiv.className = 'message error';
                     errDiv.textContent = 'Invalid API Secret';
@@ -696,13 +915,27 @@
         document.getElementById('add-quote-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             var text = document.getElementById('quote-text').value;
+            var contributor = document.getElementById('quote-contributor').value;
             var quoteDate = document.getElementById('quote-date').value;
             var quoteTime = document.getElementById('quote-time').value || null;
             var quoteId = document.getElementById('quote-id').value;
+            var location = document.getElementById('quote-location').value.trim() || 'Fort Marcy Park, Santa Fe, NM';
+            var latitude = document.getElementById('quote-latitude').value || 35.6956;
+            var longitude = document.getElementById('quote-longitude').value || -105.9345;
+            var notes = document.getElementById('quote-notes').value.trim();
             var msg = document.getElementById('message');
             
-            // Build body with optional ID
-            var body = { text: text, date: quoteDate, time: quoteTime };
+            // Build body with all fields
+            var body = { 
+                text: text, 
+                date: quoteDate, 
+                time: quoteTime,
+                speaker: contributor,
+                location: location,
+                latitude: parseFloat(latitude),
+                longitude: parseFloat(longitude),
+                notes: notes
+            };
             if (quoteId) {
                 body.id = parseInt(quoteId);
             }
@@ -719,12 +952,15 @@
                 if (res.ok) {
                     var result = await res.json();
                     msg.className = 'message success';
-                    msg.textContent = result.message + (result.is_high_fidelity ? ' (high-fidelity 📡)' : ' (analog)');
+                    msg.textContent = result.message + ' by ' + contributor + (result.is_high_fidelity ? ' (high-fidelity 📡)' : ' (analog)');
                     msg.style.display = 'block';
+                    
+                    // Clear NON-sticky fields only (text, time, id)
                     document.getElementById('quote-text').value = '';
-                    document.getElementById('quote-date').value = '';
                     document.getElementById('quote-time').value = '';
                     document.getElementById('quote-id').value = '';
+                    // Sticky fields (contributor, date, location, notes) are preserved
+                    
                     setTimeout(function() { msg.style.display = 'none'; }, 5000);
                 } else {
                     var err = await res.json();
