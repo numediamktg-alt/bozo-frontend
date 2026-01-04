@@ -206,12 +206,16 @@
                             <input type="date" id="quote-date" required style="width: 100%;">
                         </div>
                         <div class="field" style="flex: 1;">
-                            <label>Time (optional - for high-fidelity)</label>
+                            <label>Time (optional)</label>
                             <input type="time" id="quote-time" placeholder="HH:MM" style="width: 100%;">
+                        </div>
+                        <div class="field" style="width: 100px;">
+                            <label>ID (optional)</label>
+                            <input type="number" id="quote-id" placeholder="Auto" style="width: 100%;">
                         </div>
                     </div>
                     <p style="font-size: 12px; color: #888; margin: 10px 0;">
-                        📡 Adding exact time creates a "high-fidelity" quote with more precise cosmic fingerprint.
+                        💡 Leave ID blank for auto-assign, or enter a specific ID (e.g., 46) when splitting merged quotes.
                     </p>
                     <button type="submit">Add Quote</button>
                 </form>
@@ -570,8 +574,9 @@
                     throw new Error(err.detail || 'Failed to save');
                 }
                 
+                var savedId = editingQuoteId;
                 closeQuoteModal();
-                showQuoteMessage('Updated quote #' + editingQuoteId, 'success');
+                showQuoteMessage('Updated quote #' + savedId, 'success');
                 loadQuotes(currentQuotePage);
                 
             } catch (e) {
@@ -718,7 +723,14 @@
             var text = document.getElementById('quote-text').value;
             var quoteDate = document.getElementById('quote-date').value;
             var quoteTime = document.getElementById('quote-time').value || null;
+            var quoteId = document.getElementById('quote-id').value;
             var msg = document.getElementById('message');
+            
+            // Build body with optional ID
+            var body = { text: text, date: quoteDate, time: quoteTime };
+            if (quoteId) {
+                body.id = parseInt(quoteId);
+            }
             
             try {
                 var res = await fetch(API_BASE + '/api/admin/add-quote?secret=' + encodeURIComponent(apiSecret), {
@@ -726,24 +738,28 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ text: text, date: quoteDate, time: quoteTime })
+                    body: JSON.stringify(body)
                 });
                 
                 if (res.ok) {
                     var result = await res.json();
                     msg.className = 'message success';
                     msg.textContent = result.message + (result.is_high_fidelity ? ' (high-fidelity 📡)' : ' (analog)');
+                    msg.style.display = 'block';
                     document.getElementById('quote-text').value = '';
                     document.getElementById('quote-date').value = '';
                     document.getElementById('quote-time').value = '';
+                    document.getElementById('quote-id').value = '';
                     setTimeout(function() { msg.style.display = 'none'; }, 5000);
                 } else {
                     var err = await res.json();
                     msg.className = 'message error';
+                    msg.style.display = 'block';
                     msg.textContent = err.detail || 'Error adding quote';
                 }
             } catch (e) {
                 msg.className = 'message error';
+                msg.style.display = 'block';
                 msg.textContent = 'Connection error';
             }
         });
