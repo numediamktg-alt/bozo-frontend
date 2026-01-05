@@ -203,7 +203,7 @@
         }
         .quote { font-family: 'Caveat', cursive; font-size: 1.8rem; text-align: center; margin: 20px 0; }
         .meta { text-align: center; color: #666; font-size: 0.9rem; }
-        .resonance { background: var(--yellow); padding: 2px 8px; border-radius: 10px; margin-left: 10px; }
+        .traffic-light { font-size: 1.2rem; margin-left: 10px; cursor: help; }
         
         .interpretation-card {
             background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
@@ -539,15 +539,26 @@
         }
 
         function renderReading(r) {
+            // Traffic light based on similarity
+            const sim = r.similarity * 100;
+            let trafficLight;
+            if (sim >= 75) {
+                trafficLight = '<span class="traffic-light" title="High signal alignment">🟩</span>';
+            } else if (sim >= 50) {
+                trafficLight = '<span class="traffic-light" title="Partial signal alignment">🟨</span>';
+            } else {
+                trafficLight = '<span class="traffic-light" title="Low signal alignment">🟥</span>';
+            }
+            
             let html = `
                 <div class="oracle-card">
                     <div class="quote">"${r.quote}"</div>
-                    <div class="meta">Written ${r.quote_date} <span class="resonance">${Math.round(r.similarity*100)}% resonance</span></div>
+                    <div class="meta">Written ${r.quote_date} ${trafficLight}</div>
                 </div>`;
             if (r.interpretation) {
                 html += `
                     <div class="interpretation-card">
-                        <div class="driver-header"><div class="driver-avatar">🤡</div><div class="driver-name">The Driver Says...</div></div>
+                        <div class="driver-header"><div class="driver-avatar">🤡</div><div class="driver-name">The Dashboard</div></div>
                         <div class="interpretation-text">${r.interpretation.replace(/\n/g, '<br>')}</div>
                     </div>`;
             }
