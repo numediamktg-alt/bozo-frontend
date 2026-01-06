@@ -351,6 +351,41 @@
             font-size: 0.9rem;
         }
 
+        /* Teaser CTA */
+        .teaser-content {
+            text-align: center;
+            padding: 20px 0 10px;
+        }
+
+        .teaser-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .teaser-text em {
+            color: var(--purple);
+            font-style: italic;
+        }
+
+        .teaser-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--purple) 0%, #a855f7 100%);
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+
+        .teaser-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--purple-glow);
+        }
+
         /* Sidebar */
         .sidebar {
             display: flex;
@@ -584,7 +619,7 @@
         <nav class="nav-pills">
             <a href="index.html">Home</a>
             <a href="ask.html" class="active">The Oracle</a>
-            <a href="bus.html">The Dashboard</a>
+            <a href="bus.html">The DashBoard</a>
         </nav>
     </header>
 
@@ -644,16 +679,19 @@
                     <p class="disclaimer">Signal alignment reflects resonance between question and quote, not accuracy or advice.</p>
                 </div>
 
-                <!-- Interpretation -->
+                <!-- Dashboard Teaser -->
                 <div class="card interpretation-card animate-in" style="animation-delay: 0.2s;">
                     <div class="interpretation-header">
                         <div class="dashboard-icon">📊</div>
                         <div>
-                            <div class="dashboard-label">The Dashboard</div>
+                            <div class="dashboard-label">The DashBoard™</div>
                             <div class="dashboard-sublabel">Reading the gauges</div>
                         </div>
                     </div>
-                    <div class="interpretation-text" id="interpretation-text"></div>
+                    <div class="teaser-content">
+                        <p class="teaser-text">What does this quote mean for <em>you</em>? The DashBoard™ interprets each reading through your personal cosmic frequency.</p>
+                        <a href="bus.html" class="teaser-btn">Unlock AI Interpretation →</a>
+                    </div>
                 </div>
 
                 <!-- Ask Another -->
@@ -713,7 +751,7 @@
 
             <!-- CTA -->
             <div class="card cta-card">
-                <div class="cta-title">The Dashboard™</div>
+                <div class="cta-title">The DashBoard™</div>
                 <p class="cta-subtitle">Your birth data. Your cosmic frequency. Your personalized readings.</p>
                 <a href="bus.html">
                     <button class="cta-btn">
@@ -834,14 +872,6 @@
             }
 
             document.getElementById('signal-detail').textContent = `${Math.round(sim)}% resonance`;
-
-            // Interpretation
-            if (r.interpretation) {
-                let interp = r.interpretation.replace(/\n/g, '<br>');
-                // Remove signature from text (we show it separately in the header)
-                interp = interp.replace(/<br><br>— The Dashboard/gi, '').replace(/— The Dashboard/gi, '');
-                document.getElementById('interpretation-text').innerHTML = interp;
-            }
 
             // Score circle
             scoreCard.style.display = 'block';
