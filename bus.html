@@ -203,7 +203,11 @@
         }
         .quote { font-family: 'Caveat', cursive; font-size: 1.8rem; text-align: center; margin: 20px 0; }
         .meta { text-align: center; color: #666; font-size: 0.9rem; }
-        .traffic-light { font-size: 1.2rem; margin-left: 10px; cursor: help; }
+        .traffic-lights { display: inline-flex; gap: 4px; margin-left: 10px; font-size: 1.2rem; vertical-align: middle; }
+        .traffic-lights .light { opacity: 0.25; }
+        .traffic-lights .light.active { opacity: 1; }
+        .signal-label { display: block; text-align: center; font-size: 0.9rem; color: #555; margin-top: 12px; }
+        .signal-disclaimer { display: block; text-align: center; font-size: 0.75rem; color: #999; margin-top: 6px; font-style: italic; }
         
         .interpretation-card {
             background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
@@ -539,21 +543,26 @@
         }
 
         function renderReading(r) {
-            // Traffic light based on similarity
+            // Traffic light - show all three, highlight active one
             const sim = r.similarity * 100;
-            let trafficLight;
+            let trafficLight, signalDesc;
             if (sim >= 75) {
-                trafficLight = '<span class="traffic-light" title="High signal alignment">🟩</span>';
+                trafficLight = '<span class="traffic-lights"><span class="light">🟥</span><span class="light">🟨</span><span class="light active">🟩</span></span>';
+                signalDesc = 'Signals broadly align. Interpretation is clear but still non-prescriptive.';
             } else if (sim >= 50) {
-                trafficLight = '<span class="traffic-light" title="Partial signal alignment">🟨</span>';
+                trafficLight = '<span class="traffic-lights"><span class="light">🟥</span><span class="light active">🟨</span><span class="light">🟩</span></span>';
+                signalDesc = 'Mixed signals. Useful tension present. Multiple interpretations possible.';
             } else {
-                trafficLight = '<span class="traffic-light" title="Low signal alignment">🟥</span>';
+                trafficLight = '<span class="traffic-lights"><span class="light active">🟥</span><span class="light">🟨</span><span class="light">🟩</span></span>';
+                signalDesc = 'Signals conflict or pull in opposing directions. Interpretation is framing-sensitive.';
             }
             
             let html = `
                 <div class="oracle-card">
                     <div class="quote">"${r.quote}"</div>
                     <div class="meta">Written ${r.quote_date} ${trafficLight}</div>
+                    <div class="signal-label">${signalDesc}</div>
+                    <div class="signal-disclaimer">Indicator reflects signal alignment, not accuracy or advice.</div>
                 </div>`;
             if (r.interpretation) {
                 html += `
