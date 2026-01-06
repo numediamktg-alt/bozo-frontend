@@ -3,65 +3,888 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ask the Driver | Bozo on the Bus</title>
+    <title>Ask the Oracle | Bozo on the Bus</title>
     <meta name="description" content="Ask the oracle. Get wisdom matched to this exact cosmic moment.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d0d14;
+            --bg-card: #16161f;
+            --bg-card-hover: #1c1c28;
+            --border: rgba(255,255,255,0.08);
+            --border-highlight: rgba(139,92,246,0.3);
+            --purple: #8b5cf6;
+            --purple-glow: rgba(139,92,246,0.2);
+            --orange: #f97316;
+            --orange-glow: rgba(249,115,22,0.2);
+            --green: #22c55e;
+            --yellow: #eab308;
+            --red: #ef4444;
+            --text: #f1f1f1;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--purple), var(--orange));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .nav-pills {
+            display: flex;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .nav-pills a {
+            color: var(--text-muted);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-pills a:hover { color: var(--text); }
+        .nav-pills a.active {
+            background: var(--bg-card-hover);
+            color: var(--text);
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+        }
+
+        @media (max-width: 1000px) {
+            .main-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            .header { padding: 16px 20px; }
+            .nav-pills { display: none; }
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        /* Ask Section */
+        .ask-section {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .hero-card {
+            background: linear-gradient(135deg, var(--bg-card) 0%, rgba(139,92,246,0.1) 100%);
+            border: 1px solid var(--border-highlight);
+            text-align: center;
+            padding: 40px 32px;
+        }
+
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--purple) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Question Input */
+        .question-card { padding: 0; overflow: hidden; }
+
+        .question-input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-size: 1rem;
+            padding: 24px;
+            resize: none;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
+        .question-input::placeholder { color: var(--text-dim); }
+        .question-input:focus { outline: none; }
+
+        .question-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            background: rgba(0,0,0,0.2);
+        }
+
+        .char-count { color: var(--text-dim); font-size: 0.85rem; }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--purple) 0%, #a855f7 100%);
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px var(--purple-glow);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Reading Result */
+        .reading-container { display: none; }
+        .reading-container.visible { display: flex; flex-direction: column; gap: 24px; }
+
+        /* Quote Card */
+        .quote-card {
+            background: linear-gradient(135deg, #1a1a24 0%, #1f1f2e 100%);
+            border: 1px solid var(--border-highlight);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quote-card::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 120px;
+            color: var(--purple);
+            opacity: 0.1;
+            font-family: Georgia, serif;
+        }
+
+        .quote-text {
+            font-family: 'Caveat', cursive;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Traffic Light */
+        .signal-indicator {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .traffic-light {
+            display: flex;
+            gap: 6px;
+        }
+
+        .light {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .light.red { background: var(--red); }
+        .light.yellow { background: var(--yellow); }
+        .light.green { background: var(--green); }
+        .light.dim { opacity: 0.2; }
+        .light.active {
+            box-shadow: 0 0 20px currentColor;
+        }
+
+        .light.red.active { box-shadow: 0 0 20px var(--red); }
+        .light.yellow.active { box-shadow: 0 0 20px var(--yellow); }
+        .light.green.active { box-shadow: 0 0 20px var(--green); }
+
+        .signal-info {
+            flex: 1;
+        }
+
+        .signal-label {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .signal-detail {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Interpretation */
+        .interpretation-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--purple);
+        }
+
+        .interpretation-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .dashboard-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--purple), var(--orange));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .dashboard-label {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .dashboard-sublabel {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .interpretation-text {
+            color: var(--text);
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .interpretation-signature {
+            margin-top: 16px;
+            color: var(--purple);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Conditions Card */
+        .conditions-card .card-header {
+            margin-bottom: 24px;
+        }
+
+        .meter-group {
+            margin-bottom: 20px;
+        }
+
+        .meter-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .meter-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .meter-icon {
+            font-size: 1rem;
+        }
+
+        .meter-value {
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .meter-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .meter-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-out;
+        }
+
+        .meter-fill.creative { background: linear-gradient(90deg, var(--orange), #fb923c); }
+        .meter-fill.intuition { background: linear-gradient(90deg, var(--purple), #a855f7); }
+        .meter-fill.drive { background: linear-gradient(90deg, var(--green), #4ade80); }
+
+        /* Score Circle */
+        .score-card {
+            text-align: center;
+            padding: 32px 24px;
+        }
+
+        .score-circle {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 16px;
+            position: relative;
+        }
+
+        .score-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--purple) 0deg,
+                var(--purple) calc(var(--score) * 3.6deg),
+                rgba(255,255,255,0.1) calc(var(--score) * 3.6deg),
+                rgba(255,255,255,0.1) 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-inner {
+            width: 110px;
+            height: 110px;
+            background: var(--bg-card);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .score-label {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* CTA Card */
+        .cta-card {
+            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+            border: none;
+            text-align: center;
+        }
+
+        .cta-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .cta-subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-btn {
+            background: white;
+            color: var(--purple);
+            border: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .cta-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        .cta-price {
+            margin-top: 12px;
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .loading-spinner {
+            width: 48px;
+            height: 48px;
+            border: 3px solid var(--border);
+            border-top-color: var(--purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+            margin-top: 40px;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            text-align: center;
+            margin-top: 12px;
+            font-style: italic;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Ask Another */
+        .ask-another {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .ask-another-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .ask-another-btn:hover {
+            border-color: var(--purple);
+            color: var(--text);
+        }
+    </style>
 </head>
 <body>
-    <header class="site-header">
-        <div class="container">
-            <a href="index.html" class="logo">BOZO ON THE BUS</a>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="bus.html">Get on the Bus</a>
-            </nav>
-        </div>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🚌</div>
+            Bozo on the Bus
+        </a>
+        <nav class="nav-pills">
+            <a href="index.html">Home</a>
+            <a href="ask.html" class="active">Oracle</a>
+            <a href="bus.html">Dashboard</a>
+        </nav>
     </header>
-    
-    <main style="min-height: 80vh; padding: 60px 24px;">
-        <div class="container">
-            <div style="text-align: center; margin-bottom: 48px;">
-                <h1 style="color: var(--gold); font-size: 2.5rem; margin-bottom: 16px;">Ask the Driver</h1>
-                <p style="color: var(--text-muted); font-size: 1.1rem;">
-                    The bus pulled up. What's on your mind?
-                </p>
+
+    <main class="main-container">
+        <section class="ask-section">
+            <!-- Hero -->
+            <div class="card hero-card" id="hero-card">
+                <h1 class="hero-title">Ask the Oracle</h1>
+                <p class="hero-subtitle">The bus pulled up. What's on your mind?</p>
             </div>
-            
-            <div style="max-width: 600px; margin: 0 auto;">
-                <form id="ask-form">
-                    <div class="form-group">
-                        <textarea name="question" rows="4" 
-                                  placeholder="Type your question here... What are you wrestling with? What decision are you facing? What would you ask a wise stranger on a bus?"
-                                  required></textarea>
-                    </div>
-                    <div style="text-align: center;">
-                        <button type="submit" class="btn btn-primary">
-                            Ask the Oracle
-                        </button>
-                    </div>
-                </form>
-                
-                <div id="reading-result" style="margin-top: 48px;"></div>
-                
-                <div style="margin-top: 60px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center;">
-                    <p style="color: var(--text-muted); margin-bottom: 16px;">
-                        Want personalized readings based on YOUR cosmic frequency?
-                    </p>
-                    <a href="bus.html" class="btn btn-secondary">Get on the Bus — $10/mo</a>
+
+            <!-- Question Input -->
+            <div class="card question-card" id="question-card">
+                <textarea 
+                    class="question-input" 
+                    id="question-input"
+                    rows="4" 
+                    placeholder="What are you wrestling with? What decision sits heavy? What would you ask a stranger who somehow already knows?"
+                    maxlength="500"
+                ></textarea>
+                <div class="question-footer">
+                    <span class="char-count"><span id="char-count">0</span>/500</span>
+                    <button class="submit-btn" id="submit-btn">
+                        <span>Ask</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </div>
+
+            <!-- Loading State -->
+            <div class="card loading-state" id="loading-state" style="display: none;">
+                <div class="loading-spinner"></div>
+                <p class="loading-text">Consulting the cosmos...</p>
+            </div>
+
+            <!-- Reading Result -->
+            <div class="reading-container" id="reading-container">
+                <!-- Quote Card -->
+                <div class="card quote-card animate-in">
+                    <div class="quote-text" id="quote-text"></div>
+                    <div class="quote-meta">
+                        <span id="quote-date"></span>
+                    </div>
+                    <div class="signal-indicator">
+                        <div class="traffic-light">
+                            <div class="light red" id="light-red"></div>
+                            <div class="light yellow" id="light-yellow"></div>
+                            <div class="light green" id="light-green"></div>
+                        </div>
+                        <div class="signal-info">
+                            <div class="signal-label" id="signal-label"></div>
+                            <div class="signal-detail" id="signal-detail"></div>
+                        </div>
+                    </div>
+                    <p class="disclaimer">Signal alignment reflects resonance between question and quote, not accuracy or advice.</p>
+                </div>
+
+                <!-- Interpretation -->
+                <div class="card interpretation-card animate-in" style="animation-delay: 0.2s;">
+                    <div class="interpretation-header">
+                        <div class="dashboard-icon">📊</div>
+                        <div>
+                            <div class="dashboard-label">The Dashboard</div>
+                            <div class="dashboard-sublabel">Reading the gauges</div>
+                        </div>
+                    </div>
+                    <div class="interpretation-text" id="interpretation-text"></div>
+                </div>
+
+                <!-- Ask Another -->
+                <div class="ask-another">
+                    <button class="ask-another-btn" id="ask-another-btn">Ask Another Question</button>
+                </div>
+            </div>
+        </section>
+
+        <aside class="sidebar">
+            <!-- Conditions -->
+            <div class="card conditions-card">
+                <div class="card-header">
+                    <span class="card-title">📡 Transmission Levels</span>
+                </div>
+                <div class="meter-group">
+                    <div class="meter-header">
+                        <span class="meter-label"><span class="meter-icon">🎨</span> Creative Flow</span>
+                        <span class="meter-value" id="h5-value">--</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill creative" id="h5-bar" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div class="meter-group">
+                    <div class="meter-header">
+                        <span class="meter-label"><span class="meter-icon">👁️</span> Intuition</span>
+                        <span class="meter-value" id="h7-value">--</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill intuition" id="h7-bar" style="width: 50%"></div>
+                    </div>
+                </div>
+                <div class="meter-group" style="margin-bottom: 0;">
+                    <div class="meter-header">
+                        <span class="meter-label"><span class="meter-icon">🔨</span> Drive</span>
+                        <span class="meter-value" id="h10-value">--</span>
+                    </div>
+                    <div class="meter-bar">
+                        <div class="meter-fill drive" id="h10-bar" style="width: 50%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Circle (shown after reading) -->
+            <div class="card score-card" id="score-card" style="display: none;">
+                <div class="score-circle">
+                    <div class="score-ring" id="score-ring" style="--score: 0">
+                        <div class="score-inner">
+                            <div class="score-number" id="score-number">0</div>
+                            <div class="score-label">resonance</div>
+                        </div>
+                    </div>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.85rem;">Signal alignment strength</p>
+            </div>
+
+            <!-- CTA -->
+            <div class="card cta-card">
+                <div class="cta-title">Get Personal Readings</div>
+                <p class="cta-subtitle">Your birth data. Your cosmic frequency. Your dashboard.</p>
+                <a href="bus.html">
+                    <button class="cta-btn">
+                        <span>✨</span>
+                        Get on the Bus
+                    </button>
+                </a>
+                <p class="cta-price">$10 / month</p>
+            </div>
+        </aside>
     </main>
-    
-    <footer>
-        <p class="copyright">
-            <strong>ThisOldHippie.com</strong><br>
-            © 2025 Charles P. Jones
-        </p>
+
+    <footer class="footer">
+        <strong>ThisOldHippie.com</strong><br>
+        © 2026 Charles P. Jones
     </footer>
-    
-    <script src="js/app.js"></script>
+
+    <script>
+        const API_BASE = 'https://bozo-oracle-production.up.railway.app';
+
+        // Elements
+        const questionInput = document.getElementById('question-input');
+        const charCount = document.getElementById('char-count');
+        const submitBtn = document.getElementById('submit-btn');
+        const heroCard = document.getElementById('hero-card');
+        const questionCard = document.getElementById('question-card');
+        const loadingState = document.getElementById('loading-state');
+        const readingContainer = document.getElementById('reading-container');
+        const askAnotherBtn = document.getElementById('ask-another-btn');
+        const scoreCard = document.getElementById('score-card');
+
+        // Character count
+        questionInput.addEventListener('input', () => {
+            charCount.textContent = questionInput.value.length;
+        });
+
+        // Submit
+        submitBtn.addEventListener('click', async () => {
+            const question = questionInput.value.trim();
+            if (!question) return;
+
+            // Show loading
+            heroCard.style.display = 'none';
+            questionCard.style.display = 'none';
+            readingContainer.classList.remove('visible');
+            loadingState.style.display = 'block';
+
+            try {
+                const response = await fetch(`${API_BASE}/api/reading`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question })
+                });
+
+                if (!response.ok) throw new Error('Failed');
+                const reading = await response.json();
+                renderReading(reading);
+            } catch (error) {
+                alert('The bus hit a bump. Please try again.');
+                resetForm();
+            }
+        });
+
+        // Enter to submit
+        questionInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitBtn.click();
+            }
+        });
+
+        // Ask another
+        askAnotherBtn.addEventListener('click', resetForm);
+
+        function resetForm() {
+            heroCard.style.display = 'block';
+            questionCard.style.display = 'block';
+            loadingState.style.display = 'none';
+            readingContainer.classList.remove('visible');
+            scoreCard.style.display = 'none';
+            questionInput.value = '';
+            charCount.textContent = '0';
+        }
+
+        function renderReading(r) {
+            loadingState.style.display = 'none';
+            readingContainer.classList.add('visible');
+
+            // Quote
+            document.getElementById('quote-text').textContent = `"${r.quote}"`;
+            document.getElementById('quote-date').textContent = `Written ${r.quote_date}`;
+
+            // Traffic light
+            const sim = r.similarity * 100;
+            const redLight = document.getElementById('light-red');
+            const yellowLight = document.getElementById('light-yellow');
+            const greenLight = document.getElementById('light-green');
+
+            redLight.classList.remove('active', 'dim');
+            yellowLight.classList.remove('active', 'dim');
+            greenLight.classList.remove('active', 'dim');
+
+            if (sim >= 75) {
+                redLight.classList.add('dim');
+                yellowLight.classList.add('dim');
+                greenLight.classList.add('active');
+                document.getElementById('signal-label').textContent = 'Signals broadly align';
+            } else if (sim >= 50) {
+                redLight.classList.add('dim');
+                yellowLight.classList.add('active');
+                greenLight.classList.add('dim');
+                document.getElementById('signal-label').textContent = 'Mixed signals, useful tension';
+            } else {
+                redLight.classList.add('active');
+                yellowLight.classList.add('dim');
+                greenLight.classList.add('dim');
+                document.getElementById('signal-label').textContent = 'Signals conflict';
+            }
+
+            document.getElementById('signal-detail').textContent = `${Math.round(sim)}% resonance`;
+
+            // Interpretation
+            if (r.interpretation) {
+                let interp = r.interpretation.replace(/\n/g, '<br>');
+                // Remove signature from text (we show it separately in the header)
+                interp = interp.replace(/<br><br>— The Dashboard/gi, '').replace(/— The Dashboard/gi, '');
+                document.getElementById('interpretation-text').innerHTML = interp;
+            }
+
+            // Score circle
+            scoreCard.style.display = 'block';
+            const scoreRing = document.getElementById('score-ring');
+            const scoreNumber = document.getElementById('score-number');
+            
+            // Animate score
+            setTimeout(() => {
+                scoreRing.style.setProperty('--score', Math.round(sim));
+                scoreNumber.textContent = Math.round(sim);
+            }, 300);
+
+            // Update conditions if available
+            if (r.conditions) {
+                updateConditions(r.conditions);
+            }
+        }
+
+        function updateConditions(c) {
+            const toPercent = (gain) => Math.max(5, Math.min(100, ((gain - 0.85) / 0.3) * 100));
+            
+            document.getElementById('h5-value').textContent = `${Math.round(toPercent(c.h5_gain))}%`;
+            document.getElementById('h5-bar').style.width = `${toPercent(c.h5_gain)}%`;
+            
+            document.getElementById('h7-value').textContent = `${Math.round(toPercent(c.h7_gain))}%`;
+            document.getElementById('h7-bar').style.width = `${toPercent(c.h7_gain)}%`;
+            
+            document.getElementById('h10-value').textContent = `${Math.round(toPercent(c.h10_gain))}%`;
+            document.getElementById('h10-bar').style.width = `${toPercent(c.h10_gain)}%`;
+        }
+
+        // Load initial conditions
+        async function loadConditions() {
+            try {
+                const response = await fetch(`${API_BASE}/api/conditions`);
+                if (response.ok) {
+                    const c = await response.json();
+                    updateConditions(c);
+                }
+            } catch (e) {}
+        }
+
+        loadConditions();
+    </script>
 </body>
 </html>
