@@ -3,48 +3,349 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Aboard | Bozo on the Bus</title>
+    <title>Welcome Aboard | Bozo on the Bus™</title>
+    <meta name="description" content="You're on the bus now. Welcome to The DashBoard™.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d0d14;
+            --bg-card: #16161f;
+            --bg-card-hover: #1c1c28;
+            --border: rgba(255,255,255,0.08);
+            --border-highlight: rgba(139,92,246,0.3);
+            --purple: #8b5cf6;
+            --purple-glow: rgba(139,92,246,0.2);
+            --orange: #f97316;
+            --orange-glow: rgba(249,115,22,0.2);
+            --green: #22c55e;
+            --gold: #fbbf24;
+            --teal: #2dd4bf;
+            --text: #f1f1f1;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--purple), var(--orange));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        /* Main Content */
+        .main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .main::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, var(--purple-glow) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .welcome-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-highlight);
+            border-radius: 24px;
+            padding: 60px 48px;
+            max-width: 600px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--green) 0%, #4ade80 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 32px;
+            box-shadow: 0 8px 32px rgba(34, 197, 94, 0.3);
+        }
+
+        .welcome-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--orange) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.3rem;
+            color: var(--text);
+            margin-bottom: 32px;
+        }
+
+        .welcome-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .welcome-text strong {
+            color: var(--teal);
+        }
+
+        .features-list {
+            text-align: left;
+            margin-bottom: 40px;
+            padding: 24px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            color: var(--text-muted);
+        }
+
+        .feature-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .feature-icon {
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .feature-text strong {
+            color: var(--text);
+        }
+
+        .enter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, var(--purple) 0%, #a855f7 100%);
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .enter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px var(--purple-glow);
+        }
+
+        .enter-btn svg {
+            transition: transform 0.2s;
+        }
+
+        .enter-btn:hover svg {
+            transform: translateX(4px);
+        }
+
+        .next-step {
+            margin-top: 32px;
+            padding-top: 32px;
+            border-top: 1px solid var(--border);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        .next-step strong {
+            color: var(--purple);
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid var(--border);
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .footer-quote {
+            font-family: 'Caveat', cursive;
+            font-size: 1.4rem;
+            color: var(--gold);
+            max-width: 600px;
+            margin: 0 auto 12px;
+        }
+
+        .footer-attribution {
+            color: var(--purple);
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 640px) {
+            .welcome-card {
+                padding: 40px 24px;
+            }
+            .welcome-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Confetti animation */
+        @keyframes fall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: fall linear forwards;
+        }
+    </style>
 </head>
 <body>
-    <header class="site-header">
-        <div class="container">
-            <a href="index.html" class="logo">BOZO ON THE BUS</a>
-        </div>
+    <div class="confetti" id="confetti"></div>
+
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">🚌</div>
+            Bozo on the Bus™
+        </a>
     </header>
-    
-    <main style="min-height: 80vh; display: flex; align-items: center; justify-content: center; padding: 60px 24px;">
-        <div class="container" style="text-align: center; max-width: 600px;">
-            <h1 style="color: var(--gold); font-size: 3rem; margin-bottom: 24px;">
-                Welcome Aboard
-            </h1>
+
+    <main class="main">
+        <div class="welcome-card">
+            <div class="success-icon">✓</div>
+            <h1 class="welcome-title">Welcome Aboard!</h1>
+            <p class="welcome-subtitle">You're on the bus now.</p>
             
-            <p style="font-size: 1.3rem; margin-bottom: 32px;">
-                You're on the bus now.
+            <p class="welcome-text">
+                The road stretches ahead. <strong>540 quotes and growing</strong> — 
+                each one written under specific cosmic conditions, waiting to resonate 
+                with the right moment. Your moment.
             </p>
-            
-            <p style="color: var(--text-muted); margin-bottom: 48px;">
-                The road stretches ahead. The Driver's been watching it for a long time.
-                Let's see what wisdom surfaces for you.
-            </p>
-            
-            <a href="bus.html" class="btn btn-primary" style="font-size: 1.2rem; padding: 20px 48px;">
-                Enter Your Dashboard
+
+            <div class="features-list">
+                <div class="feature-item">
+                    <span class="feature-icon">📊</span>
+                    <span class="feature-text"><strong>The DashBoard™</strong> — Your personalized AI interpretation</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🎯</span>
+                    <span class="feature-text"><strong>Your Frequency</strong> — Readings tuned to your birth data</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">📡</span>
+                    <span class="feature-text"><strong>Live Conditions</strong> — Real-time transmission levels</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-icon">🚦</span>
+                    <span class="feature-text"><strong>Signal Alignment</strong> — Traffic light resonance indicator</span>
+                </div>
+            </div>
+
+            <a href="bus.html" class="enter-btn">
+                Enter The DashBoard™
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
             </a>
-            
-            <p style="margin-top: 48px; color: var(--text-muted); font-size: 0.95rem;">
-                Your first step: enter your birth data so the oracle can tune to your frequency.
+
+            <p class="next-step">
+                <strong>First step:</strong> Enter your birth data so the oracle can tune to your cosmic frequency.
             </p>
         </div>
     </main>
-    
-    <footer>
-        <blockquote style="color: var(--gold); font-style: italic;">
-            "The ironic thing about attaining enlightenment is that there is nothing to attain."
-        </blockquote>
-        <p class="attribution">— November 19, 1988</p>
+
+    <footer class="footer">
+        <p class="footer-quote">"The ironic thing about attaining enlightenment is that there is nothing to attain."</p>
+        <p class="footer-attribution">— Bozo on the Bus, November 19, 1988</p>
     </footer>
+
+    <script>
+        // Simple confetti on load
+        function createConfetti() {
+            const container = document.getElementById('confetti');
+            const colors = ['#8b5cf6', '#f97316', '#22c55e', '#fbbf24', '#2dd4bf'];
+            
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(piece);
+            }
+
+            // Clean up after animation
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 6000);
+        }
+
+        createConfetti();
+    </script>
 </body>
 </html>
