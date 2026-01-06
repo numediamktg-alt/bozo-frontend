@@ -203,11 +203,16 @@
         }
         .quote { font-family: 'Caveat', cursive; font-size: 1.8rem; text-align: center; margin: 20px 0; }
         .meta { text-align: center; color: #666; font-size: 0.9rem; }
-        .traffic-lights { display: inline-flex; gap: 4px; margin-left: 10px; font-size: 1.2rem; vertical-align: middle; }
+        
+        /* Traffic Light */
+        .signal-row { display: flex; align-items: center; justify-content: center; gap: 15px; margin-top: 15px; flex-wrap: wrap; }
+        .traffic-lights { display: inline-flex; gap: 4px; font-size: 1.4rem; }
         .traffic-lights .light { opacity: 0.25; }
         .traffic-lights .light.active { opacity: 1; }
-        .signal-label { display: block; text-align: center; font-size: 0.9rem; color: #555; margin-top: 12px; }
-        .signal-disclaimer { display: block; text-align: center; font-size: 0.75rem; color: #999; margin-top: 6px; font-style: italic; }
+        .signal-info { text-align: center; }
+        .signal-label { font-weight: 600; color: var(--dark); font-size: 0.95rem; }
+        .signal-pct { color: #666; font-size: 0.85rem; margin-top: 2px; }
+        .signal-disclaimer { font-size: 0.75rem; color: #999; margin-top: 8px; font-style: italic; text-align: center; }
         
         .interpretation-card {
             background: linear-gradient(135deg, var(--blue) 0%, var(--light-blue) 100%);
@@ -543,25 +548,39 @@
         }
 
         function renderReading(r) {
-            // Traffic light - show all three, highlight active one
             const sim = r.similarity * 100;
-            let trafficLight, signalDesc;
+            const pct = Math.round(sim);
+            
+            // Traffic light - all three visible, active one at full opacity
+            let redClass = 'light', yellowClass = 'light', greenClass = 'light';
+            let label;
+            
             if (sim >= 75) {
-                trafficLight = '<span class="traffic-lights"><span class="light">🟥</span><span class="light">🟨</span><span class="light active">🟩</span></span>';
-                signalDesc = 'Signals broadly align. Interpretation is clear but still non-prescriptive.';
+                greenClass = 'light active';
+                label = 'Signals broadly align';
             } else if (sim >= 50) {
-                trafficLight = '<span class="traffic-lights"><span class="light">🟥</span><span class="light active">🟨</span><span class="light">🟩</span></span>';
-                signalDesc = 'Mixed signals. Useful tension present. Multiple interpretations possible.';
+                yellowClass = 'light active';
+                label = 'Mixed signals, useful tension';
             } else {
-                trafficLight = '<span class="traffic-lights"><span class="light active">🟥</span><span class="light">🟨</span><span class="light">🟩</span></span>';
-                signalDesc = 'Signals conflict or pull in opposing directions. Interpretation is framing-sensitive.';
+                redClass = 'light active';
+                label = 'Signals conflict';
             }
             
             let html = `
                 <div class="oracle-card">
                     <div class="quote">"${r.quote}"</div>
-                    <div class="meta">Written ${r.quote_date} ${trafficLight}</div>
-                    <div class="signal-label">${signalDesc}</div>
+                    <div class="meta">Written ${r.quote_date}</div>
+                    <div class="signal-row">
+                        <span class="traffic-lights">
+                            <span class="${redClass}">🟥</span>
+                            <span class="${yellowClass}">🟨</span>
+                            <span class="${greenClass}">🟩</span>
+                        </span>
+                        <div class="signal-info">
+                            <div class="signal-label">${label}</div>
+                            <div class="signal-pct">${pct}% resonance</div>
+                        </div>
+                    </div>
                     <div class="signal-disclaimer">Indicator reflects signal alignment, not accuracy or advice.</div>
                 </div>`;
             if (r.interpretation) {
