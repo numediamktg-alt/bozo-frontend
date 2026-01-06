@@ -150,6 +150,28 @@
             margin-bottom: 48px;
         }
 
+        .hero-photo {
+            max-width: 600px;
+            margin: 32px auto 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-photo img {
+            width: 100%;
+            border-radius: 16px;
+            border: 1px solid var(--border-highlight);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .photo-caption {
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
         .hero-buttons {
             display: flex;
             gap: 16px;
@@ -536,6 +558,12 @@
         <h1 class="hero-title">BOZO ON THE BUS™</h1>
         <p class="hero-quote">"We're all bozos on the bus, so might as well sit back and enjoy the ride."</p>
         <p class="hero-attribution">— Wavy Gravy</p>
+        
+        <div class="hero-photo">
+            <img src="images/wavy-gravy-lester-chambers.jpg" alt="Wavy Gravy and Lester Chambers backstage at the 40th Anniversary Summer of Love">
+            <p class="photo-caption">Wavy Gravy & Lester Chambers, backstage at the 40th Anniversary Summer of Love.<br>Golden Gate Park, September 2, 2007. Photo by Charles Paul Jones.</p>
+        </div>
+        
         <p class="hero-tagline">Where Synchronicity Meets Serendipity</p>
         <p class="hero-quote" style="margin-top: 32px;">"You're either on the bus or off the bus."</p>
         <p class="hero-attribution">— Ken Kesey, 1964</p>
