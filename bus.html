@@ -306,6 +306,14 @@
             });
             return res.json();
         }
+        async function createCheckout(email) {
+            const res = await fetch(`${API_BASE}/api/checkout`, {
+                method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ email })
+            });
+            if (!res.ok) throw new Error('Failed to create checkout');
+            return res.json();
+        }
 
         async function initBusPage() {
             const container = document.getElementById('bus-content');
@@ -315,7 +323,8 @@
             try {
                 const status = await getUserStatus(email);
                 if (!status.is_active) {
-                    localStorage.removeItem('bozo_email'); showLoginForm(container); return;
+                    showSubscribePrompt(container, email);
+                    return;
                 }
                 if (!status.has_birth_data) {
                     showBirthDataForm(container, email);
@@ -323,7 +332,46 @@
                     // Pass full status including natal bandwidth for personalized meters
                     showSubscriberDashboard(container, email, status);
                 }
-            } catch (e) { showLoginForm(container); }
+            } catch (e) { 
+                // User doesn't exist yet - show subscribe prompt
+                showSubscribePrompt(container, email);
+            }
+        }
+
+        function showSubscribePrompt(container, email) {
+            container.innerHTML = `
+                <div class="welcome-card" style="text-align: center;">
+                    <h2 class="welcome-title">Get On The Bus! 🚌</h2>
+                    <p style="font-size: 1.1rem; margin: 20px 0;">One Alexander Hamilton per month.</p>
+                    <p style="color: #666; margin-bottom: 30px;">Personalized readings tuned to YOUR cosmic frequency.</p>
+                    <p style="margin-bottom: 20px;"><strong>${email}</strong></p>
+                    <button id="checkout-btn" class="submit-btn" style="font-size: 1.2rem; padding: 18px 40px;">
+                        Subscribe — $10/month
+                    </button>
+                    <p style="margin-top: 20px; font-size: 0.9rem; color: #888;">
+                        <a href="#" id="change-email" style="color: var(--purple);">Use a different email</a>
+                    </p>
+                </div>`;
+            
+            document.getElementById('checkout-btn').addEventListener('click', async () => {
+                const btn = document.getElementById('checkout-btn');
+                btn.textContent = 'Redirecting to Stripe...';
+                btn.disabled = true;
+                try {
+                    const { checkout_url } = await createCheckout(email);
+                    window.location.href = checkout_url;
+                } catch (err) {
+                    alert('Could not connect to payment. Please try again.');
+                    btn.textContent = 'Subscribe — $10/month';
+                    btn.disabled = false;
+                }
+            });
+            
+            document.getElementById('change-email').addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.removeItem('bozo_email');
+                showLoginForm(container);
+            });
         }
 
         function showLoginForm(container) {
