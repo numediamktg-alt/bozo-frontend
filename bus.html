@@ -137,6 +137,73 @@
             line-height: 1.5;
         }
 
+        /* VIDEO POPUP LINK */
+        .video-link {
+            display: block;
+            text-align: center;
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
+            border-radius: 10px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .video-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(139,92,246,0.4);
+        }
+
+        /* VIDEO MODAL */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-modal.active {
+            display: flex;
+        }
+        .video-modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 900px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        .video-modal-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        .video-modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .video-modal-close:hover {
+            opacity: 1;
+        }
+
         /* MAIN CONTENT */
         .main-content {
             min-width: 0;
@@ -528,7 +595,6 @@
                 <a href="index.html" class="nav-pill">Home</a>
                 <a href="ask.html" class="nav-pill">The Oracle</a>
                 <a href="bus.html" class="nav-pill active">The DashBoard™</a>
-                <a href="control.html" class="nav-pill">Admin</a>
                 <a href="docs/BOZO_USERS_MANUAL_v3.pdf?v=2" target="_blank" class="nav-pill">Help</a>
             </nav>
         </div>
@@ -542,6 +608,7 @@
                 <p class="photo-quote">"We're all bozos on the bus, so might as well sit back and enjoy the ride."</p>
                 <p class="photo-attribution">— Wavy Gravy</p>
                 <p class="photo-caption">Wavy Gravy & Lester Chambers, 40th Anniversary Summer of Love.<br>Golden Gate Park, September 2, 2007.<br>Photo by Charles Paul Jones.</p>
+                <a class="video-link" id="open-video-btn">🎬 What IS This Bus About?</a>
             </div>
         </aside>
 
@@ -560,6 +627,14 @@
     <footer class="site-footer">
         <strong>ThisOldHippie.com</strong><br>© 2026 Charles Paul Jones
     </footer>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="video-modal">
+        <div class="video-modal-content">
+            <button class="video-modal-close" id="close-video-btn">&times;</button>
+            <iframe id="video-iframe" src="" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
 
     <script>
         const API_BASE = 'https://bozo-oracle-production.up.railway.app';
@@ -932,7 +1007,46 @@
             return html;
         }
 
-        document.addEventListener('DOMContentLoaded', initBusPage);
+        // VIDEO POPUP HANDLING
+        function setupVideoPopup() {
+            const openBtn = document.getElementById('open-video-btn');
+            const modal = document.getElementById('video-modal');
+            const closeBtn = document.getElementById('close-video-btn');
+            const iframe = document.getElementById('video-iframe');
+            const videoUrl = 'https://player.vimeo.com/video/1155316382?autoplay=1';
+
+            if (openBtn && modal && closeBtn && iframe) {
+                openBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    iframe.src = videoUrl;
+                    modal.classList.add('active');
+                });
+
+                closeBtn.addEventListener('click', () => {
+                    modal.classList.remove('active');
+                    iframe.src = '';
+                });
+
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                        iframe.src = '';
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && modal.classList.contains('active')) {
+                        modal.classList.remove('active');
+                        iframe.src = '';
+                    }
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initBusPage();
+            setupVideoPopup();
+        });
     </script>
 </body>
 </html>
