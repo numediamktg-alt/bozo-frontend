@@ -895,24 +895,49 @@
             });
         }
 
+        // v3.4.0: FIXED - Now uses Transit Activation from API instead of calculating locally from Field Gain
         function renderConditions(c, natal = {h5: 10, h7: 10, h10: 10}) {
-            let hook = { title: "Good Morning, Starshine", text: "The signal is steady. Chop wood, carry water." };
-            if (c.h5_gain > 1.04 && c.h10_gain > 1.04) hook = { title: "⚡ Powerhouse Day", text: "High Creativity + Discipline. Stop thinking, start BUILDING." };
-            else if (c.h7_gain > 1.05) hook = { title: "👁️ The Veil is Thin", text: "Insight is peaking. Trust your gut over the spreadsheet." };
-            else if (c.h5_gain > 1.05) hook = { title: "🎨 The Muse is Loud", text: "Big creative energy. Capture ideas now, edit later." };
-            else if (c.h10_gain > 1.05) hook = { title: "🔨 Hammer Time", text: "Obstacles are small today. Grind, finish, and close loops." };
+            // Use day_label and day_advice from API (Transit Activation method)
+            // Fallback to old logic only if new fields aren't present
+            let hook;
+            if (c.day_label && c.day_advice) {
+                // v3.4.0: Use the backend's determination
+                hook = { title: c.day_label, text: c.day_advice };
+            } else {
+                // Legacy fallback (should not happen with v3.4.0 backend)
+                hook = { title: "Good Morning, Starshine", text: "The signal is steady. Chop wood, carry water." };
+                if (c.h5_gain > 1.04 && c.h10_gain > 1.04) hook = { title: "⚡ Powerhouse Day", text: "High Creativity + Discipline. Stop thinking, start BUILDING." };
+                else if (c.h7_gain > 1.05) hook = { title: "👁️ The Veil is Thin", text: "Insight is peaking. Trust your gut over the spreadsheet." };
+                else if (c.h5_gain > 1.05) hook = { title: "🎨 The Muse is Loud", text: "Big creative energy. Capture ideas now, edit later." };
+                else if (c.h10_gain > 1.05) hook = { title: "🔨 Hammer Time", text: "Obstacles are small today. Grind, finish, and close loops." };
+            }
 
-            const avgNatal = 10;
-            const sens = {
-                h5: Math.max(0.5, natal.h5 / avgNatal),
-                h7: Math.max(0.5, natal.h7 / avgNatal),
-                h10: Math.max(0.5, natal.h10 / avgNatal)
-            };
-            const getW = (gain, sensitivity) => {
-                const basePercent = (gain - 0.85) / (1.15 - 0.85) * 100;
-                const amplified = 50 + (basePercent - 50) * sensitivity;
-                return Math.max(5, Math.min(100, amplified));
-            };
+            // v3.4.0: Use Transit Activation percentages directly if available
+            // These are actual contacts to your chart (0-100%)
+            let h5_pct, h7_pct, h10_pct;
+            
+            if (c.h5_activation !== undefined) {
+                // v3.4.0: Direct activation percentages from backend
+                h5_pct = Math.round(c.h5_activation);
+                h7_pct = Math.round(c.h7_activation);
+                h10_pct = Math.round(c.h10_activation);
+            } else {
+                // Legacy fallback: calculate from field gain
+                const avgNatal = 10;
+                const sens = {
+                    h5: Math.max(0.5, natal.h5 / avgNatal),
+                    h7: Math.max(0.5, natal.h7 / avgNatal),
+                    h10: Math.max(0.5, natal.h10 / avgNatal)
+                };
+                const getW = (gain, sensitivity) => {
+                    const basePercent = (gain - 0.85) / (1.15 - 0.85) * 100;
+                    const amplified = 50 + (basePercent - 50) * sensitivity;
+                    return Math.max(5, Math.min(100, amplified));
+                };
+                h5_pct = Math.round(getW(c.h5_gain, sens.h5));
+                h7_pct = Math.round(getW(c.h7_gain, sens.h7));
+                h10_pct = Math.round(getW(c.h10_gain, sens.h10));
+            }
 
             return `
                 <div class="card hook-card">
@@ -926,33 +951,33 @@
                     <div class="meter-group">
                         <div class="meter-header">
                             <span class="meter-label">🎨 Creative Flow (H5)</span>
-                            <span class="meter-value" style="color: var(--orange);">${Math.round(getW(c.h5_gain, sens.h5))}%</span>
+                            <span class="meter-value" style="color: var(--orange);">${h5_pct}%</span>
                         </div>
                         <div class="meter-track">
                             <div class="meter-baseline"></div>
-                            <div class="meter-fill" style="width: ${getW(c.h5_gain, sens.h5)}%; background: var(--orange);"></div>
+                            <div class="meter-fill" style="width: ${h5_pct}%; background: var(--orange);"></div>
                         </div>
                     </div>
 
                     <div class="meter-group">
                         <div class="meter-header">
                             <span class="meter-label">👁️ Intuition (H7)</span>
-                            <span class="meter-value" style="color: var(--purple);">${Math.round(getW(c.h7_gain, sens.h7))}%</span>
+                            <span class="meter-value" style="color: var(--purple);">${h7_pct}%</span>
                         </div>
                         <div class="meter-track">
                             <div class="meter-baseline"></div>
-                            <div class="meter-fill" style="width: ${getW(c.h7_gain, sens.h7)}%; background: var(--purple);"></div>
+                            <div class="meter-fill" style="width: ${h7_pct}%; background: var(--purple);"></div>
                         </div>
                     </div>
 
                     <div class="meter-group">
                         <div class="meter-header">
                             <span class="meter-label">🔨 Power / Drive (H10)</span>
-                            <span class="meter-value" style="color: var(--teal);">${Math.round(getW(c.h10_gain, sens.h10))}%</span>
+                            <span class="meter-value" style="color: var(--teal);">${h10_pct}%</span>
                         </div>
                         <div class="meter-track">
                             <div class="meter-baseline"></div>
-                            <div class="meter-fill" style="width: ${getW(c.h10_gain, sens.h10)}%; background: var(--teal);"></div>
+                            <div class="meter-fill" style="width: ${h10_pct}%; background: var(--teal);"></div>
                         </div>
                     </div>
                 </div>`;
