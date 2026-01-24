@@ -344,6 +344,25 @@
         .direct-contacts-title .icon {
             font-size: 1.2rem;
         }
+        .direct-contacts-list {
+            max-height: 280px;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        .direct-contacts-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        .direct-contacts-list::-webkit-scrollbar-track {
+            background: var(--bg-input);
+            border-radius: 3px;
+        }
+        .direct-contacts-list::-webkit-scrollbar-thumb {
+            background: var(--text-dim);
+            border-radius: 3px;
+        }
+        .direct-contacts-list::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
         .contact-row {
             margin-bottom: 14px;
         }
@@ -355,10 +374,21 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 6px;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .contact-channel {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: var(--bg-input);
+            color: var(--text-dim);
+            white-space: nowrap;
         }
         .contact-label {
             font-size: 0.85rem;
             color: var(--text-muted);
+            flex: 1;
         }
         .contact-harmonic {
             font-size: 0.75rem;
@@ -370,6 +400,7 @@
         .contact-value {
             font-weight: 600;
             font-size: 0.9rem;
+            white-space: nowrap;
         }
         .contact-bar-track {
             height: 8px;
@@ -985,63 +1016,56 @@
             });
         }
 
-        // v3.5.0: Helper - Get heat class based on strength percentage
-        function getHeatClass(pct) {
-            if (pct >= 99) return 'heat-99';
-            if (pct >= 97) return 'heat-97';
-            if (pct >= 95) return 'heat-95';
-            if (pct >= 90) return 'heat-90';
-            return 'heat-85';
+        // v3.5.2: Helper - Get heat class based on orb in degrees (tighter = hotter)
+        function getHeatClassOrb(orbDegrees) {
+            if (orbDegrees <= 0.1) return 'heat-99';   // Exact
+            if (orbDegrees <= 0.5) return 'heat-97';   // Very tight
+            if (orbDegrees <= 1.0) return 'heat-95';   // Precision
+            if (orbDegrees <= 2.0) return 'heat-90';   // Tight
+            return 'heat-85';                          // Standard
         }
 
-        // v3.5.0: Helper - Get color for value display based on strength
-        function getHeatColor(pct) {
-            if (pct >= 99) return 'var(--heat-magenta)';
-            if (pct >= 97) return 'var(--heat-orange)';
-            if (pct >= 95) return 'var(--heat-yellow)';
-            if (pct >= 90) return 'var(--heat-teal)';
+        // v3.5.2: Helper - Get color for orb display (tighter = hotter)
+        function getHeatColorOrb(orbDegrees) {
+            if (orbDegrees <= 0.1) return 'var(--heat-magenta)';
+            if (orbDegrees <= 0.5) return 'var(--heat-orange)';
+            if (orbDegrees <= 1.0) return 'var(--heat-yellow)';
+            if (orbDegrees <= 2.0) return 'var(--heat-teal)';
             return 'var(--heat-blue)';
         }
 
-        // v3.5.0: Helper - Get harmonic display name (Classical+ support)
-        function getHarmonicName(h) {
-            const names = {
-                1: 'Conjunction',
-                2: 'Opposition',
-                3: 'Trine',
-                4: 'Square',
-                5: 'H5 Creative',
-                6: 'Sextile',
-                7: 'H7 Seer',
-                10: 'H10 Power'
-            };
-            return names[h] || `H${h}`;
-        }
-
-        // v3.5.0: Render Direct Contacts (precision hits above 85%)
+        // v3.5.2: Render Direct Contacts with traditional orbs and applying/separating
         function renderDirectContacts(hotAspects) {
             if (!hotAspects || hotAspects.length === 0) return '';
             
-            // Filter to aspects above 85% (0.85 strength)
-            const significant = hotAspects.filter(a => a.strength >= 0.85).slice(0, 5);
-            if (significant.length === 0) return '';
-            
             let rows = '';
-            for (const asp of significant) {
-                const pct = Math.round(asp.strength * 100);
-                const heatClass = getHeatClass(pct);
-                const heatColor = getHeatColor(pct);
-                const hName = getHarmonicName(asp.harmonic);
+            for (const asp of hotAspects) {
+                const orbDisplay = asp.orb_degrees.toFixed(2);
+                const heatClass = getHeatClassOrb(asp.orb_degrees);
+                const heatColor = getHeatColorOrb(asp.orb_degrees);
+                
+                // Build indicators: precision (⚡) and applying/separating (+/-)
+                let indicators = '';
+                if (asp.is_precision) indicators += '⚡';
+                if (asp.is_applying === true) indicators += '+';
+                else if (asp.is_applying === false) indicators += '−';
+                
+                // Channel label like (H5 Creative)
+                const channelLabel = `(H${asp.harmonic} ${asp.channel_name || ''})`.trim();
+                
+                // Bar width: inverse of orb (tighter = fuller) with max orb of 8°
+                const maxOrb = 8.0;
+                const barWidth = Math.max(10, Math.round((1 - asp.orb_degrees / maxOrb) * 100));
                 
                 rows += `
                     <div class="contact-row">
                         <div class="contact-header">
-                            <span class="contact-label">${asp.transit} → ${asp.natal}</span>
-                            <span class="contact-harmonic">${hName}</span>
-                            <span class="contact-value" style="color: ${heatColor};">${pct}%</span>
+                            <span class="contact-channel">${channelLabel}</span>
+                            <span class="contact-label">${asp.transit} ${asp.aspect_name} ${asp.natal}</span>
+                            <span class="contact-value" style="color: ${heatColor};">${orbDisplay}° ${indicators}</span>
                         </div>
                         <div class="contact-bar-track">
-                            <div class="contact-bar-fill ${heatClass}" style="width: ${pct}%;"></div>
+                            <div class="contact-bar-fill ${heatClass}" style="width: ${barWidth}%;"></div>
                         </div>
                     </div>`;
             }
@@ -1049,9 +1073,11 @@
             return `
                 <div class="card direct-contacts-card">
                     <div class="direct-contacts-title">
-                        <span class="icon">⚡</span> Direct Contacts Today
+                        <span class="icon">⚡</span> Direct Contacts Today (${hotAspects.length})
                     </div>
-                    ${rows}
+                    <div class="direct-contacts-list">
+                        ${rows}
+                    </div>
                 </div>`;
         }
 
