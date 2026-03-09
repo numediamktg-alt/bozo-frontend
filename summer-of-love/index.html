@@ -313,9 +313,10 @@ html, body {
     toggleLike();
   });
 
-  // ── Image URL helper ──
+  // ── Image URL helper (cache-bust to force new versions) ──
+  var cacheBust = 'v=' + Date.now();
   function imageURL(filename) {
-    return R2_BASE + '/' + encodeURIComponent(filename);
+    return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
   }
 
   // ── Build gallery with lightGallery ──
