@@ -8,6 +8,11 @@
 <meta property="og:title" content="40th Anniversary of the Summer of Love">
 <meta property="og:description" content="100 photographs by Chuck Jones. Leaf Aptus 75S and Leica M8.">
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://thisoldhippie.com/summer-of-love/">
+<meta property="og:image" content="https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/L9521608.jpg">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/L9521608.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
@@ -421,39 +426,47 @@ html, body {
       var toolbar = document.querySelector('.lg-toolbar');
       if (!toolbar) return;
 
-      var pageUrl = encodeURIComponent(window.location.href);
-      var pageTitle = encodeURIComponent('40th Anniversary of the Summer of Love - Photographs by Chuck Jones');
+      var pageTitle = '40th Anniversary of the Summer of Love - Photographs by Chuck Jones';
+      var pageUrl = window.location.href;
 
-      // Facebook
+      function currentImageUrl() {
+        return imageURL(currentFilename || manifest[0]);
+      }
+
+      // Facebook - share the image URL directly so Facebook shows the photo
       var fbBtn = document.createElement('button');
       fbBtn.className = 'lg-share-btn';
       fbBtn.title = 'Share on Facebook';
       fbBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>';
       fbBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        window.open('https://www.facebook.com/sharer/sharer.php?u=' + pageUrl, '_blank', 'width=600,height=400');
+        var imgUrl = encodeURIComponent(currentImageUrl());
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + imgUrl, '_blank', 'width=600,height=400');
       });
 
-      // X (Twitter)
+      // X (Twitter) - include the image URL in the tweet
       var twBtn = document.createElement('button');
       twBtn.className = 'lg-share-btn';
       twBtn.title = 'Share on X';
       twBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
       twBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        window.open('https://twitter.com/intent/tweet?url=' + pageUrl + '&text=' + pageTitle, '_blank', 'width=600,height=400');
+        var text = encodeURIComponent(pageTitle + ' ' + currentImageUrl());
+        var url = encodeURIComponent(pageUrl);
+        window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + url, '_blank', 'width=600,height=400');
       });
 
-      // Pinterest
+      // Pinterest - media parameter sends the actual image
       var pinBtn = document.createElement('button');
       pinBtn.className = 'lg-share-btn';
       pinBtn.title = 'Pin on Pinterest';
       pinBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>';
       pinBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        var imgSrc = manifest[currentFilename ? manifest.indexOf(currentFilename) : 0] || '';
-        var imgUrl = encodeURIComponent(imageURL(imgSrc));
-        window.open('https://pinterest.com/pin/create/button/?url=' + pageUrl + '&media=' + imgUrl + '&description=' + pageTitle, '_blank', 'width=600,height=400');
+        var imgUrl = encodeURIComponent(currentImageUrl());
+        var url = encodeURIComponent(pageUrl);
+        var desc = encodeURIComponent(pageTitle);
+        window.open('https://pinterest.com/pin/create/button/?url=' + url + '&media=' + imgUrl + '&description=' + desc, '_blank', 'width=600,height=400');
       });
 
       // Insert before the first existing button
