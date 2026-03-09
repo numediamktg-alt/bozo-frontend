@@ -433,25 +433,25 @@ html, body {
         return imageURL(currentFilename || manifest[0]);
       }
 
-      // Facebook - share the image URL directly so Facebook shows the photo
+      // Facebook - share gallery page URL (OG tags provide the image)
       var fbBtn = document.createElement('button');
       fbBtn.className = 'lg-share-btn';
       fbBtn.title = 'Share on Facebook';
       fbBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>';
       fbBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        var imgUrl = encodeURIComponent(currentImageUrl());
-        window.open('https://www.facebook.com/sharer/sharer.php?u=' + imgUrl, '_blank', 'width=600,height=400');
+        var url = encodeURIComponent(pageUrl);
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank', 'width=600,height=400');
       });
 
-      // X (Twitter) - include the image URL in the tweet
+      // X (Twitter) - share gallery page with title
       var twBtn = document.createElement('button');
       twBtn.className = 'lg-share-btn';
       twBtn.title = 'Share on X';
       twBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
       twBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        var text = encodeURIComponent(pageTitle + ' ' + currentImageUrl());
+        var text = encodeURIComponent(pageTitle);
         var url = encodeURIComponent(pageUrl);
         window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + url, '_blank', 'width=600,height=400');
       });
