@@ -101,7 +101,7 @@ html, body {
   position: fixed;
   bottom: 0.8rem;
   left: 1.5rem;
-  z-index: 2147483647;
+  z-index: 99;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
   font-size: 0.75rem;
@@ -109,6 +109,7 @@ html, body {
   letter-spacing: 0.1em;
   pointer-events: none;
   user-select: none;
+  display: none;
 }
 
 /* ── Like button ── */
@@ -116,7 +117,7 @@ html, body {
   position: fixed;
   bottom: 70px;
   right: 20px;
-  z-index: 2147483647;
+  z-index: 99;
   display: none;
   text-align: center;
 }
@@ -414,8 +415,20 @@ html, body {
     // Open gallery at first slide
     galleryInstance.openGallery(0);
 
-    // Show like button
-    $likeWrap.style.display = 'block';
+    // Inject copyright and like button INTO lightGallery's DOM
+    // (external elements can't punch through lightGallery's stacking context)
+    var lgOuter = document.querySelector('.lg-outer');
+    if (lgOuter) {
+      // Move copyright inside
+      var crEl = document.getElementById('copyright');
+      lgOuter.appendChild(crEl);
+      crEl.style.display = 'block';
+
+      // Move like button inside
+      var lkEl = document.getElementById('like-wrap');
+      lgOuter.appendChild(lkEl);
+      lkEl.style.display = 'block';
+    }
   }
 
   // ── Initialize ──
