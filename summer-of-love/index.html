@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>40th Anniversary of the Summer of Love</title>
+<meta name="description" content="A photographic document of the 40th Anniversary of the Summer of Love, 2007. Photographs by Chuck Jones.">
+<meta property="og:title" content="40th Anniversary of the Summer of Love">
+<meta property="og:description" content="101 photographs by Chuck Jones. Leaf Aptus 75S and Leica M8.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  cursor: none;
+}
+
+body.controls-visible {
+  cursor: default;
+}
+
+/* ── Title card ── */
+#title-card {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 1.8s ease;
+}
+
+#title-card.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#title-card h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 4vw, 3.2rem);
+  color: #d4d0c8;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 2rem;
+}
+
+#title-card .subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+  color: #8a8478;
+  margin-top: 1.5rem;
+  letter-spacing: 0.08em;
+}
+
+#title-card .enter {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(0.8rem, 1.2vw, 1rem);
+  color: #5a5650;
+  margin-top: 3.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.4s ease;
+  animation: pulse-subtle 3s ease-in-out infinite;
+}
+
+#title-card .enter:hover {
+  color: #d4d0c8;
+}
+
+@keyframes pulse-subtle {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ── Gallery layers ── */
+#gallery {
+  position: fixed;
+  inset: 0;
+  background: #000;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  will-change: opacity, transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide img {
+  max-width: 92%;
+  max-height: 92%;
+  object-fit: contain;
+  will-change: transform;
+}
+
+/* ── Ken Burns ── */
+@keyframes kb-zoom-in {
+  0% { transform: scale(1) translate(0, 0); }
+  100% { transform: scale(1.08) translate(var(--kb-x), var(--kb-y)); }
+}
+
+@keyframes kb-zoom-out {
+  0% { transform: scale(1.08) translate(var(--kb-x), var(--kb-y)); }
+  100% { transform: scale(1) translate(0, 0); }
+}
+
+.slide img.kb-in {
+  animation: kb-zoom-in 9s ease-in-out forwards;
+}
+
+.slide img.kb-out {
+  animation: kb-zoom-out 9s ease-in-out forwards;
+}
+
+/* ── Controls overlay ── */
+#controls {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+#controls.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(200, 195, 185, 0.5);
+  font-size: 2.4rem;
+  padding: 2rem 1.2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+}
+
+.nav-arrow:hover {
+  color: rgba(200, 195, 185, 0.9);
+}
+
+#prev-btn { left: 0; }
+#next-btn { right: 0; }
+
+#counter {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 2rem;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: 0.85rem;
+  color: rgba(140, 135, 125, 0.6);
+  letter-spacing: 0.15em;
+}
+
+#pause-indicator {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 2rem;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: 0.75rem;
+  color: rgba(140, 135, 125, 0.6);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+#pause-indicator.show {
+  opacity: 1;
+}
+
+#fullscreen-btn {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: rgba(140, 135, 125, 0.4);
+  font-size: 0.7rem;
+  cursor: pointer;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  transition: color 0.3s ease;
+}
+
+#fullscreen-btn:hover {
+  color: rgba(200, 195, 185, 0.8);
+}
+
+/* ── Loading ── */
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease;
+}
+
+#loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loading .spinner {
+  width: 2px;
+  height: 24px;
+  background: #5a5650;
+  animation: load-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes load-pulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ── Progress bar (very subtle) ── */
+#progress {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  background: rgba(140, 135, 125, 0.2);
+  z-index: 60;
+  transition: width linear;
+  width: 0;
+}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="spinner"></div></div>
+
+<div id="title-card">
+  <h1>40th Anniversary<br>of the<br>Summer of Love</h1>
+  <div class="subtitle">Photographs by Chuck Jones</div>
+  <div class="enter" id="enter-btn">Enter Gallery</div>
+</div>
+
+<div id="gallery">
+  <div class="slide" id="slide-a"></div>
+  <div class="slide" id="slide-b"></div>
+</div>
+
+<div id="controls">
+  <button class="nav-arrow" id="prev-btn" aria-label="Previous">&#8249;</button>
+  <button class="nav-arrow" id="next-btn" aria-label="Next">&#8250;</button>
+  <div id="counter"></div>
+  <div id="pause-indicator">Paused</div>
+  <button id="fullscreen-btn">Fullscreen</button>
+</div>
+
+<div id="progress"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ── Configuration ──
+  const R2_BASE = 'https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev';
+  const HOLD_DURATION = 7000;       // 7 seconds per image
+  const FADE_DURATION = 1400;       // 1.4s crossfade (matches CSS)
+  const KB_DURATION = 9000;         // Ken Burns animation length
+  const CONTROLS_TIMEOUT = 3000;    // Hide controls after 3s
+  const PRELOAD_AHEAD = 3;          // Preload N images ahead
+
+  // ── State ──
+  let manifest = [];
+  let currentIndex = 0;
+  let isPlaying = false;
+  let advanceTimer = null;
+  let progressTimer = null;
+  let controlsTimer = null;
+  let activeSlide = 'a';
+  let preloadCache = new Map();
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let galleryStarted = false;
+
+  // ── Elements ──
+  const $loading = document.getElementById('loading');
+  const $titleCard = document.getElementById('title-card');
+  const $enterBtn = document.getElementById('enter-btn');
+  const $slideA = document.getElementById('slide-a');
+  const $slideB = document.getElementById('slide-b');
+  const $counter = document.getElementById('counter');
+  const $pauseInd = document.getElementById('pause-indicator');
+  const $controls = document.getElementById('controls');
+  const $progress = document.getElementById('progress');
+  const $prevBtn = document.getElementById('prev-btn');
+  const $nextBtn = document.getElementById('next-btn');
+  const $fsBtn = document.getElementById('fullscreen-btn');
+
+  // ── Ken Burns random parameters ──
+  function randomKB() {
+    const maxShift = 1.2; // percent
+    const x = (Math.random() - 0.5) * 2 * maxShift;
+    const y = (Math.random() - 0.5) * 2 * maxShift;
+    const zoomIn = Math.random() > 0.5;
+    return { x: x + '%', y: y + '%', zoomIn };
+  }
+
+  // ── Image URL ──
+  function imageURL(filename) {
+    return R2_BASE + '/' + encodeURIComponent(filename);
+  }
+
+  // ── Preload image ──
+  function preloadImage(filename) {
+    if (preloadCache.has(filename)) return preloadCache.get(filename);
+    const promise = new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.src = imageURL(filename);
+    });
+    preloadCache.set(filename, promise);
+    return promise;
+  }
+
+  // ── Preload ahead ──
+  function preloadAhead() {
+    for (let i = 1; i <= PRELOAD_AHEAD; i++) {
+      const idx = (currentIndex + i) % manifest.length;
+      preloadImage(manifest[idx]);
+    }
+  }
+
+  // ── Show image on a slide ──
+  async function showOnSlide(slideEl, index) {
+    const filename = manifest[index];
+    try {
+      await preloadImage(filename);
+    } catch(e) {
+      // Skip broken images
+      console.warn('Failed to load:', filename);
+    }
+
+    const img = document.createElement('img');
+    img.src = imageURL(filename);
+    img.alt = '';
+    img.draggable = false;
+
+    // Apply Ken Burns
+    const kb = randomKB();
+    img.style.setProperty('--kb-x', kb.x);
+    img.style.setProperty('--kb-y', kb.y);
+    img.classList.add(kb.zoomIn ? 'kb-in' : 'kb-out');
+
+    // Clear old content
+    slideEl.innerHTML = '';
+    slideEl.appendChild(img);
+  }
+
+  // ── Update counter ──
+  function updateCounter() {
+    $counter.textContent = (currentIndex + 1) + ' / ' + manifest.length;
+  }
+
+  // ── Progress bar ──
+  function startProgress() {
+    $progress.style.transition = 'none';
+    $progress.style.width = '0';
+    // Force reflow
+    $progress.offsetHeight;
+    $progress.style.transition = 'width ' + HOLD_DURATION + 'ms linear';
+    $progress.style.width = '100%';
+  }
+
+  function stopProgress() {
+    const w = $progress.getBoundingClientRect().width;
+    const bw = document.body.getBoundingClientRect().width;
+    $progress.style.transition = 'none';
+    $progress.style.width = (w / bw * 100) + '%';
+  }
+
+  function resumeProgress() {
+    // Calculate remaining time from current width
+    const w = $progress.getBoundingClientRect().width;
+    const bw = document.body.getBoundingClientRect().width;
+    const pct = w / bw;
+    const remaining = HOLD_DURATION * (1 - pct);
+    $progress.style.transition = 'width ' + remaining + 'ms linear';
+    $progress.style.width = '100%';
+  }
+
+  // ── Transition to image ──
+  async function goTo(index, skipTransition) {
+    if (index < 0) index = manifest.length - 1;
+    if (index >= manifest.length) index = 0;
+    currentIndex = index;
+    updateCounter();
+
+    const nextSlideId = activeSlide === 'a' ? 'b' : 'a';
+    const $current = activeSlide === 'a' ? $slideA : $slideB;
+    const $next = nextSlideId === 'a' ? $slideA : $slideB;
+
+    await showOnSlide($next, currentIndex);
+
+    // Crossfade
+    $current.classList.remove('active');
+    $next.classList.add('active');
+    activeSlide = nextSlideId;
+
+    preloadAhead();
+
+    if (isPlaying) {
+      scheduleAdvance();
+      startProgress();
+    }
+  }
+
+  // ── Auto advance ──
+  function scheduleAdvance() {
+    clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(() => {
+      goTo(currentIndex + 1);
+    }, HOLD_DURATION);
+  }
+
+  // ── Play / Pause ──
+  function play() {
+    isPlaying = true;
+    $pauseInd.classList.remove('show');
+    scheduleAdvance();
+    startProgress();
+  }
+
+  function pause() {
+    isPlaying = false;
+    clearTimeout(advanceTimer);
+    $pauseInd.classList.add('show');
+    stopProgress();
+  }
+
+  function togglePlay() {
+    if (isPlaying) pause(); else play();
+    showControls();
+  }
+
+  // ── Navigation ──
+  function next() {
+    clearTimeout(advanceTimer);
+    goTo(currentIndex + 1);
+    showControls();
+  }
+
+  function prev() {
+    clearTimeout(advanceTimer);
+    goTo(currentIndex - 1);
+    showControls();
+  }
+
+  // ── Controls visibility ──
+  function showControls() {
+    $controls.classList.add('visible');
+    document.body.classList.add('controls-visible');
+    clearTimeout(controlsTimer);
+    controlsTimer = setTimeout(hideControls, CONTROLS_TIMEOUT);
+  }
+
+  function hideControls() {
+    if (!isPlaying) return; // Keep visible when paused
+    $controls.classList.remove('visible');
+    document.body.classList.remove('controls-visible');
+  }
+
+  // ── Fullscreen ──
+  function toggleFullscreen() {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  }
+
+  // ── Event listeners ──
+  document.addEventListener('keydown', function(e) {
+    if (!galleryStarted) return;
+    switch(e.key) {
+      case 'ArrowRight': case 'l': next(); break;
+      case 'ArrowLeft': case 'h': prev(); break;
+      case ' ': e.preventDefault(); togglePlay(); break;
+      case 'f': toggleFullscreen(); break;
+      case 'Escape':
+        if (document.fullscreenElement) document.exitFullscreen();
+        break;
+    }
+  });
+
+  document.addEventListener('mousemove', function() {
+    if (galleryStarted) showControls();
+  });
+
+  // Touch support
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    if (!galleryStarted) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) {
+      if (dx < 0) next(); else prev();
+    } else if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+      togglePlay();
+    }
+    showControls();
+  }, { passive: true });
+
+  $prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prev(); });
+  $nextBtn.addEventListener('click', function(e) { e.stopPropagation(); next(); });
+  $fsBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleFullscreen(); });
+
+  // ── Initialize ──
+  async function init() {
+    try {
+      const resp = await fetch(R2_BASE + '/manifest.json?t=' + Date.now());
+      if (!resp.ok) throw new Error('No manifest');
+      const data = await resp.json();
+      manifest = data.images || data;
+    } catch(e) {
+      // Fallback: try numbered images
+      console.error('Could not load manifest:', e);
+      $loading.querySelector('.spinner').style.background = '#8a3030';
+      return;
+    }
+
+    if (manifest.length === 0) return;
+
+    // Preload first image
+    await preloadImage(manifest[0]);
+    await showOnSlide($slideA, 0);
+    $slideA.classList.add('active');
+    activeSlide = 'a';
+    updateCounter();
+    preloadAhead();
+
+    // Ready
+    $loading.classList.add('hidden');
+  }
+
+  // ── Enter gallery ──
+  $enterBtn.addEventListener('click', startGallery);
+  $titleCard.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') startGallery();
+  });
+
+  function startGallery() {
+    if (galleryStarted) return;
+    galleryStarted = true;
+    $titleCard.classList.add('fade-out');
+    setTimeout(() => {
+      $titleCard.style.display = 'none';
+    }, 1800);
+    isPlaying = true;
+    scheduleAdvance();
+    startProgress();
+  }
+
+  // Go
+  init();
+
+})();
+</script>
+</body>
+</html>
