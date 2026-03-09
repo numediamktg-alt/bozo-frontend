@@ -96,18 +96,11 @@ html, body {
   height: 100%;
 }
 
-/* ── Copyright watermark ── */
-.lg-copyright {
-  position: absolute;
-  bottom: 12px;
-  left: 20px;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-weight: 300;
-  font-size: 13px;
-  color: rgba(160, 155, 145, 0.35);
-  letter-spacing: 0.1em;
-  pointer-events: none;
-  user-select: none;
+/* ── Copyright watermark via lightGallery subHtml ── */
+.lg-sub-html {
+  text-align: left !important;
+  padding: 8px 20px !important;
+  background: transparent !important;
 }
 
 /* ── Like button ── */
@@ -338,7 +331,7 @@ html, body {
       return {
         src: imageURL(filename),
         thumb: imageURL(filename),
-        subHtml: '',
+        subHtml: '<span style="font-family:Cormorant Garamond,Georgia,serif;font-weight:300;font-size:13px;color:rgba(160,155,145,0.35);letter-spacing:0.1em">\u00A9 Chuck Jones</span>',
       };
     });
 
@@ -410,16 +403,10 @@ html, body {
     // Open gallery at first slide
     galleryInstance.openGallery(0);
 
-    // Inject copyright into lightGallery's own DOM
+    // Move like button inside lightGallery
     setTimeout(function() {
       var lgContainer = document.querySelector('.lg-container');
       if (lgContainer) {
-        var cr = document.createElement('div');
-        cr.className = 'lg-copyright';
-        cr.textContent = '\u00A9 Chuck Jones';
-        lgContainer.appendChild(cr);
-
-        // Also move like button inside
         var lk = document.getElementById('like-wrap');
         lgContainer.appendChild(lk);
         lk.style.display = 'block';
