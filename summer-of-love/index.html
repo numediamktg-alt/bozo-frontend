@@ -23,10 +23,14 @@ html, body {
   height: 100%;
   overflow: hidden;
   background: #000;
+  cursor: default;
+}
+
+body.gallery-active {
   cursor: none;
 }
 
-body.controls-visible {
+body.gallery-active.controls-visible {
   cursor: default;
 }
 
@@ -74,23 +78,21 @@ body.controls-visible {
 #title-card .enter {
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 400;
-  font-size: clamp(0.8rem, 1.2vw, 1rem);
-  color: #5a5650;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: #d4d0c8;
   margin-top: 3.5rem;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   cursor: pointer;
   transition: color 0.4s ease;
-  animation: pulse-subtle 3s ease-in-out infinite;
+  border: 1px solid rgba(200, 195, 185, 0.3);
+  padding: 0.8rem 2.5rem;
+  border-radius: 2px;
 }
 
 #title-card .enter:hover {
-  color: #d4d0c8;
-}
-
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 0.5; }
-  50% { opacity: 1; }
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 /* ── Gallery layers ── */
@@ -593,6 +595,7 @@ body.controls-visible {
   function startGallery() {
     if (galleryStarted) return;
     galleryStarted = true;
+    document.body.classList.add('gallery-active');
     $titleCard.classList.add('fade-out');
     setTimeout(() => {
       $titleCard.style.display = 'none';
