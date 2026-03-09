@@ -194,7 +194,7 @@ body.gallery-active.controls-visible {
 
 #pause-indicator {
   position: absolute;
-  bottom: 1.5rem;
+  bottom: 3rem;
   left: 2rem;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
@@ -269,6 +269,83 @@ body.gallery-active.controls-visible {
   transition: width linear;
   width: 0;
 }
+
+/* ── Copyright watermark ── */
+#copyright {
+  position: fixed;
+  bottom: 1.2rem;
+  left: 2rem;
+  z-index: 55;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: 0.75rem;
+  color: rgba(120, 115, 105, 0.25);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ── Like button ── */
+#like-btn {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  transition: opacity 0.3s ease;
+}
+
+#like-btn .heart {
+  width: 22px;
+  height: 22px;
+  transition: transform 0.2s ease;
+}
+
+#like-btn .heart svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: rgba(180, 175, 165, 0.5);
+  stroke-width: 1.5;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+#like-btn.liked .heart svg {
+  fill: rgba(200, 80, 80, 0.8);
+  stroke: rgba(200, 80, 80, 0.9);
+}
+
+#like-btn:hover .heart {
+  transform: scale(1.15);
+}
+
+#like-btn .like-count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: rgba(140, 135, 125, 0.6);
+  min-width: 1.2rem;
+}
+
+#like-btn.liked .like-count {
+  color: rgba(200, 80, 80, 0.7);
+}
+
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+#like-btn.pop .heart {
+  animation: heart-pop 0.35s ease;
+}
 </style>
 </head>
 <body>
@@ -290,9 +367,15 @@ body.gallery-active.controls-visible {
   <button class="nav-arrow" id="prev-btn" aria-label="Previous">&#8249;</button>
   <button class="nav-arrow" id="next-btn" aria-label="Next">&#8250;</button>
   <div id="counter"></div>
+  <button id="like-btn" aria-label="Like this image">
+    <span class="heart"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+    <span class="like-count" id="like-count"></span>
+  </button>
   <div id="pause-indicator">Paused</div>
   <button id="fullscreen-btn">Fullscreen</button>
 </div>
+
+<div id="copyright">&copy; Chuck Jones</div>
 
 <div id="progress"></div>
 
@@ -302,6 +385,7 @@ body.gallery-active.controls-visible {
 
   // ── Configuration ──
   const R2_BASE = 'https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev';
+  const LIKES_API = 'https://sol-likes.chuck-3ba.workers.dev';
   const HOLD_DURATION = 7000;       // 7 seconds per image
   const FADE_DURATION = 1400;       // 1.4s crossfade (matches CSS)
   const KB_DURATION = 9000;         // Ken Burns animation length
@@ -320,6 +404,8 @@ body.gallery-active.controls-visible {
   let touchStartX = 0;
   let touchStartY = 0;
   let galleryStarted = false;
+  let myLikes = {};          // personal favorites (localStorage)
+  let likeCounts = {};       // aggregate counts from Worker
 
   // ── Elements ──
   const $loading = document.getElementById('loading');
@@ -334,6 +420,66 @@ body.gallery-active.controls-visible {
   const $prevBtn = document.getElementById('prev-btn');
   const $nextBtn = document.getElementById('next-btn');
   const $fsBtn = document.getElementById('fullscreen-btn');
+  const $likeBtn = document.getElementById('like-btn');
+  const $likeCount = document.getElementById('like-count');
+
+  // ── Likes system ──
+  try { myLikes = JSON.parse(localStorage.getItem('sol-likes') || '{}'); } catch(e) {}
+
+  function saveMyLikes() {
+    try { localStorage.setItem('sol-likes', JSON.stringify(myLikes)); } catch(e) {}
+  }
+
+  function updateLikeUI() {
+    const filename = manifest[currentIndex];
+    if (!filename) return;
+    const isLiked = !!myLikes[filename];
+    const count = likeCounts[filename] || 0;
+    $likeBtn.classList.toggle('liked', isLiked);
+    $likeCount.textContent = count > 0 ? count : '';
+  }
+
+  async function fetchAllLikes() {
+    try {
+      const resp = await fetch(LIKES_API + '/likes');
+      if (resp.ok) likeCounts = await resp.json();
+    } catch(e) {}
+  }
+
+  async function toggleLike() {
+    const filename = manifest[currentIndex];
+    if (!filename) return;
+    const isLiked = !!myLikes[filename];
+    const action = isLiked ? 'unlike' : 'like';
+
+    // Optimistic update
+    if (isLiked) {
+      delete myLikes[filename];
+      likeCounts[filename] = Math.max(0, (likeCounts[filename] || 1) - 1);
+    } else {
+      myLikes[filename] = true;
+      likeCounts[filename] = (likeCounts[filename] || 0) + 1;
+      $likeBtn.classList.remove('pop');
+      void $likeBtn.offsetHeight;
+      $likeBtn.classList.add('pop');
+    }
+    saveMyLikes();
+    updateLikeUI();
+
+    // Send to Worker
+    try {
+      const resp = await fetch(LIKES_API + '/like', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image: filename, action }),
+      });
+      if (resp.ok) {
+        const data = await resp.json();
+        likeCounts[filename] = data.count;
+        updateLikeUI();
+      }
+    } catch(e) {}
+  }
 
   // ── Ken Burns random parameters ──
   function randomKB() {
@@ -447,6 +593,7 @@ body.gallery-active.controls-visible {
     activeSlide = nextSlideId;
 
     preloadAhead();
+    updateLikeUI();
 
     if (isPlaying) {
       scheduleAdvance();
@@ -526,6 +673,7 @@ body.gallery-active.controls-visible {
       case 'ArrowLeft': case 'h': prev(); break;
       case ' ': e.preventDefault(); togglePlay(); break;
       case 'f': toggleFullscreen(); break;
+      case 'k': toggleLike(); showControls(); break;
       case 'Escape':
         if (document.fullscreenElement) document.exitFullscreen();
         break;
@@ -557,6 +705,7 @@ body.gallery-active.controls-visible {
   $prevBtn.addEventListener('click', function(e) { e.stopPropagation(); prev(); });
   $nextBtn.addEventListener('click', function(e) { e.stopPropagation(); next(); });
   $fsBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleFullscreen(); });
+  $likeBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleLike(); showControls(); });
 
   // ── Initialize ──
   async function init() {
@@ -584,6 +733,9 @@ body.gallery-active.controls-visible {
 
     // Ready
     $loading.classList.add('hidden');
+
+    // Load like counts in background
+    fetchAllLikes().then(updateLikeUI);
   }
 
   // ── Enter gallery ──
