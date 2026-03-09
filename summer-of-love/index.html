@@ -97,24 +97,22 @@ html, body {
 }
 
 /* ── Copyright watermark ── */
-#copyright {
-  position: fixed;
-  bottom: 0.8rem;
-  left: 1.5rem;
-  z-index: 99;
+.lg-copyright {
+  position: absolute;
+  bottom: 12px;
+  left: 20px;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
-  font-size: 0.75rem;
-  color: rgba(120, 115, 105, 0.25);
+  font-size: 13px;
+  color: rgba(160, 155, 145, 0.35);
   letter-spacing: 0.1em;
   pointer-events: none;
   user-select: none;
-  display: none;
 }
 
 /* ── Like button ── */
 #like-wrap {
-  position: fixed;
+  position: absolute;
   bottom: 70px;
   right: 20px;
   z-index: 99;
@@ -231,8 +229,6 @@ html, body {
 
 <div id="inline-gallery"></div>
 
-<div id="copyright">&copy; Chuck Jones</div>
-
 <div id="like-wrap">
   <button id="like-btn" aria-label="Like this image">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -267,7 +263,6 @@ html, body {
   var $titleCard = document.getElementById('title-card');
   var $enterBtn = document.getElementById('enter-btn');
   var $inlineGallery = document.getElementById('inline-gallery');
-  var $copyright = document.getElementById('copyright');
   var $likeWrap = document.getElementById('like-wrap');
   var $likeBtn = document.getElementById('like-btn');
   var $likeCount = document.getElementById('like-count');
@@ -415,20 +410,21 @@ html, body {
     // Open gallery at first slide
     galleryInstance.openGallery(0);
 
-    // Inject copyright and like button INTO lightGallery's DOM
-    // (external elements can't punch through lightGallery's stacking context)
-    var lgOuter = document.querySelector('.lg-outer');
-    if (lgOuter) {
-      // Move copyright inside
-      var crEl = document.getElementById('copyright');
-      lgOuter.appendChild(crEl);
-      crEl.style.display = 'block';
+    // Inject copyright into lightGallery's own DOM
+    setTimeout(function() {
+      var lgContainer = document.querySelector('.lg-container');
+      if (lgContainer) {
+        var cr = document.createElement('div');
+        cr.className = 'lg-copyright';
+        cr.textContent = '\u00A9 Chuck Jones';
+        lgContainer.appendChild(cr);
 
-      // Move like button inside
-      var lkEl = document.getElementById('like-wrap');
-      lgOuter.appendChild(lkEl);
-      lkEl.style.display = 'block';
-    }
+        // Also move like button inside
+        var lk = document.getElementById('like-wrap');
+        lgContainer.appendChild(lk);
+        lk.style.display = 'block';
+      }
+    }, 500);
   }
 
   // ── Initialize ──
