@@ -101,7 +101,7 @@ html, body {
   position: fixed;
   bottom: 0.8rem;
   left: 1.5rem;
-  z-index: 10000;
+  z-index: 2147483647;
   font-family: 'Cormorant Garamond', Georgia, serif;
   font-weight: 300;
   font-size: 0.75rem;
@@ -109,7 +109,6 @@ html, body {
   letter-spacing: 0.1em;
   pointer-events: none;
   user-select: none;
-  display: none;
 }
 
 /* ── Like button ── */
@@ -415,9 +414,8 @@ html, body {
     // Open gallery at first slide
     galleryInstance.openGallery(0);
 
-    // Show like button and copyright
+    // Show like button
     $likeWrap.style.display = 'block';
-    $copyright.style.display = 'block';
   }
 
   // ── Initialize ──
