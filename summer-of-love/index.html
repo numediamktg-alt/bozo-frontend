@@ -234,6 +234,37 @@ html, body {
   animation: heart-pop 0.35s ease;
 }
 
+/* ── Mute button ── */
+#mute-btn {
+  position: fixed;
+  bottom: 130px;
+  right: 20px;
+  z-index: 2147483647;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#mute-btn:hover {
+  background: rgba(0,0,0,0.6);
+  transform: scale(1.1);
+}
+
+#mute-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1.5;
+}
+
 /* ── One-click share buttons in toolbar ── */
 .lg-share-btn {
   background: none;
@@ -339,12 +370,21 @@ html, body {
 
 <div id="inline-gallery"></div>
 
+<audio id="gallery-audio" preload="auto">
+  <source src="https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/dan-hicks.webm?v=20260309" type="audio/webm">
+</audio>
+
 <div id="like-wrap">
   <button id="like-btn" aria-label="Like this image">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
   </button>
   <div id="like-count"></div>
 </div>
+
+<button id="mute-btn" aria-label="Mute/Unmute" style="display:none">
+  <svg id="vol-on" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+  <svg id="vol-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+</button>
 
 <!-- lightGallery core + plugins from cdnjs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/lightgallery.umd.min.js"></script>
@@ -375,6 +415,10 @@ html, body {
   var $likeWrap = document.getElementById('like-wrap');
   var $likeBtn = document.getElementById('like-btn');
   var $likeCount = document.getElementById('like-count');
+  var $audio = document.getElementById('gallery-audio');
+  var $muteBtn = document.getElementById('mute-btn');
+  var $volOn = document.getElementById('vol-on');
+  var $volOff = document.getElementById('vol-off');
 
   // ── Likes system ──
   try { myLikes = JSON.parse(localStorage.getItem('sol-likes') || '{}'); } catch(e) {}
@@ -604,13 +648,29 @@ html, body {
     setTimeout(function() {
       $titleCard.style.display = 'none';
       buildGallery();
+      // Start audio (user click satisfies autoplay policy)
+      $audio.play().catch(function() {});
+      $muteBtn.style.display = 'flex';
     }, 1800);
   }
 
-  // K key for like
+  // Mute toggle
+  $muteBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    $audio.muted = !$audio.muted;
+    $volOn.style.display = $audio.muted ? 'none' : 'block';
+    $volOff.style.display = $audio.muted ? 'block' : 'none';
+  });
+
+  // K key for like, M key for mute
   document.addEventListener('keydown', function(e) {
     if (e.key === 'k' || e.key === 'K') {
       toggleLike();
+    }
+    if (e.key === 'm' || e.key === 'M') {
+      $audio.muted = !$audio.muted;
+      $volOn.style.display = $audio.muted ? 'none' : 'block';
+      $volOff.style.display = $audio.muted ? 'block' : 'none';
     }
   });
 
