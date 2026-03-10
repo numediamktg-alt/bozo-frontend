@@ -1147,16 +1147,44 @@
                 h10_pct = Math.round(getW(c.h10_gain, sens.h10));
             }
 
+            // v3.6.0: Transit Intensity (composite across all 8 harmonics)
+            const intensity = c.transit_intensity !== undefined ? Math.round(c.transit_intensity) : null;
+            let intensityColor = 'var(--text-dim)';
+            let intensityGlow = 'none';
+            if (intensity !== null) {
+                if (intensity >= 65) { intensityColor = '#ef4444'; intensityGlow = '0 0 12px rgba(239,68,68,0.4)'; }
+                else if (intensity >= 40) { intensityColor = '#f59e0b'; intensityGlow = '0 0 8px rgba(245,158,11,0.3)'; }
+                else if (intensity >= 15) { intensityColor = '#22c55e'; }
+            }
+
             // v3.5.0: Render Direct Contacts section (appears BEFORE volume meters)
             const directContactsHtml = renderDirectContacts(hotAspects);
+
+            // v3.6.0: Transit Intensity headline meter
+            const intensityHtml = intensity !== null ? `
+                <div class="card" style="margin-bottom: 12px;">
+                    <h3 class="card-title"><span class="card-title-icon">🔥</span> Transit Intensity</h3>
+                    <div class="meter-group">
+                        <div class="meter-header">
+                            <span class="meter-label" style="font-size: 15px; font-weight: 600;">All Channels Combined</span>
+                            <span class="meter-value" style="color: ${intensityColor}; font-size: 18px; font-weight: 700; text-shadow: ${intensityGlow};">${intensity}%</span>
+                        </div>
+                        <div class="meter-track" style="height: 10px;">
+                            <div class="meter-baseline"></div>
+                            <div class="meter-fill" style="width: ${intensity}%; background: ${intensityColor}; height: 10px; box-shadow: ${intensityGlow};"></div>
+                        </div>
+                    </div>
+                </div>` : '';
 
             return `
                 ${hookHtml}
 
                 ${directContactsHtml}
 
+                ${intensityHtml}
+
                 <div class="card">
-                    <h3 class="card-title"><span class="card-title-icon">📡</span> Volume Levels</h3>
+                    <h3 class="card-title"><span class="card-title-icon">📡</span> Channel Detail</h3>
 
                     <div class="meter-group">
                         <div class="meter-header">
