@@ -43,7 +43,9 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: 8vh;
+  overflow-y: auto;
   opacity: 1;
   transition: opacity 1.8s ease;
 }
@@ -93,6 +95,66 @@ html, body {
 #title-card .enter:hover {
   color: #fff;
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Review section ── */
+.review {
+  max-width: 680px;
+  margin: 4rem auto 6rem;
+  padding: 0 2rem;
+  text-align: left;
+}
+
+.review .review-label {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(0.7rem, 1vw, 0.8rem);
+  color: rgba(138, 132, 120, 0.5);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.review h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+  color: #d4d0c8;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.2rem;
+  line-height: 1.4;
+}
+
+.review p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  color: rgba(180, 175, 165, 0.7);
+  line-height: 1.8;
+  margin-bottom: 1.2rem;
+}
+
+.review h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: rgba(200, 195, 185, 0.5);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.review .pullquote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.1rem, 1.8vw, 1.4rem);
+  color: #d4d0c8;
+  line-height: 1.6;
+  margin-top: 2.5rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(138, 132, 120, 0.3);
 }
 
 /* ── Inline gallery container ── */
@@ -242,6 +304,23 @@ html, body {
   <div class="subtitle">September 2, 2007</div>
   <div class="subtitle">Photographs by Chuck Jones</div>
   <div class="enter" id="enter-btn">Enter Gallery</div>
+
+  <div class="review">
+    <div class="review-label">Review</div>
+    <h2>40th Anniversary Archive</h2>
+    <p>This archive is a fascinating study of continuity. It captures the 2007 gathering in Golden Gate Park, serving as a visual bridge between the original movement and the 21st century.</p>
+
+    <h3>Quality &amp; Style Elements</h3>
+    <p>The style here is deeply respectful. The photography focuses on the weathered faces and "life-worn" style of the original participants. It's a study in how an aesthetic - tie-dye, long hair, and iconography - ages over four decades.</p>
+    <p>Unlike the grainy, often desaturated look of actual 60s film, these images (taken with more modern equipment) are punchy and sharp. The colors are loud - neon dyes and bright San Francisco sunlight - which highlights the "still here, still loud" defiance of the attendees.</p>
+    <p>The archive is anchored by high-quality shots of figures like Wavy Gravy and George Lynch. The style is "intimate documentary"; you feel the proximity of the photographer to the subjects, suggesting a level of trust and shared history.</p>
+
+    <h3>Technical Evaluation</h3>
+    <p>The archive maintains a consistent "festival" energy. The framing often uses the crowd to create a sense of scale, showing that even 40 years later, the "tribe" could still fill a meadow.</p>
+    <p>As a photography project, its greatest value is in documenting the evolution of a subculture. It captures the 2007 version of "The Summer of Love" not as a costume party, but as a living, breathing community.</p>
+
+    <div class="pullquote">"The 40th Anniversary wasn't a reenactment; it was a roll call of those who never left the bus."</div>
+  </div>
 </div>
 
 <div id="inline-gallery"></div>
