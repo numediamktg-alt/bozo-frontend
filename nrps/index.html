@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>New Riders of the Purple Sage - Sausalito Art Festival 2007</title>
+<meta name="description" content="New Riders of the Purple Sage live at the Sausalito Art Festival, September 3, 2007. Photographs by Chuck Jones.">
+<meta property="og:title" content="New Riders of the Purple Sage - Sausalito 2007">
+<meta property="og:description" content="98 photographs by Chuck Jones. Leica M8. Sausalito Art Festival, September 3, 2007.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thisoldhippie.com/nrps/">
+<meta property="og:image" content="https://pub-7cccd121d52d4449a991c87cd59f7a71.r2.dev/L9522909.jpg">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pub-7cccd121d52d4449a991c87cd59f7a71.r2.dev/L9522909.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7B7R3WVPJW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7B7R3WVPJW');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+<!-- lightGallery core + plugin CSS (bundle includes all plugin styles) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery-bundle.min.css">
+
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+/* ── Title card ── */
+#title-card {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 8vh;
+  overflow-y: auto;
+  opacity: 1;
+  transition: opacity 1.8s ease;
+}
+
+#title-card.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#title-card h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 4vw, 3.2rem);
+  color: #d4d0c8;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 2rem;
+}
+
+#title-card .subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+  color: #8a8478;
+  margin-top: 1.5rem;
+  letter-spacing: 0.08em;
+}
+
+#title-card .enter {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: #d4d0c8;
+  margin-top: 3.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.4s ease, border-color 0.4s ease;
+  border: 1px solid rgba(200, 195, 185, 0.3);
+  padding: 0.8rem 2.5rem;
+  border-radius: 2px;
+}
+
+#title-card .enter:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ── Review section ── */
+.review {
+  max-width: 680px;
+  margin: 4rem auto 6rem;
+  padding: 0 2rem;
+  text-align: left;
+}
+
+.review .review-label {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: rgba(200, 195, 185, 0.7);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.review h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  color: #e8e4dc;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.2rem;
+  line-height: 1.4;
+}
+
+.review p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  color: rgba(220, 215, 205, 0.85);
+  line-height: 1.9;
+  margin-bottom: 1.4rem;
+}
+
+.review h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: rgba(220, 215, 205, 0.7);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.review .pullquote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  color: #e8e4dc;
+  line-height: 1.6;
+  margin-top: 2.5rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(200, 195, 185, 0.4);
+}
+
+/* ── Inline gallery container ── */
+#inline-gallery {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── Like button ── */
+#like-wrap {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  z-index: 2147483647;
+  display: none;
+  text-align: center;
+}
+
+#like-btn {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#like-btn:hover {
+  background: rgba(0,0,0,0.6);
+  transform: scale(1.1);
+}
+
+#like-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1.5;
+  transition: fill 0.3s ease, stroke 0.3s ease;
+}
+
+#like-btn.liked svg {
+  fill: rgba(220, 60, 60, 0.9);
+  stroke: rgba(220, 60, 60, 1);
+}
+
+#like-count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.5);
+  margin-top: 0.25rem;
+}
+
+#like-btn.liked ~ #like-count {
+  color: rgba(220, 60, 60, 0.7);
+}
+
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+#like-btn.pop {
+  animation: heart-pop 0.35s ease;
+}
+
+/* ── Mute button ── */
+#mute-btn {
+  position: fixed;
+  bottom: 130px;
+  right: 20px;
+  z-index: 2147483647;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#mute-btn:hover {
+  background: rgba(0,0,0,0.6);
+  transform: scale(1.1);
+}
+
+#mute-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1.5;
+}
+
+/* ── One-click share buttons in toolbar ── */
+.lg-share-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 6px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  vertical-align: middle;
+}
+
+.lg-share-btn:hover {
+  opacity: 1;
+}
+
+.lg-share-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #999;
+  transition: fill 0.2s ease;
+}
+
+.lg-share-btn:hover svg {
+  fill: #fff;
+}
+
+/* ── Loading ── */
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease;
+}
+
+#loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loading .spinner {
+  width: 2px;
+  height: 24px;
+  background: #5a5650;
+  animation: load-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes load-pulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ── lightGallery overrides for dark gallery aesthetic ── */
+.lg-backdrop {
+  background-color: #000 !important;
+}
+
+.lg-progress-bar .lg-progress {
+  background-color: rgba(200, 195, 185, 0.4) !important;
+}
+
+.lg-outer .lg-thumb-outer {
+  background-color: rgba(0,0,0,0.85) !important;
+}
+</style>
+</head>
+<body>
+
+<div id="loading"><div class="spinner"></div></div>
+
+<div id="title-card">
+  <h1>New Riders of<br>the Purple Sage</h1>
+  <div class="subtitle">Sausalito Art Festival</div>
+  <div class="subtitle">September 3, 2007</div>
+  <div class="subtitle" style="margin-top: 2rem;">Photographs by Chuck Jones</div>
+  <div class="enter" id="enter-btn">Enter Gallery</div>
+
+  <div class="review">
+    <div class="review-label">Artist's Statement</div>
+    <p>The New Riders were pure Marin County that afternoon. The stage sat right on the waterfront, sailboats behind the amps, the hills of Tiburon across Richardson Bay. I was shooting with the Leica M8 and had the kind of access you dream about. Right up on stage, down in the crowd, wherever the music pulled me.</p>
+    <p>This was the Sausalito Art Festival at its best. Labor Day weekend, the sun pouring in under the tent, and a band that had been doing this since 1969 still playing like they meant every note.</p>
+    <p style="color: rgba(200, 195, 185, 0.5); margin-top: 0.5rem; margin-bottom: 0;">- Chuck Jones</p>
+  </div>
+
+  <div class="review">
+    <div class="review-label">About the Band</div>
+    <p>New Riders of the Purple Sage emerged from the Grateful Dead's orbit in 1969, with Jerry Garcia on pedal steel in the early days. By 2007 they were deep into their fourth decade, still carrying the spirit of the San Francisco sound to festivals and stages across the country.</p>
+  </div>
+
+  <div class="review">
+    <div class="review-label">Technical Notes</div>
+    <h2>Leica M8 Digital Camera</h2>
+    <p>All 98 images were shot on the Leica M8, Leica's first digital rangefinder. ISO 160, mostly at f/16 for depth across the stage. The M8's CCD sensor gives these images a particular quality that CMOS sensors of the same era couldn't match - there's a clarity and a color rendering that feels closer to film than digital.</p>
+    <p>Shutter speeds ranged from 1/125 to 1/500 as the afternoon light shifted under the festival tent and across the open waterfront.</p>
+  </div>
+</div>
+
+<div id="inline-gallery"></div>
+
+<audio id="gallery-audio" preload="auto" loop>
+  <source src="https://pub-7cccd121d52d4449a991c87cd59f7a71.r2.dev/NRPS%202007.m4a" type="audio/mp4">
+</audio>
+
+<div id="like-wrap">
+  <button id="like-btn" aria-label="Like this image">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  </button>
+  <div id="like-count"></div>
+</div>
+
+<button id="mute-btn" aria-label="Mute/Unmute" style="display:none">
+  <svg id="vol-on" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+  <svg id="vol-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+</button>
+
+<!-- lightGallery core + plugins from cdnjs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/lightgallery.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/autoplay/lg-autoplay.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/fullscreen/lg-fullscreen.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/zoom/lg-zoom.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  var R2_BASE = 'https://pub-7cccd121d52d4449a991c87cd59f7a71.r2.dev';
+  var LIKES_API = 'https://nrps-likes.chuck-3ba.workers.dev';
+
+  // ── State ──
+  var manifest = [];
+  var galleryInstance = null;
+  var currentFilename = '';
+  var myLikes = {};
+  var likeCounts = {};
+
+  // ── Elements ──
+  var $loading = document.getElementById('loading');
+  var $titleCard = document.getElementById('title-card');
+  var $enterBtn = document.getElementById('enter-btn');
+  var $inlineGallery = document.getElementById('inline-gallery');
+  var $likeWrap = document.getElementById('like-wrap');
+  var $likeBtn = document.getElementById('like-btn');
+  var $likeCount = document.getElementById('like-count');
+  var $audio = document.getElementById('gallery-audio');
+  var $muteBtn = document.getElementById('mute-btn');
+  var $volOn = document.getElementById('vol-on');
+  var $volOff = document.getElementById('vol-off');
+
+  // ── Likes system ──
+  try { myLikes = JSON.parse(localStorage.getItem('nrps-likes') || '{}'); } catch(e) {}
+
+  function saveMyLikes() {
+    try { localStorage.setItem('nrps-likes', JSON.stringify(myLikes)); } catch(e) {}
+  }
+
+  function updateLikeUI() {
+    if (!currentFilename) return;
+    var isLiked = !!myLikes[currentFilename];
+    var count = likeCounts[currentFilename] || 0;
+    $likeBtn.classList.toggle('liked', isLiked);
+    $likeCount.textContent = count > 0 ? count : '';
+  }
+
+  function fetchAllLikes() {
+    return fetch(LIKES_API + '/likes')
+      .then(function(resp) { return resp.ok ? resp.json() : {}; })
+      .then(function(data) { likeCounts = data; })
+      .catch(function() {});
+  }
+
+  function toggleLike() {
+    if (!currentFilename) return;
+    var isLiked = !!myLikes[currentFilename];
+    var action = isLiked ? 'unlike' : 'like';
+
+    if (isLiked) {
+      delete myLikes[currentFilename];
+      likeCounts[currentFilename] = Math.max(0, (likeCounts[currentFilename] || 1) - 1);
+    } else {
+      myLikes[currentFilename] = true;
+      likeCounts[currentFilename] = (likeCounts[currentFilename] || 0) + 1;
+      $likeBtn.classList.remove('pop');
+      void $likeBtn.offsetHeight;
+      $likeBtn.classList.add('pop');
+    }
+    saveMyLikes();
+    updateLikeUI();
+
+    fetch(LIKES_API + '/like', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: currentFilename, action: action }),
+    })
+    .then(function(resp) { return resp.ok ? resp.json() : null; })
+    .then(function(data) {
+      if (data) {
+        likeCounts[currentFilename] = data.count;
+        updateLikeUI();
+      }
+    })
+    .catch(function() {});
+  }
+
+  $likeBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleLike();
+  });
+
+  // ── Image URL helper (cache-bust to force new versions) ──
+  var cacheBust = 'v=20260311';
+  function imageURL(filename) {
+    return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
+  }
+
+  // ── Build gallery with lightGallery ──
+  function buildGallery() {
+    var dynamicEl = manifest.map(function(filename) {
+      return {
+        src: imageURL(filename),
+        thumb: imageURL(filename),
+        subHtml: '',
+      };
+    });
+
+    galleryInstance = lightGallery($inlineGallery, {
+      container: $inlineGallery,
+      dynamic: true,
+      dynamicEl: dynamicEl,
+
+      // Plugins
+      plugins: [lgAutoplay, lgFullscreen, lgZoom, lgThumbnail],
+
+      // Core
+      mode: 'lg-fade',
+      speed: 1400,
+      loop: true,
+      counter: true,
+      download: false,
+      mousewheel: true,
+      keyPress: true,
+      controls: true,
+      closable: false,
+      showCloseIcon: false,
+      showMaximizeIcon: false,
+      preload: 3,
+      swipeToClose: false,
+      closeOnTap: false,
+
+      // Autoplay
+      autoplay: true,
+      slideShowAutoplay: true,
+      slideShowInterval: 8000,
+      progressBar: true,
+      forceSlideShowAutoplay: false,
+
+      // Fullscreen
+      fullScreen: true,
+
+      // Zoom
+      scale: 1,
+      zoom: true,
+      actualSize: true,
+
+      // Thumbnails
+      thumbnail: true,
+      showThumbByDefault: false,
+      toggleThumb: true,
+      thumbWidth: 80,
+      thumbHeight: '60px',
+      thumbMargin: 5,
+    });
+
+    // Track current slide for the like button
+    $inlineGallery.addEventListener('lgAfterSlide', function(event) {
+      var index = event.detail.index;
+      currentFilename = manifest[index] || '';
+      updateLikeUI();
+    });
+
+    // Set initial filename
+    currentFilename = manifest[0] || '';
+    updateLikeUI();
+
+    // Open gallery at first slide
+    galleryInstance.openGallery(0);
+
+    // Inject one-click share buttons into lightGallery toolbar
+    setTimeout(function() {
+      var toolbar = document.querySelector('.lg-toolbar');
+      if (!toolbar) return;
+
+      var pageTitle = 'New Riders of the Purple Sage - Sausalito Art Festival 2007 - Photographs by Chuck Jones';
+      var pageUrl = window.location.href;
+
+      function currentImageUrl() {
+        return imageURL(currentFilename || manifest[0]);
+      }
+
+      // Facebook
+      var fbBtn = document.createElement('button');
+      fbBtn.className = 'lg-share-btn';
+      fbBtn.title = 'Share on Facebook';
+      fbBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>';
+      fbBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var url = encodeURIComponent(pageUrl);
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank', 'width=600,height=400');
+      });
+
+      // X (Twitter)
+      var twBtn = document.createElement('button');
+      twBtn.className = 'lg-share-btn';
+      twBtn.title = 'Share on X';
+      twBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+      twBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var text = encodeURIComponent(pageTitle);
+        var url = encodeURIComponent(pageUrl);
+        window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + url, '_blank', 'width=600,height=400');
+      });
+
+      // Pinterest
+      var pinBtn = document.createElement('button');
+      pinBtn.className = 'lg-share-btn';
+      pinBtn.title = 'Pin on Pinterest';
+      pinBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>';
+      pinBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var imgUrl = encodeURIComponent(currentImageUrl());
+        var url = encodeURIComponent(pageUrl);
+        var desc = encodeURIComponent(pageTitle);
+        window.open('https://pinterest.com/pin/create/button/?url=' + url + '&media=' + imgUrl + '&description=' + desc, '_blank', 'width=600,height=400');
+      });
+
+      // Insert before the first existing button
+      var firstBtn = toolbar.firstChild;
+      toolbar.insertBefore(pinBtn, firstBtn);
+      toolbar.insertBefore(twBtn, firstBtn);
+      toolbar.insertBefore(fbBtn, firstBtn);
+
+      // Show like button
+      document.getElementById('like-wrap').style.display = 'block';
+    }, 300);
+  }
+
+  // ── Initialize ──
+  function init() {
+    fetch(R2_BASE + '/manifest.json?t=' + Date.now())
+      .then(function(resp) {
+        if (!resp.ok) throw new Error('No manifest');
+        return resp.json();
+      })
+      .then(function(data) {
+        manifest = data.images || data;
+        if (manifest.length === 0) return;
+
+        // Load like counts in background
+        fetchAllLikes().then(updateLikeUI);
+
+        // Ready
+        $loading.classList.add('hidden');
+      })
+      .catch(function(e) {
+        console.error('Could not load manifest:', e);
+        $loading.querySelector('.spinner').style.background = '#8a3030';
+      });
+  }
+
+  // ── Enter gallery ──
+  $enterBtn.addEventListener('click', startGallery);
+
+  function startGallery() {
+    $titleCard.classList.add('fade-out');
+    setTimeout(function() {
+      $titleCard.style.display = 'none';
+      buildGallery();
+      // Start audio (user click satisfies autoplay policy)
+      $audio.play().catch(function() {});
+      $muteBtn.style.display = 'flex';
+    }, 1800);
+  }
+
+  // Mute toggle
+  $muteBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    $audio.muted = !$audio.muted;
+    $volOn.style.display = $audio.muted ? 'none' : 'block';
+    $volOff.style.display = $audio.muted ? 'block' : 'none';
+  });
+
+  // K key for like, M key for mute
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'k' || e.key === 'K') {
+      toggleLike();
+    }
+    if (e.key === 'm' || e.key === 'M') {
+      $audio.muted = !$audio.muted;
+      $volOn.style.display = $audio.muted ? 'none' : 'block';
+      $volOff.style.display = $audio.muted ? 'block' : 'none';
+    }
+  });
+
+  // Go
+  init();
+
+})();
+</script>
+</body>
+</html>
