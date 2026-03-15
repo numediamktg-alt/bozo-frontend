@@ -12,14 +12,15 @@
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The DashBoard™ | Bozo on the Bus</title>
-    <meta name="description" content="Your personalized oracle dashboard. Daily readings tuned to your cosmic frequency.">
+    <meta name="description" content="Your personalized harmonic weather dashboard. See today's conditions for creativity, insight, and action.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-dark: #0d0d14;
             --bg-card: #16161f;
             --bg-input: #1e1e2a;
+            --bg-tech: #111118;
             --border: rgba(255,255,255,0.08);
             --border-highlight: rgba(139,92,246,0.3);
             --purple: #8b5cf6;
@@ -32,690 +33,210 @@
             --text: #f1f1f1;
             --text-muted: #a1a1aa;
             --text-dim: #71717a;
-            /* v3.5.0: Heat gradient colors for precision display */
             --heat-blue: #3B82F6;
             --heat-teal: #2DD4BF;
             --heat-yellow: #FBBF24;
             --heat-orange: #F97316;
             --heat-magenta: #EC4899;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg-dark); color: var(--text); min-height: 100vh; line-height: 1.6; }
 
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text);
-            min-height: 100vh;
-            line-height: 1.6;
-        }
-
-        /* HEADER */
-        .header {
-            background: var(--bg-card);
-            border-bottom: 1px solid var(--border);
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .header-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .logo {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text);
-            text-decoration: none;
-        }
+        .header { background: var(--bg-card); border-bottom: 1px solid var(--border); padding: 16px 24px; position: sticky; top: 0; z-index: 100; }
+        .header-inner { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.3rem; font-weight: 700; color: var(--text); text-decoration: none; }
         .logo span { color: var(--purple); }
-        .nav-pills {
-            display: flex;
-            gap: 8px;
-        }
-        .nav-pill {
-            padding: 8px 16px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            background: transparent;
-            border: 1px solid transparent;
-            transition: all 0.2s;
-        }
+        .nav-pills { display: flex; gap: 8px; }
+        .nav-pill { padding: 8px 16px; border-radius: 20px; text-decoration: none; font-size: 0.9rem; font-weight: 500; color: var(--text-muted); background: transparent; border: 1px solid transparent; transition: all 0.2s; }
         .nav-pill:hover { color: var(--text); background: var(--bg-input); }
         .nav-pill.active { background: var(--purple); color: white; }
 
-        /* MAIN LAYOUT */
-        .main-wrapper {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 24px;
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 40px;
-            align-items: start;
-        }
-
-        /* SIDEBAR */
-        .sidebar {
-            position: sticky;
-            top: 100px;
-        }
-        .sidebar-photos {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
-        }
-        .sidebar-photos img {
-            width: 100%;
-            border-radius: 12px;
-            margin-bottom: 12px;
-        }
+        .main-wrapper { max-width: 1400px; margin: 0 auto; padding: 40px 24px; display: grid; grid-template-columns: 320px 1fr; gap: 40px; align-items: start; }
+        .sidebar { position: sticky; top: 100px; }
+        .sidebar-photos { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 20px; }
+        .sidebar-photos img { width: 100%; border-radius: 12px; margin-bottom: 12px; }
         .sidebar-photos img:last-of-type { margin-bottom: 0; }
-        .photo-quote {
-            font-family: 'Caveat', cursive;
-            font-size: 1.15rem;
-            color: var(--gold);
-            text-align: center;
-            margin-top: 12px;
-            line-height: 1.4;
-        }
-        .photo-attribution {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.85rem;
-            margin-top: 4px;
-        }
-        .photo-caption {
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.75rem;
-            margin-top: 8px;
-            font-style: italic;
-            line-height: 1.5;
-        }
+        .photo-quote { font-family: 'Caveat', cursive; font-size: 1.15rem; color: var(--gold); text-align: center; margin-top: 12px; line-height: 1.4; }
+        .photo-attribution { text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+        .photo-caption { text-align: center; color: var(--text-dim); font-size: 0.75rem; margin-top: 8px; font-style: italic; line-height: 1.5; }
+        .video-link { display: block; text-align: center; margin-top: 16px; padding: 12px 16px; background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%); border-radius: 10px; color: white; text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; cursor: pointer; }
+        .video-link:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(139,92,246,0.4); }
 
-        /* VIDEO POPUP LINK */
-        .video-link {
-            display: block;
-            text-align: center;
-            margin-top: 16px;
-            padding: 12px 16px;
-            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
-            border-radius: 10px;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s;
-            cursor: pointer;
-        }
-        .video-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(139,92,246,0.4);
-        }
+        .video-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; justify-content: center; align-items: center; }
+        .video-modal.active { display: flex; }
+        .video-modal-content { position: relative; width: 90%; max-width: 900px; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+        .video-modal-content iframe { width: 100%; height: 100%; border: none; }
+        .video-modal-close { position: absolute; top: -40px; right: 0; background: none; border: none; color: white; font-size: 2rem; cursor: pointer; opacity: 0.8; transition: opacity 0.2s; }
+        .video-modal-close:hover { opacity: 1; }
 
-        /* VIDEO MODAL */
-        .video-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-        }
-        .video-modal.active {
-            display: flex;
-        }
-        .video-modal-content {
-            position: relative;
-            width: 90%;
-            max-width: 900px;
-            aspect-ratio: 16/9;
-            background: #000;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .video-modal-content iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-        .video-modal-close {
-            position: absolute;
-            top: -40px;
-            right: 0;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            opacity: 0.8;
-            transition: opacity 0.2s;
-        }
-        .video-modal-close:hover {
-            opacity: 1;
-        }
+        .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 24px; }
+        .card-highlight { border-color: var(--border-highlight); }
+        .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+        .card-title-icon { font-size: 1.3rem; }
 
-        /* MAIN CONTENT */
-        .main-content {
-            min-width: 0;
-        }
+        /* v4.0 WEATHER HERO */
+        .weather-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 32px; margin-bottom: 24px; position: relative; overflow: hidden; }
+        .weather-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; border-radius: 20px 20px 0 0; }
+        .weather-card.type-powerhouse::before { background: linear-gradient(90deg, #ef4444, #f97316); }
+        .weather-card.type-charged::before { background: linear-gradient(90deg, #f97316, #fbbf24); }
+        .weather-card.type-intense::before { background: linear-gradient(90deg, #ec4899, #ef4444); }
+        .weather-card.type-receptive::before { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .weather-card.type-creative::before { background: linear-gradient(90deg, #f97316, #fbbf24); }
+        .weather-card.type-builder::before { background: linear-gradient(90deg, #2dd4bf, #22c55e); }
+        .weather-card.type-friction::before { background: linear-gradient(90deg, #f59e0b, #ef4444); }
+        .weather-card.type-flowing::before { background: linear-gradient(90deg, #3b82f6, #2dd4bf); }
+        .weather-card.type-active::before { background: linear-gradient(90deg, #22c55e, #2dd4bf); }
+        .weather-card.type-mixed::before { background: linear-gradient(90deg, #71717a, #a1a1aa); }
+        .weather-card.type-quiet::before { background: linear-gradient(90deg, #3b4a6b, #4b5e80); }
 
-        /* CARDS */
-        .card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-        .card-highlight {
-            border-color: var(--border-highlight);
-        }
-        .card-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .card-title-icon {
-            font-size: 1.3rem;
-        }
+        .weather-date { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+        .weather-type-row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
+        .weather-type-icon { font-size: 2.4rem; line-height: 1; }
+        .weather-type-name { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
+        .weather-guidance { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; max-width: 600px; }
 
-        /* LICENSE CARD */
-        .license-card {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .license-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--bg-input);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.2rem;
-        }
-        .license-info h3 {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            margin-bottom: 4px;
-        }
-        .license-class {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-        .license-quote {
-            font-family: 'Caveat', cursive;
-            font-size: 1.1rem;
-            color: var(--text-muted);
-        }
+        .weather-density { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; padding: 12px 16px; background: var(--bg-input); border-radius: 10px; }
+        .density-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+        .density-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+        .density-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease-out; }
+        .density-value { font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
 
-        /* DAILY HOOK */
-        .hook-card {
-            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
-            text-align: center;
-        }
-        .hook-title {
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-        }
-        .hook-text {
-            font-size: 1.05rem;
-            opacity: 0.95;
-        }
+        .weather-meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .w-meter { background: var(--bg-input); border-radius: 12px; padding: 16px; text-align: center; }
+        .w-meter-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+        .w-meter-value { font-size: 1.8rem; font-weight: 700; line-height: 1; margin-bottom: 8px; }
+        .w-meter-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
+        .w-meter-fill { height: 100%; border-radius: 2px; transition: width 1s ease-out; }
 
-        /* METERS */
+        /* v4.0 EXPLAINER */
+        .explainer-card { background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
+        .explainer-text { font-size: 0.88rem; color: var(--text-dim); line-height: 1.7; }
+        .explainer-text strong { color: var(--text-muted); }
+
+        /* v4.0 TECH TOGGLE */
+        .tech-toggle { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--bg-tech); border: 1px solid var(--border); border-radius: 10px; color: var(--text-dim); font-size: 0.85rem; cursor: pointer; transition: all 0.2s; margin-bottom: 4px; width: 100%; text-align: left; font-family: inherit; }
+        .tech-toggle:hover { color: var(--text-muted); border-color: rgba(255,255,255,0.12); }
+        .tech-toggle-arrow { transition: transform 0.3s; font-size: 0.7rem; }
+        .tech-toggle.open .tech-toggle-arrow { transform: rotate(90deg); }
+        .tech-details { max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+        .tech-details.open { max-height: 4000px; }
+        .tech-details-inner { padding: 16px 0 0 0; }
+
+        .direct-contacts-card { background: var(--bg-tech); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+        .direct-contacts-title { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 600; margin-bottom: 14px; color: var(--text-muted); }
+        .direct-contacts-list { max-height: 400px; overflow-y: auto; padding-right: 8px; }
+        .direct-contacts-list::-webkit-scrollbar { width: 5px; }
+        .direct-contacts-list::-webkit-scrollbar-track { background: var(--bg-input); border-radius: 3px; }
+        .direct-contacts-list::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 3px; }
+        .contact-row { margin-bottom: 12px; }
+        .contact-row:last-child { margin-bottom: 0; }
+        .contact-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; gap: 8px; flex-wrap: wrap; }
+        .contact-channel { font-size: 0.65rem; padding: 2px 5px; border-radius: 3px; background: var(--bg-input); color: var(--text-dim); white-space: nowrap; }
+        .contact-label { font-size: 0.8rem; color: var(--text-dim); flex: 1; }
+        .contact-value { font-weight: 600; font-size: 0.8rem; white-space: nowrap; }
+        .contact-bar-track { height: 6px; background: var(--bg-input); border-radius: 3px; overflow: hidden; }
+        .contact-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease-out; }
+        .contact-bar-fill.heat-85 { background: var(--heat-blue); }
+        .contact-bar-fill.heat-90 { background: linear-gradient(90deg, var(--heat-blue), var(--heat-teal)); }
+        .contact-bar-fill.heat-95 { background: linear-gradient(90deg, var(--heat-blue), var(--heat-teal), var(--heat-yellow)); }
+        .contact-bar-fill.heat-97 { background: linear-gradient(90deg, var(--heat-blue), var(--heat-teal), var(--heat-yellow), var(--heat-orange)); }
+        .contact-bar-fill.heat-99 { background: linear-gradient(90deg, var(--heat-teal), var(--heat-yellow), var(--heat-orange), var(--heat-magenta)); }
+
+        .intensity-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-tech); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 16px; }
+        .intensity-label { font-size: 0.8rem; color: var(--text-dim); white-space: nowrap; }
+        .intensity-track { flex: 1; height: 8px; background: var(--bg-input); border-radius: 4px; overflow: hidden; }
+        .intensity-fill { height: 100%; border-radius: 4px; transition: width 1s ease-out; }
+        .intensity-value { font-weight: 700; font-size: 0.95rem; min-width: 38px; text-align: right; }
+
+        .license-card { display: flex; align-items: center; gap: 20px; }
+        .license-icon { width: 70px; height: 70px; background: var(--bg-input); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; }
+        .license-info h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; }
+        .license-class { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+        .license-quote { font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--text-muted); }
+
         .meter-group { margin-bottom: 20px; }
         .meter-group:last-child { margin-bottom: 0; }
-        .meter-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .meter-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 500;
-            font-size: 0.9rem;
-        }
-        .meter-value {
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .meter-track {
-            height: 10px;
-            background: var(--bg-input);
-            border-radius: 5px;
-            position: relative;
-            overflow: hidden;
-        }
-        .meter-fill {
-            height: 100%;
-            border-radius: 5px;
-            transition: width 1s ease-out;
-        }
-        .meter-baseline {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--text-dim);
-            opacity: 0.5;
-        }
+        .meter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .meter-label { display: flex; align-items: center; gap: 8px; font-weight: 500; font-size: 0.9rem; }
+        .meter-value { font-weight: 600; font-size: 0.9rem; }
+        .meter-track { height: 8px; background: var(--bg-input); border-radius: 4px; overflow: hidden; }
+        .meter-fill { height: 100%; border-radius: 4px; transition: width 1s ease-out; }
 
-        /* v3.5.0: DIRECT CONTACTS (Precision Hits) */
-        .direct-contacts-card {
-            border-left: 3px solid var(--heat-magenta);
-        }
-        .direct-contacts-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: var(--text);
-        }
-        .direct-contacts-title .icon {
-            font-size: 1.2rem;
-        }
-        .direct-contacts-list {
-            max-height: 280px;
-            overflow-y: auto;
-            padding-right: 8px;
-        }
-        .direct-contacts-list::-webkit-scrollbar {
-            width: 6px;
-        }
-        .direct-contacts-list::-webkit-scrollbar-track {
-            background: var(--bg-input);
-            border-radius: 3px;
-        }
-        .direct-contacts-list::-webkit-scrollbar-thumb {
-            background: var(--text-dim);
-            border-radius: 3px;
-        }
-        .direct-contacts-list::-webkit-scrollbar-thumb:hover {
-            background: var(--text-muted);
-        }
-        .contact-row {
-            margin-bottom: 14px;
-        }
-        .contact-row:last-child {
-            margin-bottom: 0;
-        }
-        .contact-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 6px;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .contact-channel {
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: var(--bg-input);
-            color: var(--text-dim);
-            white-space: nowrap;
-        }
-        .contact-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            flex: 1;
-        }
-        .contact-harmonic {
-            font-size: 0.75rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: var(--bg-input);
-            color: var(--text-dim);
-        }
-        .contact-value {
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-        .contact-bar-track {
-            height: 8px;
-            background: var(--bg-input);
-            border-radius: 4px;
-            overflow: hidden;
-            position: relative;
-        }
-        .contact-bar-fill {
-            height: 100%;
-            border-radius: 4px;
-            position: relative;
-            transition: width 0.8s ease-out;
-        }
-        /* Heat gradient: blue -> teal -> yellow -> orange -> magenta */
-        .contact-bar-fill.heat-85 { background: linear-gradient(90deg, var(--heat-blue) 0%, var(--heat-blue) 100%); }
-        .contact-bar-fill.heat-90 { background: linear-gradient(90deg, var(--heat-blue) 0%, var(--heat-teal) 100%); }
-        .contact-bar-fill.heat-95 { background: linear-gradient(90deg, var(--heat-blue) 0%, var(--heat-teal) 50%, var(--heat-yellow) 100%); }
-        .contact-bar-fill.heat-97 { background: linear-gradient(90deg, var(--heat-blue) 0%, var(--heat-teal) 33%, var(--heat-yellow) 66%, var(--heat-orange) 100%); }
-        .contact-bar-fill.heat-99 { background: linear-gradient(90deg, var(--heat-blue) 0%, var(--heat-teal) 25%, var(--heat-yellow) 50%, var(--heat-orange) 75%, var(--heat-magenta) 100%); }
-        
-        /* Dual label styling for hook card */
-        .hook-dual-label {
-            display: flex;
-            justify-content: center;
-            gap: 12px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-        .hook-label-volume {
-            font-size: 1rem;
-            opacity: 0.85;
-        }
-        .hook-label-precision {
-            font-size: 1rem;
-            color: var(--heat-magenta);
-            font-weight: 600;
-        }
-        .hook-label-divider {
-            opacity: 0.5;
-        }
-
-        /* QUESTION FORM */
-        .question-textarea {
-            width: 100%;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 1rem;
-            min-height: 100px;
-            resize: vertical;
-            margin-bottom: 16px;
-        }
-        .question-textarea:focus {
-            outline: none;
-            border-color: var(--purple);
-        }
+        .question-textarea { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text); font-family: inherit; font-size: 1rem; min-height: 100px; resize: vertical; margin-bottom: 16px; }
+        .question-textarea:focus { outline: none; border-color: var(--purple); }
         .question-textarea::placeholder { color: var(--text-dim); }
-
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%);
-            color: white;
-            border: none;
-            padding: 16px 24px;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .submit-btn { width: 100%; background: linear-gradient(135deg, var(--purple) 0%, #7c3aed 100%); color: white; border: none; padding: 16px 24px; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
         .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(139,92,246,0.3); }
         .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-        /* LOGIN/SUBSCRIBE FORMS */
-        .email-input {
-            width: 100%;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
-            color: var(--text);
-            font-size: 1rem;
-            margin-bottom: 16px;
-        }
+        .email-input { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text); font-size: 1rem; margin-bottom: 16px; }
         .email-input:focus { outline: none; border-color: var(--purple); }
         .email-input::placeholder { color: var(--text-dim); }
-
         .form-group { margin-bottom: 20px; }
-        .form-group label {
-            display: block;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--text-muted);
-        }
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-        select, input[type="text"], input[type="number"] {
-            width: 100%;
-            background: var(--bg-input);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 12px;
-            color: var(--text);
-            font-family: inherit;
-            font-size: 0.95rem;
-        }
+        .form-group label { display: block; font-weight: 500; margin-bottom: 8px; color: var(--text-muted); }
+        .form-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        select, input[type="text"], input[type="number"] { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--text); font-family: inherit; font-size: 0.95rem; }
         select:focus, input:focus { outline: none; border-color: var(--purple); }
 
-        /* QUOTE CARD */
-        .quote-card {
-            position: relative;
-            text-align: center;
-            padding: 32px 24px;
-        }
-        .quote-card::before {
-            content: '"';
-            position: absolute;
-            top: 10px;
-            left: 20px;
-            font-family: Georgia, serif;
-            font-size: 5rem;
-            color: var(--purple);
-            opacity: 0.15;
-            line-height: 1;
-        }
-        .quote-text {
-            font-family: 'Caveat', cursive;
-            font-size: 1.8rem;
-            color: var(--text);
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-        .quote-date {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-        }
-
-        /* TRAFFIC LIGHT */
-        .traffic-row {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            flex-wrap: wrap;
-        }
-        .traffic-lights {
-            display: flex;
-            gap: 6px;
-        }
-        .traffic-light {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            opacity: 0.2;
-            transition: all 0.3s;
-        }
+        .quote-card { position: relative; text-align: center; padding: 32px 24px; }
+        .quote-card::before { content: '\201C'; position: absolute; top: 10px; left: 20px; font-family: Georgia, serif; font-size: 5rem; color: var(--purple); opacity: 0.15; line-height: 1; }
+        .quote-text { font-family: 'Caveat', cursive; font-size: 1.8rem; color: var(--text); margin-bottom: 12px; line-height: 1.4; }
+        .quote-date { color: var(--text-dim); font-size: 0.85rem; }
+        .traffic-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+        .traffic-lights { display: flex; gap: 6px; }
+        .traffic-light { width: 28px; height: 28px; border-radius: 50%; opacity: 0.2; transition: all 0.3s; }
         .traffic-light.red { background: var(--red); }
         .traffic-light.yellow { background: var(--gold); }
         .traffic-light.green { background: var(--green); }
-        .traffic-light.active {
-            opacity: 1;
-            box-shadow: 0 0 20px currentColor;
-        }
+        .traffic-light.active { opacity: 1; box-shadow: 0 0 20px currentColor; }
         .traffic-light.red.active { box-shadow: 0 0 20px var(--red); }
         .traffic-light.yellow.active { box-shadow: 0 0 20px var(--gold); }
         .traffic-light.green.active { box-shadow: 0 0 20px var(--green); }
-        .traffic-info {
-            text-align: left;
-        }
-        .traffic-label {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-        .traffic-pct {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-        }
-        .traffic-disclaimer {
-            width: 100%;
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            margin-top: 12px;
-            font-style: italic;
-        }
+        .traffic-info { text-align: left; }
+        .traffic-label { font-weight: 600; font-size: 0.95rem; }
+        .traffic-pct { color: var(--text-dim); font-size: 0.85rem; }
+        .traffic-disclaimer { width: 100%; text-align: center; font-size: 0.75rem; color: var(--text-dim); margin-top: 12px; font-style: italic; }
 
-        /* INTERPRETATION */
-        .interpretation-card {
-            background: linear-gradient(135deg, var(--bg-card) 0%, #1a1a2e 100%);
-            border-color: var(--purple);
-        }
-        .interpretation-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-        }
-        .interpretation-avatar {
-            font-size: 2rem;
-        }
-        .interpretation-name {
-            font-weight: 600;
-            color: var(--purple);
-        }
-        .interpretation-text {
-            line-height: 1.8;
-            color: var(--text-muted);
-        }
+        .interpretation-card { background: linear-gradient(135deg, var(--bg-card) 0%, #1a1a2e 100%); border-color: var(--purple); }
+        .interpretation-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+        .interpretation-avatar { font-size: 2rem; }
+        .interpretation-name { font-weight: 600; color: var(--purple); }
+        .interpretation-text { line-height: 1.8; color: var(--text-muted); }
 
-        /* LOADING */
-        .loading {
-            text-align: center;
-            padding: 60px 20px;
-        }
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--border);
-            border-top-color: var(--purple);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
+        .loading { text-align: center; padding: 60px 20px; }
+        .loading-spinner { width: 50px; height: 50px; border: 3px solid var(--border); border-top-color: var(--purple); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
         @keyframes spin { to { transform: rotate(360deg); } }
         .loading-text { color: var(--text-muted); }
 
-        /* FOOTER LINKS */
-        .footer-links {
-            margin-top: 24px;
-            padding-top: 24px;
-            border-top: 1px solid var(--border);
-            text-align: center;
-        }
-        .footer-links a {
-            color: var(--text-dim);
-            text-decoration: none;
-            margin: 0 12px;
-            font-size: 0.9rem;
-        }
+        .footer-links { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); text-align: center; }
+        .footer-links a { color: var(--text-dim); text-decoration: none; margin: 0 12px; font-size: 0.9rem; }
         .footer-links a:hover { color: var(--purple); }
+        .site-footer { text-align: center; padding: 40px 24px; color: var(--text-dim); font-size: 0.85rem; border-top: 1px solid var(--border); margin-top: 40px; }
 
-        /* SITE FOOTER */
-        .site-footer {
-            text-align: center;
-            padding: 40px 24px;
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            border-top: 1px solid var(--border);
-            margin-top: 40px;
-        }
-
-        /* WELCOME CARD SPECIAL */
-        .welcome-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .welcome-subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-        }
-        .subscribe-email {
-            text-align: center;
-            font-weight: 600;
-            color: var(--purple);
-            margin-bottom: 24px;
-        }
-        .change-email {
-            display: block;
-            text-align: center;
-            margin-top: 16px;
-            color: var(--text-dim);
-            font-size: 0.9rem;
-        }
+        .welcome-title { font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 8px; }
+        .welcome-subtitle { text-align: center; color: var(--text-muted); margin-bottom: 24px; }
+        .subscribe-email { text-align: center; font-weight: 600; color: var(--purple); margin-bottom: 24px; }
+        .change-email { display: block; text-align: center; margin-top: 16px; color: var(--text-dim); font-size: 0.9rem; }
         .change-email:hover { color: var(--purple); }
 
-        /* MOBILE */
         @media (max-width: 900px) {
-            .main-wrapper {
-                grid-template-columns: 1fr;
-                padding: 20px 16px;
-                gap: 24px;
-            }
-            .sidebar {
-                position: static;
-                max-width: 400px;
-                margin: 0 auto;
-            }
+            .main-wrapper { grid-template-columns: 1fr; padding: 20px 16px; gap: 24px; }
+            .sidebar { position: static; max-width: 400px; margin: 0 auto; }
             .header-inner { flex-direction: column; gap: 12px; }
             .form-row { grid-template-columns: 1fr; }
+            .weather-meters { grid-template-columns: 1fr; }
+            .weather-type-name { font-size: 1.3rem; }
         }
     </style>
 </head>
 <body>
     <header class="header">
         <div class="header-inner">
-            <a href="index.html" class="logo">Bozo on the Bus<span>™</span></a>
+            <a href="index.html" class="logo">Bozo on the Bus<span>&#8482;</span></a>
             <nav class="nav-pills">
                 <a href="index.html" class="nav-pill">Home</a>
                 <a href="ask.html" class="nav-pill">The Oracle</a>
-                <a href="bus.html" class="nav-pill active">The DashBoard™</a>
+                <a href="bus.html" class="nav-pill active">The DashBoard&#8482;</a>
                 <a href="docs/BOZO_USERS_MANUAL_v3.pdf?v=2" target="_blank" class="nav-pill">Help</a>
             </nav>
         </div>
@@ -727,29 +248,21 @@
                 <img src="images/bozo-bus.png" alt="Chuck & Suzanne - The Bus Driver" onerror="this.style.display='none'">
                 <img src="images/wavy-gravy-lester-chambers.jpg" alt="Wavy Gravy & Lester Chambers" onerror="this.style.display='none'">
                 <p class="photo-quote">"We're all bozos on the bus, so might as well sit back and enjoy the ride."</p>
-                <p class="photo-attribution">— Wavy Gravy</p>
+                <p class="photo-attribution">&#8212; Wavy Gravy</p>
                 <p class="photo-caption">Wavy Gravy & Lester Chambers, 40th Anniversary Summer of Love.<br>Golden Gate Park, September 2, 2007.<br>Photo by Charles Paul Jones.</p>
-                <a class="video-link" id="open-video-btn">🎬 What IS This Bus About?</a>
+                <a class="video-link" id="open-video-btn">&#127916; What IS This Bus About?</a>
             </div>
         </aside>
 
         <main class="main-content">
             <div id="bus-content">
-                <div class="card">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <p class="loading-text">Tuning your frequency...</p>
-                    </div>
-                </div>
+                <div class="card"><div class="loading"><div class="loading-spinner"></div><p class="loading-text">Reading today's conditions...</p></div></div>
             </div>
         </main>
     </div>
 
-    <footer class="site-footer">
-        <strong>ThisOldHippie.com</strong><br>© 2026 Charles Paul Jones
-    </footer>
+    <footer class="site-footer"><strong>ThisOldHippie.com</strong><br>&#169; 2026 Charles Paul Jones</footer>
 
-    <!-- Video Modal -->
     <div class="video-modal" id="video-modal">
         <div class="video-modal-content">
             <button class="video-modal-close" id="close-video-btn">&times;</button>
@@ -762,554 +275,217 @@
         let userNatal = {h5: 10, h7: 10, h10: 10};
 
         async function getReading(question, email) {
-            const res = await fetch(`${API_BASE}/api/reading`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ question, email })
-            });
+            const res = await fetch(API_BASE + '/api/reading', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ question, email }) });
             if (!res.ok) throw new Error('Failed');
             return res.json();
         }
-
         async function getUserStatus(email) {
-            const res = await fetch(`${API_BASE}/api/user_status/${encodeURIComponent(email)}`);
-            if (!res.ok) {
-                if (res.status === 404) return { is_active: false };
-                throw new Error('Failed');
-            }
+            const res = await fetch(API_BASE + '/api/user_status/' + encodeURIComponent(email));
+            if (!res.ok) { if (res.status === 404) return { is_active: false }; throw new Error('Failed'); }
             return res.json();
         }
-
-        async function updateUser(data) {
-            await fetch(`${API_BASE}/api/user`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data)
-            });
-        }
-
-        async function createPortal(email) {
-            const res = await fetch(`${API_BASE}/api/portal`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email })
-            });
-            return res.json();
-        }
-
-        async function createCheckout(email) {
-            const res = await fetch(`${API_BASE}/api/checkout`, {
-                method: 'POST', headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ email })
-            });
-            if (!res.ok) throw new Error('Failed to create checkout');
-            return res.json();
-        }
+        async function updateUser(data) { await fetch(API_BASE + '/api/user', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(data) }); }
+        async function createPortal(email) { const res = await fetch(API_BASE + '/api/portal', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ email }) }); return res.json(); }
+        async function createCheckout(email) { const res = await fetch(API_BASE + '/api/checkout', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ email }) }); if (!res.ok) throw new Error('Failed'); return res.json(); }
 
         async function initBusPage() {
             const container = document.getElementById('bus-content');
             const email = localStorage.getItem('bozo_email');
             if (!email) { showLoginForm(container); return; }
-
             try {
                 const status = await getUserStatus(email);
-                if (!status.is_active) {
-                    showSubscribePrompt(container, email);
-                    return;
-                }
-                if (!status.has_birth_data) {
-                    showBirthDataForm(container, email);
-                } else {
-                    showSubscriberDashboard(container, email, status);
-                }
-            } catch (e) {
-                showSubscribePrompt(container, email);
-            }
+                if (!status.is_active) { showSubscribePrompt(container, email); return; }
+                if (!status.has_birth_data) { showBirthDataForm(container, email); }
+                else { showSubscriberDashboard(container, email, status); }
+            } catch (e) { showSubscribePrompt(container, email); }
         }
 
         function showLoginForm(container) {
-            container.innerHTML = `
-                <div class="card card-highlight" style="max-width: 400px; margin: 0 auto;">
-                    <h2 class="welcome-title">Climb Aboard! ✌️</h2>
-                    <p class="welcome-subtitle">Enter your email to get started</p>
-                    <form id="login-form">
-                        <input type="email" class="email-input" placeholder="your@email.com" required>
-                        <button type="submit" class="submit-btn">Get On The Bus</button>
-                    </form>
-                </div>`;
-            document.getElementById('login-form').addEventListener('submit', (e) => {
-                e.preventDefault();
-                const email = e.target.querySelector('input').value.trim().toLowerCase();
-                if (email) { localStorage.setItem('bozo_email', email); initBusPage(); }
-            });
+            container.innerHTML = '<div class="card card-highlight" style="max-width:400px;margin:0 auto;"><h2 class="welcome-title">Climb Aboard! &#9996;&#65039;</h2><p class="welcome-subtitle">Enter your email to get started</p><form id="login-form"><input type="email" class="email-input" placeholder="your@email.com" required><button type="submit" class="submit-btn">Get On The Bus</button></form></div>';
+            document.getElementById('login-form').addEventListener('submit', function(e) { e.preventDefault(); var em = e.target.querySelector('input').value.trim().toLowerCase(); if (em) { localStorage.setItem('bozo_email', em); initBusPage(); } });
         }
 
         function showSubscribePrompt(container, email) {
-            container.innerHTML = `
-                <div class="card card-highlight" style="max-width: 450px; margin: 0 auto; text-align: center;">
-                    <h2 class="welcome-title">🚌 Get On The Bus!</h2>
-                    <p class="welcome-subtitle">One Alexander Hamilton per month.<br>Personalized readings tuned to YOUR cosmic frequency.<br><span style="font-size: 0.9rem; color: var(--text-dim);">No contract. Cancel anytime.</span></p>
-                    <p class="subscribe-email">${email}</p>
-                    <button id="checkout-btn" class="submit-btn">Subscribe — $10/month</button>
-                    <a href="#" id="change-email" class="change-email">Use a different email</a>
-                </div>`;
-
-            document.getElementById('checkout-btn').addEventListener('click', async () => {
-                const btn = document.getElementById('checkout-btn');
-                btn.textContent = 'Redirecting to Stripe...';
-                btn.disabled = true;
-                try {
-                    const { checkout_url } = await createCheckout(email);
-                    window.location.href = checkout_url;
-                } catch (err) {
-                    alert('Could not connect to payment. Please try again.');
-                    btn.textContent = 'Subscribe — $10/month';
-                    btn.disabled = false;
-                }
+            container.innerHTML = '<div class="card card-highlight" style="max-width:450px;margin:0 auto;text-align:center;"><h2 class="welcome-title">&#128652; Get On The Bus!</h2><p class="welcome-subtitle">One Alexander Hamilton per month.<br>Personalized readings tuned to YOUR cosmic frequency.<br><span style="font-size:0.9rem;color:var(--text-dim);">No contract. Cancel anytime.</span></p><p class="subscribe-email">' + email + '</p><button id="checkout-btn" class="submit-btn">Subscribe - $10/month</button><a href="#" id="change-email" class="change-email">Use a different email</a></div>';
+            document.getElementById('checkout-btn').addEventListener('click', async function() {
+                var btn = document.getElementById('checkout-btn'); btn.textContent = 'Redirecting to Stripe...'; btn.disabled = true;
+                try { var r = await createCheckout(email); window.location.href = r.checkout_url; } catch(err) { alert('Could not connect to payment. Please try again.'); btn.textContent = 'Subscribe - $10/month'; btn.disabled = false; }
             });
-
-            document.getElementById('change-email').addEventListener('click', (e) => {
-                e.preventDefault();
-                localStorage.removeItem('bozo_email');
-                showLoginForm(container);
-            });
+            document.getElementById('change-email').addEventListener('click', function(e) { e.preventDefault(); localStorage.removeItem('bozo_email'); showLoginForm(container); });
         }
 
         function showBirthDataForm(container, email) {
-            const range = (start, end) => Array.from({length: end-start+1}, (_, i) => start+i);
-
-            container.innerHTML = `
-                <div class="card card-highlight" style="max-width: 500px; margin: 0 auto;">
-                    <h2 class="welcome-title">Set Your Frequency 🌟</h2>
-                    <p class="welcome-subtitle">We need your arrival time to tune the engine.</p>
-                    <form id="birth-form">
-                        <div class="form-group">
-                            <label>What should we call you?</label>
-                            <input type="text" name="name" placeholder="Name" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Date of Birth</label>
-                            <div class="form-row" style="grid-template-columns: 2fr 1fr 1fr;">
-                                <select name="birth_month" required>
-                                    <option value="" disabled selected>Month</option>
-                                    <option value="1">January</option><option value="2">February</option><option value="3">March</option>
-                                    <option value="4">April</option><option value="5">May</option><option value="6">June</option>
-                                    <option value="7">July</option><option value="8">August</option><option value="9">September</option>
-                                    <option value="10">October</option><option value="11">November</option><option value="12">December</option>
-                                </select>
-                                <input type="number" name="birth_day" placeholder="Day" min="1" max="31" required>
-                                <input type="number" name="birth_year" placeholder="Year" min="1900" max="2025" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Time (Local)</label>
-                            <div class="form-row">
-                                <select name="birth_hour" required>
-                                    <option value="" disabled selected>Hr</option>
-                                    ${range(1, 12).map(h => `<option value="${h}">${h}</option>`).join('')}
-                                </select>
-                                <select name="birth_minute" required>
-                                    <option value="0">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>
-                                    ${range(1, 59).map(m => `<option value="${m}">${m < 10 ? '0'+m : m}</option>`).join('')}
-                                </select>
-                                <select name="birth_ampm" required>
-                                    <option value="AM">AM</option><option value="PM">PM</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label>Birthplace</label>
-                            <input type="text" name="birth_location" placeholder="City, State" required>
-                        </div>
-                        <button type="submit" class="submit-btn">Save & Start Engine</button>
-                    </form>
-                </div>`;
-
-            document.getElementById('birth-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const f = e.target;
-                let h = parseInt(f.birth_hour.value);
-                if (f.birth_ampm.value === 'PM' && h !== 12) h += 12;
-                if (f.birth_ampm.value === 'AM' && h === 12) h = 0;
-                const decimalTime = h + (parseInt(f.birth_minute.value)/60);
-
-                try {
-                    await updateUser({
-                        email, name: f.name.value,
-                        birth_year: parseInt(f.birth_year.value), birth_month: parseInt(f.birth_month.value), birth_day: parseInt(f.birth_day.value),
-                        birth_hour: decimalTime, birth_latitude: 40.7, birth_longitude: -74.0
-                    });
-                    initBusPage();
-                } catch(err) { alert('Error saving data'); }
+            var range = function(s,e) { return Array.from({length:e-s+1}, function(_,i){return s+i;}); };
+            container.innerHTML = '<div class="card card-highlight" style="max-width:500px;margin:0 auto;"><h2 class="welcome-title">Set Your Frequency &#127775;</h2><p class="welcome-subtitle">We need your arrival time to tune the engine.</p><form id="birth-form"><div class="form-group"><label>What should we call you?</label><input type="text" name="name" placeholder="Name" required></div><div class="form-group"><label>Date of Birth</label><div class="form-row" style="grid-template-columns:2fr 1fr 1fr;"><select name="birth_month" required><option value="" disabled selected>Month</option><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select><input type="number" name="birth_day" placeholder="Day" min="1" max="31" required><input type="number" name="birth_year" placeholder="Year" min="1900" max="2025" required></div></div><div class="form-group"><label>Time (Local)</label><div class="form-row"><select name="birth_hour" required><option value="" disabled selected>Hr</option>' + range(1,12).map(function(h){return '<option value="'+h+'">'+h+'</option>';}).join('') + '</select><select name="birth_minute" required><option value="0">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option>' + range(1,59).map(function(m){return '<option value="'+m+'">'+(m<10?'0'+m:m)+'</option>';}).join('') + '</select><select name="birth_ampm" required><option value="AM">AM</option><option value="PM">PM</option></select></div></div><div class="form-group"><label>Birthplace</label><input type="text" name="birth_location" placeholder="City, State" required></div><button type="submit" class="submit-btn">Save & Start Engine</button></form></div>';
+            document.getElementById('birth-form').addEventListener('submit', async function(e) {
+                e.preventDefault(); var f = e.target; var h = parseInt(f.birth_hour.value);
+                if (f.birth_ampm.value === 'PM' && h !== 12) h += 12; if (f.birth_ampm.value === 'AM' && h === 12) h = 0;
+                var dt = h + (parseInt(f.birth_minute.value)/60);
+                try { await updateUser({ email: email, name: f.name.value, birth_year: parseInt(f.birth_year.value), birth_month: parseInt(f.birth_month.value), birth_day: parseInt(f.birth_day.value), birth_hour: dt, birth_latitude: 40.7, birth_longitude: -74.0 }); initBusPage(); } catch(err) { alert('Error saving data'); }
             });
         }
 
-        async function showSubscriberDashboard(container, email, status) {
-            const archetype = status.archetype || 'NAVIGATOR';
-            userNatal = {
-                h5: status.natal_h5 || 10,
-                h7: status.natal_h7 || 10,
-                h10: status.natal_h10 || 10
-            };
+        /* ============================================
+           v4.0: DAY TYPE MAP - zero jargon
+           ============================================ */
+        var DAY_TYPES = {
+            'POWERHOUSE': { icon: '&#9889;', color: '#ef4444', css: 'type-powerhouse', name: 'Powerhouse Day', meaning: 'Big energy converging. High stakes, high potential. Aim it at something that matters.' },
+            'CHARGED': { icon: '&#9889;', color: '#f97316', css: 'type-charged', name: 'Charged Day', meaning: 'Strong forces in play. Bold action is favored. Do not waste this on small tasks.' },
+            'INTENSE': { icon: '&#128293;', color: '#ec4899', css: 'type-intense', name: 'High Energy Day', meaning: 'A lot is happening at once. Stay focused. This energy rewards decisiveness.' },
+            'RECEPTIVE': { icon: '&#128065;&#65039;', color: '#8b5cf6', css: 'type-receptive', name: 'Insight Day', meaning: 'Perception is heightened. Your instincts are sharper than your logic today.' },
+            'CREATIVE': { icon: '&#127912;', color: '#f97316', css: 'type-creative', name: 'Creative Day', meaning: 'Ideas come easily. Capture them now, refine later.' },
+            'BUILDER': { icon: '&#128296;', color: '#2dd4bf', css: 'type-builder', name: 'Builder Day', meaning: 'Strong conditions for steady work. Finish what you started.' },
+            'FRICTION': { icon: '&#9888;&#65039;', color: '#f59e0b', css: 'type-friction', name: 'Pressure Day', meaning: 'Resistance is productive today. The discomfort is pushing you somewhere useful.' },
+            'FLOWING': { icon: '&#127754;', color: '#3b82f6', css: 'type-flowing', name: 'Smooth Day', meaning: 'Things fall into place more easily. Push through doors that were stuck.' },
+            'ACTIVE': { icon: '&#129517;', color: '#22c55e', css: 'type-active', name: 'Active Day', meaning: 'Solid energy across the board. A good day to move things forward.' },
+            'MIXED': { icon: '&#129517;', color: '#a1a1aa', css: 'type-mixed', name: 'Shifting Day', meaning: 'Energy is changing direction. Stay flexible, follow what pulls you.' },
+            'QUIET': { icon: '&#127769;', color: '#4b5e80', css: 'type-quiet', name: 'Quiet Day', meaning: 'Low signal conditions. Best for maintenance, reflection, and rest.' }
+        };
 
-            let conditionsHtml = '';
-            try {
-                const c = await fetch(`${API_BASE}/api/conditions`).then(r => r.json());
-                conditionsHtml = renderConditions(c, userNatal);
-            } catch(e) {}
-
-            const types = {
-                'CREATOR':   { icon: '🎨', color: 'var(--orange)', title: 'THE CREATOR', quote: 'Born to turn thin air into reality.' },
-                'SEER':      { icon: '👁️', color: 'var(--purple)', title: 'THE SEER', quote: 'Logic is too slow for you.' },
-                'ARCHITECT': { icon: '🔨', color: 'var(--teal)', title: 'THE ARCHITECT', quote: 'You see the structure inside the mess.' },
-                'NAVIGATOR': { icon: '🚌', color: 'var(--gold)', title: 'THE NAVIGATOR', quote: 'You can drive on any road.' }
-            };
-            const myClass = types[archetype] || types['NAVIGATOR'];
-
-            container.innerHTML = `
-                <div class="card license-card" style="border-color: ${myClass.color};">
-                    <div class="license-icon" style="border: 2px solid ${myClass.color};">${myClass.icon}</div>
-                    <div class="license-info">
-                        <h3>Cosmic License</h3>
-                        <div class="license-class" style="color: ${myClass.color};">${myClass.title}</div>
-                        <div class="license-quote">"${myClass.quote}"</div>
-                    </div>
-                </div>
-
-                ${conditionsHtml}
-
-                <div class="card card-highlight">
-                    <h3 class="card-title"><span class="card-title-icon">🔮</span> Ask The DashBoard™</h3>
-                    <form id="reading-form">
-                        <textarea class="question-textarea" id="question" placeholder="What's on your mind today?" rows="4"></textarea>
-                        <button type="submit" class="submit-btn">Get My Reading</button>
-                    </form>
-                    <div id="reading-result"></div>
-                    <div class="footer-links">
-                        <a href="#" id="manage-sub">Manage Subscription</a>
-                        <a href="#" id="logout">Log Out</a>
-                    </div>
-                </div>`;
-
-            document.getElementById('reading-form').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                const q = document.getElementById('question').value.trim();
-                if(!q) return;
-
-                const resDiv = document.getElementById('reading-result');
-                resDiv.innerHTML = `<div class="loading"><div class="loading-spinner"></div><p class="loading-text">Consulting the cosmos...</p></div>`;
-
-                try {
-                    const reading = await getReading(q, email);
-                    resDiv.innerHTML = renderReading(reading);
-                } catch(e) {
-                    resDiv.innerHTML = `<p style="text-align:center; color:var(--red); padding: 20px;">The bus hit a bump. Try again.</p>`;
-                }
-            });
-
-            document.getElementById('manage-sub').addEventListener('click', async (e) => {
-                e.preventDefault();
-                const p = await createPortal(email);
-                window.location.href = p.portal_url;
-            });
-
-            document.getElementById('logout').addEventListener('click', () => {
-                localStorage.removeItem('bozo_email');
-                location.reload();
-            });
+        function getFieldDensity(count) {
+            if (count >= 55) return { label: 'Dense', color: '#ec4899', pct: 95 };
+            if (count >= 45) return { label: 'High', color: '#f97316', pct: 80 };
+            if (count >= 30) return { label: 'Active', color: '#fbbf24', pct: 60 };
+            if (count >= 15) return { label: 'Moderate', color: '#22c55e', pct: 40 };
+            return { label: 'Quiet', color: '#4b5e80', pct: 20 };
         }
 
-        // v3.5.2: Helper - Get heat class based on orb in degrees (tighter = hotter)
-        function getHeatClassOrb(orbDegrees) {
-            if (orbDegrees <= 0.1) return 'heat-99';   // Exact
-            if (orbDegrees <= 0.5) return 'heat-97';   // Very tight
-            if (orbDegrees <= 1.0) return 'heat-95';   // Precision
-            if (orbDegrees <= 2.0) return 'heat-90';   // Tight
-            return 'heat-85';                          // Standard
-        }
+        /* ============================================
+           v4.0: RENDER CONDITIONS (Harmonic Weather)
+           ============================================ */
+        function renderConditions(c, natal) {
+            natal = natal || {h5: 10, h7: 10, h10: 10};
+            var hotAspects = c.hot_aspects || [];
+            var contactCount = hotAspects.length;
+            var dt = DAY_TYPES[c.day_type] || DAY_TYPES['MIXED'];
 
-        // v3.5.2: Helper - Get color for orb display (tighter = hotter)
-        function getHeatColorOrb(orbDegrees) {
-            if (orbDegrees <= 0.1) return 'var(--heat-magenta)';
-            if (orbDegrees <= 0.5) return 'var(--heat-orange)';
-            if (orbDegrees <= 1.0) return 'var(--heat-yellow)';
-            if (orbDegrees <= 2.0) return 'var(--heat-teal)';
-            return 'var(--heat-blue)';
-        }
-
-        // v3.5.2: Render Direct Contacts with traditional orbs and applying/separating
-        function renderDirectContacts(hotAspects) {
-            if (!hotAspects || hotAspects.length === 0) return '';
-            
-            let rows = '';
-            for (const asp of hotAspects) {
-                const orbDisplay = asp.orb_degrees.toFixed(2);
-                const heatClass = getHeatClassOrb(asp.orb_degrees);
-                const heatColor = getHeatColorOrb(asp.orb_degrees);
-                
-                // Build indicators: precision (⚡) and applying/separating (+/-)
-                let indicators = '';
-                if (asp.is_precision) indicators += '⚡';
-                if (asp.is_applying === true) indicators += '+';
-                else if (asp.is_applying === false) indicators += '−';
-                
-                // Channel label like (H5 Creative)
-                const channelLabel = `(H${asp.harmonic} ${asp.channel_name || ''})`.trim();
-                
-                // Bar width: inverse of orb (tighter = fuller) with max orb of 8°
-                const maxOrb = 8.0;
-                const barWidth = Math.max(10, Math.round((1 - asp.orb_degrees / maxOrb) * 100));
-                
-                rows += `
-                    <div class="contact-row">
-                        <div class="contact-header">
-                            <span class="contact-channel">${channelLabel}</span>
-                            <span class="contact-label">${asp.transit} ${asp.aspect_name} ${asp.natal}</span>
-                            <span class="contact-value" style="color: ${heatColor};">${orbDisplay}° ${indicators}</span>
-                        </div>
-                        <div class="contact-bar-track">
-                            <div class="contact-bar-fill ${heatClass}" style="width: ${barWidth}%;"></div>
-                        </div>
-                    </div>`;
-            }
-            
-            return `
-                <div class="card direct-contacts-card">
-                    <div class="direct-contacts-title">
-                        <span class="icon">⚡</span> Direct Contacts Today (${hotAspects.length})
-                    </div>
-                    <div class="direct-contacts-list">
-                        ${rows}
-                    </div>
-                </div>`;
-        }
-
-        // v3.5.0: UPDATED - Now includes Direct Contacts and Dual Day Labels
-        function renderConditions(c, natal = {h5: 10, h7: 10, h10: 10}) {
-            // Check for precision hits (any aspect >= 97%)
-            const hotAspects = c.hot_aspects || [];
-            const hasPrecisionHit = hotAspects.some(a => a.strength >= 0.97);
-            const topHit = hotAspects.length > 0 ? hotAspects[0] : null;
-            
-            // Use day_label and day_advice from API (Transit Activation method)
-            let hook;
-            if (c.day_label && c.day_advice) {
-                hook = { title: c.day_label, text: c.day_advice };
-            } else {
-                // Legacy fallback
-                hook = { title: "Good Morning, Starshine", text: "The signal is steady. Chop wood, carry water." };
-                if (c.h5_gain > 1.04 && c.h10_gain > 1.04) hook = { title: "⚡ Powerhouse Day", text: "High Creativity + Discipline. Stop thinking, start BUILDING." };
-                else if (c.h7_gain > 1.05) hook = { title: "👁️ The Veil is Thin", text: "Insight is peaking. Trust your gut over the spreadsheet." };
-                else if (c.h5_gain > 1.05) hook = { title: "🎨 The Muse is Loud", text: "Big creative energy. Capture ideas now, edit later." };
-                else if (c.h10_gain > 1.05) hook = { title: "🔨 Hammer Time", text: "Obstacles are small today. Grind, finish, and close loops." };
-            }
-
-            // v3.5.0: Build hook card with dual label when precision hits exist
-            let hookHtml;
-            if (hasPrecisionHit && topHit) {
-                const topPct = Math.round(topHit.strength * 100);
-                hookHtml = `
-                    <div class="card hook-card">
-                        <div class="hook-dual-label">
-                            <span class="hook-label-volume">${hook.title}</span>
-                            <span class="hook-label-divider">/</span>
-                            <span class="hook-label-precision">⚡ Precision Active</span>
-                        </div>
-                        <div class="hook-text">${hook.text}</div>
-                    </div>`;
-            } else {
-                hookHtml = `
-                    <div class="card hook-card">
-                        <div class="hook-title">${hook.title}</div>
-                        <div class="hook-text">${hook.text}</div>
-                    </div>`;
-            }
-
-            // v3.5.0: Use Transit Activation percentages directly if available
-            let h5_pct, h7_pct, h10_pct;
-            
+            var h5_pct, h7_pct, h10_pct;
             if (c.h5_activation !== undefined) {
                 h5_pct = Math.round(c.h5_activation);
                 h7_pct = Math.round(c.h7_activation);
                 h10_pct = Math.round(c.h10_activation);
             } else {
-                // Legacy fallback
-                const avgNatal = 10;
-                const sens = {
-                    h5: Math.max(0.5, natal.h5 / avgNatal),
-                    h7: Math.max(0.5, natal.h7 / avgNatal),
-                    h10: Math.max(0.5, natal.h10 / avgNatal)
-                };
-                const getW = (gain, sensitivity) => {
-                    const basePercent = (gain - 0.85) / (1.15 - 0.85) * 100;
-                    const amplified = 50 + (basePercent - 50) * sensitivity;
-                    return Math.max(5, Math.min(100, amplified));
-                };
-                h5_pct = Math.round(getW(c.h5_gain, sens.h5));
-                h7_pct = Math.round(getW(c.h7_gain, sens.h7));
-                h10_pct = Math.round(getW(c.h10_gain, sens.h10));
+                var avgN = 10;
+                var sens = { h5: Math.max(0.5, natal.h5/avgN), h7: Math.max(0.5, natal.h7/avgN), h10: Math.max(0.5, natal.h10/avgN) };
+                var getW = function(g,s) { var b = (g-0.85)/(1.15-0.85)*100; return Math.max(5, Math.min(100, Math.round(50 + (b-50)*s))); };
+                h5_pct = getW(c.h5_gain, sens.h5);
+                h7_pct = getW(c.h7_gain, sens.h7);
+                h10_pct = getW(c.h10_gain, sens.h10);
             }
 
-            // v3.6.0: Transit Intensity (composite across all 8 harmonics)
-            const intensity = c.transit_intensity !== undefined ? Math.round(c.transit_intensity) : null;
-            let intensityColor = 'var(--text-dim)';
-            let intensityGlow = 'none';
-            if (intensity !== null) {
-                if (intensity >= 65) { intensityColor = '#ef4444'; intensityGlow = '0 0 12px rgba(239,68,68,0.4)'; }
-                else if (intensity >= 40) { intensityColor = '#f59e0b'; intensityGlow = '0 0 8px rgba(245,158,11,0.3)'; }
-                else if (intensity >= 15) { intensityColor = '#22c55e'; }
+            var intensity = c.transit_intensity !== undefined ? Math.round(c.transit_intensity) : null;
+            var iColor = '#71717a';
+            if (intensity !== null) { if (intensity >= 65) iColor = '#ef4444'; else if (intensity >= 40) iColor = '#f59e0b'; else if (intensity >= 15) iColor = '#22c55e'; }
+
+            var density = getFieldDensity(contactCount);
+            var today = new Date();
+            var dateStr = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+            var html = '<div class="weather-card ' + dt.css + '">' +
+                '<div class="weather-date">' + dateStr + '</div>' +
+                '<div class="weather-type-row"><span class="weather-type-icon">' + dt.icon + '</span><span class="weather-type-name" style="color:' + dt.color + ';">' + dt.name + '</span></div>' +
+                '<div class="weather-guidance">' + dt.meaning + '</div>' +
+                '<div class="weather-density"><span class="density-label">Field Activity</span><div class="density-bar-track"><div class="density-bar-fill" style="width:' + density.pct + '%;background:' + density.color + ';"></div></div><span class="density-value" style="color:' + density.color + ';">' + density.label + '</span></div>' +
+                '<div class="weather-meters">' +
+                '<div class="w-meter"><div class="w-meter-label">Idea Flow</div><div class="w-meter-value" style="color:var(--orange);">' + h5_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h5_pct + '%;background:var(--orange);"></div></div></div>' +
+                '<div class="w-meter"><div class="w-meter-label">Inner Signal</div><div class="w-meter-value" style="color:var(--purple);">' + h7_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h7_pct + '%;background:var(--purple);"></div></div></div>' +
+                '<div class="w-meter"><div class="w-meter-label">Action Energy</div><div class="w-meter-value" style="color:var(--teal);">' + h10_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h10_pct + '%;background:var(--teal);"></div></div></div>' +
+                '</div></div>';
+
+            html += '<div class="explainer-card"><div class="explainer-text"><strong>The Bus reads the harmonic weather of the solar system.</strong> Like a weather app for creative conditions, it measures the geometry of planetary positions relative to your birth chart. It describes conditions, not predictions. Idea Flow measures creative pattern energy. Inner Signal measures intuitive perception. Action Energy measures drive and execution force.</div></div>';
+
+            if (contactCount > 0 || intensity !== null) {
+                var toggleLabel = 'Show technical details (' + contactCount + ' planetary contacts' + (intensity !== null ? ', ' + intensity + '% composite intensity' : '') + ')';
+                html += '<button class="tech-toggle" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\');"><span class="tech-toggle-arrow">&#9654;</span> ' + toggleLabel + '</button>';
+                html += '<div class="tech-details"><div class="tech-details-inner">';
+
+                if (intensity !== null) {
+                    html += '<div class="intensity-row"><span class="intensity-label">Composite Intensity</span><div class="intensity-track"><div class="intensity-fill" style="width:' + intensity + '%;background:' + iColor + ';"></div></div><span class="intensity-value" style="color:' + iColor + ';">' + intensity + '%</span></div>';
+                }
+
+                html += '<div class="direct-contacts-card" style="margin-bottom:16px;"><div class="direct-contacts-title">Channel Detail</div>' +
+                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Idea Flow (H5 Creative)</span><span class="meter-value" style="color:var(--orange);">' + h5_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h5_pct + '%;background:var(--orange);"></div></div></div>' +
+                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Inner Signal (H7 Intuition)</span><span class="meter-value" style="color:var(--purple);">' + h7_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h7_pct + '%;background:var(--purple);"></div></div></div>' +
+                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Action Energy (H10 Mastery)</span><span class="meter-value" style="color:var(--teal);">' + h10_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h10_pct + '%;background:var(--teal);"></div></div></div></div>';
+
+                if (contactCount > 0) html += renderDirectContacts(hotAspects);
+                html += '</div></div>';
             }
+            return html;
+        }
 
-            // v3.5.0: Render Direct Contacts section (appears BEFORE volume meters)
-            const directContactsHtml = renderDirectContacts(hotAspects);
+        function getHeatClassOrb(o) { if(o<=0.1)return 'heat-99'; if(o<=0.5)return 'heat-97'; if(o<=1)return 'heat-95'; if(o<=2)return 'heat-90'; return 'heat-85'; }
+        function getHeatColorOrb(o) { if(o<=0.1)return 'var(--heat-magenta)'; if(o<=0.5)return 'var(--heat-orange)'; if(o<=1)return 'var(--heat-yellow)'; if(o<=2)return 'var(--heat-teal)'; return 'var(--heat-blue)'; }
 
-            // v3.6.0: Transit Intensity headline meter
-            const intensityHtml = intensity !== null ? `
-                <div class="card" style="margin-bottom: 12px;">
-                    <h3 class="card-title"><span class="card-title-icon">🔥</span> Transit Intensity</h3>
-                    <div class="meter-group">
-                        <div class="meter-header">
-                            <span class="meter-label" style="font-size: 15px; font-weight: 600;">All Channels Combined</span>
-                            <span class="meter-value" style="color: ${intensityColor}; font-size: 18px; font-weight: 700; text-shadow: ${intensityGlow};">${intensity}%</span>
-                        </div>
-                        <div class="meter-track" style="height: 10px;">
-                            <div class="meter-baseline"></div>
-                            <div class="meter-fill" style="width: ${intensity}%; background: ${intensityColor}; height: 10px; box-shadow: ${intensityGlow};"></div>
-                        </div>
-                    </div>
-                </div>` : '';
-
-            return `
-                ${hookHtml}
-
-                ${directContactsHtml}
-
-                ${intensityHtml}
-
-                <div class="card">
-                    <h3 class="card-title"><span class="card-title-icon">📡</span> Channel Detail</h3>
-
-                    <div class="meter-group">
-                        <div class="meter-header">
-                            <span class="meter-label">🎨 Creative Flow (H5)</span>
-                            <span class="meter-value" style="color: var(--orange);">${h5_pct}%</span>
-                        </div>
-                        <div class="meter-track">
-                            <div class="meter-baseline"></div>
-                            <div class="meter-fill" style="width: ${h5_pct}%; background: var(--orange);"></div>
-                        </div>
-                    </div>
-
-                    <div class="meter-group">
-                        <div class="meter-header">
-                            <span class="meter-label">👁️ Intuition (H7)</span>
-                            <span class="meter-value" style="color: var(--purple);">${h7_pct}%</span>
-                        </div>
-                        <div class="meter-track">
-                            <div class="meter-baseline"></div>
-                            <div class="meter-fill" style="width: ${h7_pct}%; background: var(--purple);"></div>
-                        </div>
-                    </div>
-
-                    <div class="meter-group">
-                        <div class="meter-header">
-                            <span class="meter-label">🔨 Power / Drive (H10)</span>
-                            <span class="meter-value" style="color: var(--teal);">${h10_pct}%</span>
-                        </div>
-                        <div class="meter-track">
-                            <div class="meter-baseline"></div>
-                            <div class="meter-fill" style="width: ${h10_pct}%; background: var(--teal);"></div>
-                        </div>
-                    </div>
-                </div>`;
+        function renderDirectContacts(hotAspects) {
+            if (!hotAspects || hotAspects.length === 0) return '';
+            var rows = '';
+            for (var i = 0; i < hotAspects.length; i++) {
+                var asp = hotAspects[i];
+                var orbD = asp.orb_degrees.toFixed(2);
+                var hc = getHeatClassOrb(asp.orb_degrees);
+                var hCol = getHeatColorOrb(asp.orb_degrees);
+                var ind = '';
+                if (asp.is_precision) ind += '&#9889;';
+                if (asp.is_applying === true) ind += '+';
+                else if (asp.is_applying === false) ind += '-';
+                var ch = '(H' + asp.harmonic + ' ' + (asp.channel_name || '') + ')';
+                var bw = Math.max(10, Math.round((1 - asp.orb_degrees / 8.0) * 100));
+                rows += '<div class="contact-row"><div class="contact-header"><span class="contact-channel">' + ch + '</span><span class="contact-label">' + asp.transit + ' ' + asp.aspect_name + ' ' + asp.natal + '</span><span class="contact-value" style="color:' + hCol + ';">' + orbD + '&#176; ' + ind + '</span></div><div class="contact-bar-track"><div class="contact-bar-fill ' + hc + '" style="width:' + bw + '%;"></div></div></div>';
+            }
+            return '<div class="direct-contacts-card"><div class="direct-contacts-title"><span>&#9889;</span> Planetary Contacts (' + hotAspects.length + ')</div><div class="direct-contacts-list">' + rows + '</div></div>';
         }
 
         function renderReading(r) {
-            const sim = r.similarity * 100;
-            const pct = Math.round(sim);
-
-            let redActive = '', yellowActive = '', greenActive = '', label = '';
-            if (sim >= 75) {
-                greenActive = 'active';
-                label = 'Signals broadly align';
-            } else if (sim >= 50) {
-                yellowActive = 'active';
-                label = 'Mixed signals';
-            } else {
-                redActive = 'active';
-                label = 'Signals conflict';
-            }
-
-            let html = `
-                <div class="card quote-card" style="margin-top: 24px;">
-                    <div class="quote-text">"${r.quote}"</div>
-                    <div class="quote-date">Written ${r.quote_date}</div>
-                    <div class="traffic-row">
-                        <div class="traffic-lights">
-                            <div class="traffic-light red ${redActive}"></div>
-                            <div class="traffic-light yellow ${yellowActive}"></div>
-                            <div class="traffic-light green ${greenActive}"></div>
-                        </div>
-                        <div class="traffic-info">
-                            <div class="traffic-label">${label}</div>
-                            <div class="traffic-pct">${pct}% resonance</div>
-                        </div>
-                        <div class="traffic-disclaimer">Signal alignment reflects resonance between question and quote, not accuracy or advice.</div>
-                    </div>
-                </div>`;
-
-            if (r.interpretation) {
-                html += `
-                    <div class="card interpretation-card">
-                        <div class="interpretation-header">
-                            <span class="interpretation-avatar">📊</span>
-                            <span class="interpretation-name">The DashBoard™</span>
-                        </div>
-                        <div class="interpretation-text">${r.interpretation.replace(/\n/g, '<br>')}</div>
-                    </div>`;
-            }
-
+            var sim = r.similarity * 100; var pct = Math.round(sim);
+            var rA='',yA='',gA='',lab='';
+            if(sim>=75){gA='active';lab='Signals broadly align';}else if(sim>=50){yA='active';lab='Mixed signals';}else{rA='active';lab='Signals conflict';}
+            var html = '<div class="card quote-card" style="margin-top:24px;"><div class="quote-text">"'+r.quote+'"</div><div class="quote-date">Written '+r.quote_date+'</div><div class="traffic-row"><div class="traffic-lights"><div class="traffic-light red '+rA+'"></div><div class="traffic-light yellow '+yA+'"></div><div class="traffic-light green '+gA+'"></div></div><div class="traffic-info"><div class="traffic-label">'+lab+'</div><div class="traffic-pct">'+pct+'% resonance</div></div><div class="traffic-disclaimer">Signal alignment reflects resonance between question and quote, not accuracy or advice.</div></div></div>';
+            if (r.interpretation) { html += '<div class="card interpretation-card"><div class="interpretation-header"><span class="interpretation-avatar">&#128202;</span><span class="interpretation-name">The DashBoard&#8482;</span></div><div class="interpretation-text">' + r.interpretation.replace(/\n/g,'<br>') + '</div></div>'; }
             if (r.conditions) html += renderConditions(r.conditions, userNatal);
             return html;
         }
 
-        // VIDEO POPUP HANDLING
+        async function showSubscriberDashboard(container, email, status) {
+            var archetype = status.archetype || 'NAVIGATOR';
+            userNatal = { h5: status.natal_h5 || 10, h7: status.natal_h7 || 10, h10: status.natal_h10 || 10 };
+            var conditionsHtml = '';
+            try { var c = await fetch(API_BASE + '/api/conditions').then(function(r){return r.json();}); conditionsHtml = renderConditions(c, userNatal); } catch(e) {}
+
+            var types = {
+                'CREATOR':   { icon: '&#127912;', color: 'var(--orange)', title: 'THE CREATOR', quote: 'Born to turn thin air into reality.' },
+                'SEER':      { icon: '&#128065;&#65039;', color: 'var(--purple)', title: 'THE SEER', quote: 'Logic is too slow for you.' },
+                'ARCHITECT': { icon: '&#128296;', color: 'var(--teal)', title: 'THE ARCHITECT', quote: 'You see the structure inside the mess.' },
+                'NAVIGATOR': { icon: '&#128652;', color: 'var(--gold)', title: 'THE NAVIGATOR', quote: 'You can drive on any road.' }
+            };
+            var mc = types[archetype] || types['NAVIGATOR'];
+
+            container.innerHTML = '<div class="card license-card" style="border-color:'+mc.color+';"><div class="license-icon" style="border:2px solid '+mc.color+';">'+mc.icon+'</div><div class="license-info"><h3>Cosmic License</h3><div class="license-class" style="color:'+mc.color+';">'+mc.title+'</div><div class="license-quote">"'+mc.quote+'"</div></div></div>' +
+                conditionsHtml +
+                '<div class="card card-highlight"><h3 class="card-title"><span class="card-title-icon">&#128302;</span> Ask The DashBoard&#8482;</h3><form id="reading-form"><textarea class="question-textarea" id="question" placeholder="What\'s on your mind today?" rows="4"></textarea><button type="submit" class="submit-btn">Get My Reading</button></form><div id="reading-result"></div><div class="footer-links"><a href="#" id="manage-sub">Manage Subscription</a><a href="#" id="logout">Log Out</a></div></div>';
+
+            document.getElementById('reading-form').addEventListener('submit', async function(e) {
+                e.preventDefault(); var q = document.getElementById('question').value.trim(); if(!q) return;
+                var rd = document.getElementById('reading-result');
+                rd.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p class="loading-text">Consulting the cosmos...</p></div>';
+                try { var reading = await getReading(q, email); rd.innerHTML = renderReading(reading); } catch(e) { rd.innerHTML = '<p style="text-align:center;color:var(--red);padding:20px;">The bus hit a bump. Try again.</p>'; }
+            });
+            document.getElementById('manage-sub').addEventListener('click', async function(e) { e.preventDefault(); var p = await createPortal(email); window.location.href = p.portal_url; });
+            document.getElementById('logout').addEventListener('click', function() { localStorage.removeItem('bozo_email'); location.reload(); });
+        }
+
         function setupVideoPopup() {
-            const openBtn = document.getElementById('open-video-btn');
-            const modal = document.getElementById('video-modal');
-            const closeBtn = document.getElementById('close-video-btn');
-            const iframe = document.getElementById('video-iframe');
-            const videoUrl = 'https://player.vimeo.com/video/1155316382?autoplay=1';
-
-            if (openBtn && modal && closeBtn && iframe) {
-                openBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    iframe.src = videoUrl;
-                    modal.classList.add('active');
-                });
-
-                closeBtn.addEventListener('click', () => {
-                    modal.classList.remove('active');
-                    iframe.src = '';
-                });
-
-                modal.addEventListener('click', (e) => {
-                    if (e.target === modal) {
-                        modal.classList.remove('active');
-                        iframe.src = '';
-                    }
-                });
-
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape' && modal.classList.contains('active')) {
-                        modal.classList.remove('active');
-                        iframe.src = '';
-                    }
-                });
+            var ob = document.getElementById('open-video-btn'), md = document.getElementById('video-modal'), cb = document.getElementById('close-video-btn'), ifr = document.getElementById('video-iframe');
+            var vu = 'https://player.vimeo.com/video/1155316382?autoplay=1';
+            if (ob && md && cb && ifr) {
+                ob.addEventListener('click', function(e) { e.preventDefault(); ifr.src = vu; md.classList.add('active'); });
+                cb.addEventListener('click', function() { md.classList.remove('active'); ifr.src = ''; });
+                md.addEventListener('click', function(e) { if (e.target === md) { md.classList.remove('active'); ifr.src = ''; } });
+                document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && md.classList.contains('active')) { md.classList.remove('active'); ifr.src = ''; } });
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            initBusPage();
-            setupVideoPopup();
-        });
+        document.addEventListener('DOMContentLoaded', function() { initBusPage(); setupVideoPopup(); });
     </script>
 </body>
 </html>
