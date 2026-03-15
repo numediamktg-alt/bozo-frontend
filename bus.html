@@ -387,12 +387,12 @@
                 '<div class="weather-guidance">' + dt.meaning + '</div>' +
                 '<div class="weather-density"><span class="density-label">Field Activity</span><div class="density-bar-track"><div class="density-bar-fill" style="width:' + density.pct + '%;background:' + density.color + ';"></div></div><span class="density-value" style="color:' + density.color + ';">' + density.label + '</span></div>' +
                 '<div class="weather-meters">' +
-                '<div class="w-meter"><div class="w-meter-label">Idea Flow</div><div class="w-meter-value" style="color:var(--orange);">' + h5_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h5_pct + '%;background:var(--orange);"></div></div></div>' +
-                '<div class="w-meter"><div class="w-meter-label">Inner Signal</div><div class="w-meter-value" style="color:var(--purple);">' + h7_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h7_pct + '%;background:var(--purple);"></div></div></div>' +
-                '<div class="w-meter"><div class="w-meter-label">Action Energy</div><div class="w-meter-value" style="color:var(--teal);">' + h10_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h10_pct + '%;background:var(--teal);"></div></div></div>' +
+                '<div class="w-meter"><div class="w-meter-label">Ideas</div><div class="w-meter-value" style="color:var(--orange);">' + h5_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h5_pct + '%;background:var(--orange);"></div></div></div>' +
+                '<div class="w-meter"><div class="w-meter-label">Clarity</div><div class="w-meter-value" style="color:var(--purple);">' + h7_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h7_pct + '%;background:var(--purple);"></div></div></div>' +
+                '<div class="w-meter"><div class="w-meter-label">Action</div><div class="w-meter-value" style="color:var(--teal);">' + h10_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h10_pct + '%;background:var(--teal);"></div></div></div>' +
                 '</div></div>';
 
-            html += '<div class="explainer-card"><div class="explainer-text"><strong>The Bus reads the harmonic weather of the solar system.</strong> Like a weather app for creative conditions, it measures the geometry of planetary positions relative to your birth chart. It describes conditions, not predictions. Idea Flow measures creative pattern energy. Inner Signal measures intuitive perception. Action Energy measures drive and execution force.</div></div>';
+            html += '<div class="explainer-card"><div class="explainer-text"><strong>The Bus reads the harmonic weather of the solar system.</strong> It measures planetary geometry relative to your birth chart and translates it into three channels that map to how your brain actually works. <strong>Ideas</strong> tracks your imagination and creative association. <strong>Clarity</strong> tracks your ability to sense what matters. <strong>Action</strong> tracks your drive to execute and build. These correspond to the three cognitive networks neuroscience identifies in creative thinking. The Bus describes conditions, not predictions.</div></div>';
 
             if (contactCount > 0 || intensity !== null) {
                 var toggleLabel = 'Show technical details (' + contactCount + ' planetary contacts' + (intensity !== null ? ', ' + intensity + '% composite intensity' : '') + ')';
@@ -404,9 +404,9 @@
                 }
 
                 html += '<div class="direct-contacts-card" style="margin-bottom:16px;"><div class="direct-contacts-title">Channel Detail</div>' +
-                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Idea Flow (H5 Creative)</span><span class="meter-value" style="color:var(--orange);">' + h5_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h5_pct + '%;background:var(--orange);"></div></div></div>' +
-                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Inner Signal (H7 Intuition)</span><span class="meter-value" style="color:var(--purple);">' + h7_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h7_pct + '%;background:var(--purple);"></div></div></div>' +
-                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Action Energy (H10 Mastery)</span><span class="meter-value" style="color:var(--teal);">' + h10_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h10_pct + '%;background:var(--teal);"></div></div></div></div>';
+                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Ideas (H5 Creative)</span><span class="meter-value" style="color:var(--orange);">' + h5_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h5_pct + '%;background:var(--orange);"></div></div></div>' +
+                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Clarity (H7 Intuition)</span><span class="meter-value" style="color:var(--purple);">' + h7_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h7_pct + '%;background:var(--purple);"></div></div></div>' +
+                    '<div class="meter-group"><div class="meter-header"><span class="meter-label">Action (H10 Mastery)</span><span class="meter-value" style="color:var(--teal);">' + h10_pct + '%</span></div><div class="meter-track"><div class="meter-fill" style="width:' + h10_pct + '%;background:var(--teal);"></div></div></div></div>';
 
                 if (contactCount > 0) html += renderDirectContacts(hotAspects);
                 html += '</div></div>';
@@ -453,14 +453,14 @@
             try { var c = await fetch(API_BASE + '/api/conditions').then(function(r){return r.json();}); conditionsHtml = renderConditions(c, userNatal); } catch(e) {}
 
             var types = {
-                'CREATOR':   { icon: '&#127912;', color: 'var(--orange)', title: 'THE CREATOR', quote: 'Born to turn thin air into reality.' },
-                'SEER':      { icon: '&#128065;&#65039;', color: 'var(--purple)', title: 'THE SEER', quote: 'Logic is too slow for you.' },
-                'ARCHITECT': { icon: '&#128296;', color: 'var(--teal)', title: 'THE ARCHITECT', quote: 'You see the structure inside the mess.' },
-                'NAVIGATOR': { icon: '&#128652;', color: 'var(--gold)', title: 'THE NAVIGATOR', quote: 'You can drive on any road.' }
+                'CREATOR':   { icon: '&#127912;', color: 'var(--orange)', title: 'CREATOR', quote: 'Ideas are your fuel today. Capture everything, edit later.' },
+                'SEER':      { icon: '&#128065;&#65039;', color: 'var(--purple)', title: 'SEER', quote: 'Trust your instincts. What feels right probably is.' },
+                'ARCHITECT': { icon: '&#128296;', color: 'var(--teal)', title: 'ARCHITECT', quote: 'Build systems. Solve problems. Finish what you started.' },
+                'NAVIGATOR': { icon: '&#128652;', color: 'var(--gold)', title: 'NAVIGATOR', quote: 'Stay flexible. Follow what pulls you.' }
             };
             var mc = types[archetype] || types['NAVIGATOR'];
 
-            container.innerHTML = '<div class="card license-card" style="border-color:'+mc.color+';"><div class="license-icon" style="border:2px solid '+mc.color+';">'+mc.icon+'</div><div class="license-info"><h3>Cosmic License</h3><div class="license-class" style="color:'+mc.color+';">'+mc.title+'</div><div class="license-quote">"'+mc.quote+'"</div></div></div>' +
+            container.innerHTML = '<div class="card license-card" style="border-color:'+mc.color+';"><div class="license-icon" style="border:2px solid '+mc.color+';">'+mc.icon+'</div><div class="license-info"><h3>Your Mode</h3><div class="license-class" style="color:'+mc.color+';">'+mc.title+'</div><div class="license-quote">"'+mc.quote+'"</div></div></div>' +
                 conditionsHtml +
                 '<div class="card card-highlight"><h3 class="card-title"><span class="card-title-icon">&#128302;</span> Ask The DashBoard&#8482;</h3><form id="reading-form"><textarea class="question-textarea" id="question" placeholder="What\'s on your mind today?" rows="4"></textarea><button type="submit" class="submit-btn">Get My Reading</button></form><div id="reading-result"></div><div class="footer-links"><a href="#" id="manage-sub">Manage Subscription</a><a href="#" id="logout">Log Out</a></div></div>';
 
