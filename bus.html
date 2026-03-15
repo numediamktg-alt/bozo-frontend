@@ -401,23 +401,24 @@
             }
 
             // ---- SECTION 2: Conditions (sentences from percentages, traffic light colors) ----
+            // GREEN = strong, full speed. YELLOW = moderate, be selective. RED = low, dial it back.
             function ideaSentence(pct) {
                 if (pct >= 60) return { light: 'green', text: 'Ideas are flowing. Write them down, sketch them, record a voice memo. Capture everything before it fades.' };
                 if (pct >= 35) return { light: 'yellow', text: 'Some creative spark is there but not a flood. Work with ideas you already have rather than hunting for new ones.' };
-                if (pct >= 20) return { light: 'red', text: 'Creative thinking is sluggish. Skip brainstorming. Edit old work, clean up files, or do something with your hands.' };
-                return { light: 'red', text: 'Imagination is flat. Do not try to force new ideas. Sort photos, answer emails, clean your workspace, pay bills.' };
+                if (pct >= 20) return { light: 'red', text: 'Creative energy is running cooler than usual. Lean toward editing, refining, and organizing existing work rather than starting from scratch.' };
+                return { light: 'red', text: 'Imagination is on a lower setting today. Good day to sort photos, tidy up old files, or revisit something you wrote last week with fresh eyes.' };
             }
             function claritySentence(pct) {
                 if (pct >= 60) return { light: 'green', text: 'Your gut is sharp. If something feels right or wrong, it probably is. Make the call you have been sitting on.' };
                 if (pct >= 35) return { light: 'yellow', text: 'Your instincts are working but not loud. Slow down before deciding. Sleep on anything big.' };
-                if (pct >= 20) return { light: 'red', text: 'Hard to tell what matters today. Stick to facts and lists. Do not sign contracts or make promises.' };
-                return { light: 'red', text: 'Inner compass is foggy. Avoid big decisions, difficult conversations, and anything you cannot undo tomorrow.' };
+                if (pct >= 20) return { light: 'red', text: 'Harder to read your own signals today. Lean on facts and checklists instead of gut feelings. Double-check before you commit.' };
+                return { light: 'red', text: 'Instincts are quieter than normal. Keep decisions small and reversible today. Save the big calls for when the signal comes back up.' };
             }
             function actionSentence(pct) {
                 if (pct >= 60) return { light: 'green', text: 'You have real horsepower today. Tackle the hardest thing on your list first. You will get through it.' };
                 if (pct >= 35) return { light: 'yellow', text: 'Enough energy to move things forward if you pick your battles. Do two or three things well, not ten things badly.' };
-                if (pct >= 20) return { light: 'red', text: 'Low fuel. Handle only what must get done today. Everything else can wait.' };
-                return { light: 'red', text: 'Tank is near empty. Cancel what you can. Do the bare minimum and stop. Tomorrow will be different.' };
+                if (pct >= 20) return { light: 'red', text: 'Drive is lower than usual. Shorten your list and focus on what actually matters today. Save the heavy lifting.' };
+                return { light: 'red', text: 'Energy is running quiet. Keep your commitments light and your expectations easy. A shorter day is a smarter day.' };
             }
 
             var ideas = ideaSentence(h5_pct);
