@@ -400,30 +400,65 @@
                 }
             }
 
-            // ---- SECTION 2: Conditions (sentences from percentages, traffic light colors) ----
-            // GREEN = strong, full flow. YELLOW = moderate, be selective. RED = refined, precise, concentrated.
-            function ideaSentence(pct) {
-                if (pct >= 55) return { light: 'green', text: 'Ideas are flowing. Write them down, sketch them, record a voice memo. Capture everything before it fades.' };
-                if (pct >= 25) return { light: 'yellow', text: 'Some creative spark is there but not a flood. Work with ideas you already have rather than hunting for new ones.' };
-                if (pct >= 12) return { light: 'red', text: 'Creative signal is refined today, not scattered. You will have fewer ideas but sharper ones. Edit, polish, and perfect what you already have.' };
-                return { light: 'red', text: 'Imagination is precise, not loud. This is the day your eye catches the detail everyone else misses. Sort photos, revisit old work, refine what matters.' };
-            }
-            function claritySentence(pct) {
-                if (pct >= 55) return { light: 'green', text: 'Your gut is sharp. If something feels right or wrong, it probably is. Make the call you have been sitting on.' };
-                if (pct >= 25) return { light: 'yellow', text: 'Your instincts are working but not loud. Slow down before deciding. Sleep on anything big.' };
-                if (pct >= 12) return { light: 'red', text: 'Inner signal is running narrow and focused. You may not see the big picture, but you will see the one thing that needs fixing.' };
-                return { light: 'red', text: 'Instincts are whispering, not shouting. Pay attention to the small signals. The quiet voice is often the most accurate one.' };
-            }
-            function actionSentence(pct) {
-                if (pct >= 55) return { light: 'green', text: 'You have real horsepower today. Tackle the hardest thing on your list first. You will get through it.' };
-                if (pct >= 25) return { light: 'yellow', text: 'Enough energy to move things forward if you pick your battles. Do two or three things well, not ten things badly.' };
-                if (pct >= 12) return { light: 'red', text: 'Drive is concentrated rather than wide. Pick one thing and do it with care. Precision work over brute force.' };
-                return { light: 'red', text: 'Energy favors the careful hand today. Small, deliberate moves. The kind of work that looks easy but requires real attention.' };
+            // ---- SECTION 2: Synthesized reading from the PATTERN of all three channels ----
+            // The relationship between channels IS the meaning. Not three separate readings.
+            function synthesizeReading(h5, h7, h10) {
+                // Determine which channels are in which gear
+                var g = function(pct) { return pct >= 55 ? 'green' : pct >= 25 ? 'yellow' : 'orange'; };
+                var ideas = g(h5), clarity = g(h7), action = g(h10);
+
+                // Find dominant and weakest
+                var max = Math.max(h5, h7, h10);
+                var min = Math.min(h5, h7, h10);
+                var spread = max - min;
+
+                // Pattern: all three similar
+                if (spread < 15) {
+                    if (max >= 55) return 'All three channels are running strong together. Ideas, instincts, and drive are all available. Rare day. Use it on something that needs all of you.';
+                    if (max >= 25) return 'Everything is running at a similar moderate pace. No single channel dominates. A good day to do a little of everything without overcommitting to any one direction.';
+                    return 'All three channels are running in a refined, precise mode. The signal is quiet but unified. This is a day for careful, detailed work where nothing needs to be loud to be effective.';
+                }
+
+                // Pattern: Action dominant
+                if (h10 > h5 + 10 && h10 > h7 + 10) {
+                    if (h5 < 25 && h7 < 25) return 'Your strongest energy today is in doing, not thinking. Show up, perform, execute. Ideas and instincts are in a refined mode, which means today is not about inventing new material or making big judgment calls. It is about tightening what you already have. Do the work your hands already know.';
+                    if (h7 < 25) return 'Drive is your strongest signal and ideas are present, but your gut instincts are quieter. Good day to execute plans you already trust. Build, finish, deliver. Skip decisions that depend on reading people or trusting hunches.';
+                    if (h5 < 25) return 'You have the drive to act and the instincts to steer, but creative imagination is in a quieter mode. Execute on existing ideas rather than generating new ones. Your judgment about what matters is sharp. Trust it and move.';
+                    return 'Action leads the way today with good support from ideas and instincts. You can think, decide, and do. Start with your biggest priority and let momentum carry you.';
+                }
+
+                // Pattern: Ideas dominant
+                if (h5 > h10 + 10 && h5 > h7 + 10) {
+                    if (h10 < 25 && h7 < 25) return 'Your imagination is the loudest channel today. Ideas will come, but the energy to act on them and the clarity to judge them are both in a refined mode. Capture everything. Write it down, sketch it, record it. Do not try to finish or decide anything. Just collect.';
+                    if (h10 < 25) return 'Ideas are flowing and your instincts can tell which ones matter, but execution energy is in a quieter mode. Brainstorm and decide what is worth pursuing, then save the building for a stronger action day.';
+                    if (h7 < 25) return 'Creative ideas are strong and you have the energy to act, but your inner compass is quieter. Good day to experiment and prototype, but hold off on permanent commitments. You can make it, just do not bet the house on it today.';
+                    return 'Ideas are leading today with solid support from instincts and drive. A genuinely creative day. Follow what excites you.';
+                }
+
+                // Pattern: Clarity dominant
+                if (h7 > h5 + 10 && h7 > h10 + 10) {
+                    if (h5 < 25 && h10 < 25) return 'Your instincts are the sharpest tool today. You can see clearly what matters and what does not. But creative flow and action energy are both in a refined mode. Use today to make decisions, evaluate options, and see truth. Do not force creation or production.';
+                    if (h5 < 25) return 'Your gut and your drive are both working, but imagination is in a quieter mode. Good day to evaluate what you already have, make the call you have been sitting on, and act on it. Not the day to invent. The day to choose.';
+                    if (h10 < 25) return 'Instincts and ideas are both active but execution energy is refined. You can see clearly and think creatively, but pushing hard will feel forced. Plan, strategize, and decide. Save the heavy lifting.';
+                    return 'Clarity leads today with ideas and action both available. You can see what matters, imagine solutions, and act on them. A good day for important decisions.';
+                }
+
+                // Pattern: two high, one refined
+                if (h5 >= 25 && h10 >= 25 && h7 < 25) return 'Ideas and drive are both available today, but your inner compass is in a finer-tuned mode. You can create and you can build, but double-check your direction before you commit. Make things, but verify before you ship.';
+                if (h5 >= 25 && h7 >= 25 && h10 < 25) return 'Your mind is alive with ideas and your instincts are reading clearly, but execution energy is in a refined mode. A great day to plan, dream, and decide. Save the heavy building for when action comes back up.';
+                if (h7 >= 25 && h10 >= 25 && h5 < 25) return 'Instincts and drive are both strong but creative imagination is in a precise mode. You know what to do and you have the energy to do it. Today favors executing known plans over inventing new approaches.';
+
+                // Fallback
+                return 'Mixed signals today. No single channel dominates. Stay flexible, follow what pulls you, and do not overcommit in any direction.';
             }
 
-            var ideas = ideaSentence(h5_pct);
-            var clarity = claritySentence(h7_pct);
-            var action = actionSentence(h10_pct);
+            var reading = synthesizeReading(h5_pct, h7_pct, h10_pct);
+
+            // Traffic light colors for visual anchors
+            var gLight = function(pct) { return pct >= 55 ? 'green' : pct >= 25 ? 'yellow' : 'red'; };
+            var ideasLight = gLight(h5_pct);
+            var clarityLight = gLight(h7_pct);
+            var actionLight = gLight(h10_pct);
 
             // ---- SECTION 3: Suggested Course (concrete actions, not philosophy) ----
             var courseMap = {
@@ -457,13 +492,14 @@
             html += '<div class="weather-type-row"><span class="weather-type-icon">' + dt.icon + '</span><span class="weather-type-name" style="color:' + dt.color + ';">' + dt.name + '</span></div>';
             html += '<div class="weather-guidance">' + dt.meaning + '</div>';
 
-            // Conditions as sentences
+            // Synthesized reading paragraph
             html += '<div class="conditions-section">' +
-                '<div class="conditions-heading">Conditions</div>' +
-                '<div class="condition-line"><span class="condition-dot ' + ideas.light + '"></span><div class="condition-text"><span class="condition-name">Ideas.</span> <span class="condition-desc">' + ideas.text + '</span></div></div>' +
-                '<div class="condition-line"><span class="condition-dot ' + clarity.light + '"></span><div class="condition-text"><span class="condition-name">Clarity.</span> <span class="condition-desc">' + clarity.text + '</span></div></div>' +
-                '<div class="condition-line"><span class="condition-dot ' + action.light + '"></span><div class="condition-text"><span class="condition-name">Action.</span> <span class="condition-desc">' + action.text + '</span></div></div>' +
-                '</div>';
+                '<div style="font-size:1rem;color:var(--text-muted);line-height:1.7;margin-bottom:20px;">' + reading + '</div>' +
+                '<div style="display:flex;gap:24px;flex-wrap:wrap;">' +
+                '<div style="display:flex;align-items:center;gap:8px;"><span class="condition-dot ' + ideasLight + '"></span><span style="font-size:0.85rem;color:var(--text-dim);">Ideas</span></div>' +
+                '<div style="display:flex;align-items:center;gap:8px;"><span class="condition-dot ' + clarityLight + '"></span><span style="font-size:0.85rem;color:var(--text-dim);">Clarity</span></div>' +
+                '<div style="display:flex;align-items:center;gap:8px;"><span class="condition-dot ' + actionLight + '"></span><span style="font-size:0.85rem;color:var(--text-dim);">Action</span></div>' +
+                '</div></div>';
 
             // Suggested course
             html += '<div class="course-section"><div class="course-heading">Suggested Course</div>';
