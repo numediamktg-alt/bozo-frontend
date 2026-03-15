@@ -340,7 +340,7 @@
             'FLOWING': { icon: '&#127754;', color: '#3b82f6', css: 'type-flowing', name: 'Smooth Day', meaning: 'Things fall into place more easily. Push through doors that were stuck.' },
             'ACTIVE': { icon: '&#129517;', color: '#22c55e', css: 'type-active', name: 'Active Day', meaning: 'Solid energy across the board. A good day to move things forward.' },
             'MIXED': { icon: '&#129517;', color: '#a1a1aa', css: 'type-mixed', name: 'Shifting Day', meaning: 'Energy is changing direction. Stay flexible, follow what pulls you.' },
-            'QUIET': { icon: '&#127769;', color: '#4b5e80', css: 'type-quiet', name: 'Quiet Day', meaning: 'Everything is running at a gentler pace. A good day to work slowly, reflect, and take care of the details.' }
+            'QUIET': { icon: '&#127769;', color: '#4b5e80', css: 'type-quiet', name: 'Quiet Day', meaning: 'The signal is refined today, not loud. Think of it as a whisper that carries further than a shout. Precision over volume.' }
         };
 
         /* v4.1: renderConditions generates sentences, not meters */
@@ -394,31 +394,31 @@
                 if (aligned.indexOf(dayType) >= 0) {
                     alignLine = archetypeWiring[archetype] + " Today's conditions support that.";
                 } else if (dayType === 'QUIET') {
-                    alignLine = archetypeWiring[archetype] + " Today is running at a gentler pace. Work slowly on what matters.";
+                    alignLine = archetypeWiring[archetype] + " Today's signal is refined, not loud. Precision work suits the day.";
                 } else {
                     alignLine = archetypeWiring[archetype] + " Today pulls a different direction. Stay aware of the shift.";
                 }
             }
 
             // ---- SECTION 2: Conditions (sentences from percentages, traffic light colors) ----
-            // GREEN = strong, full speed. YELLOW = moderate, be selective. RED = slower gear, different strengths.
+            // GREEN = strong, full flow. YELLOW = moderate, be selective. RED = refined, precise, concentrated.
             function ideaSentence(pct) {
                 if (pct >= 60) return { light: 'green', text: 'Ideas are flowing. Write them down, sketch them, record a voice memo. Capture everything before it fades.' };
                 if (pct >= 35) return { light: 'yellow', text: 'Some creative spark is there but not a flood. Work with ideas you already have rather than hunting for new ones.' };
-                if (pct >= 20) return { light: 'red', text: 'Your creative engine is running on slower, more focused vibes today. Great for editing, refining, and polishing existing work.' };
-                return { light: 'red', text: 'Imagination is in a quieter gear. This is your day to sort photos, tidy up old files, or revisit something you wrote last week with fresh eyes.' };
+                if (pct >= 20) return { light: 'red', text: 'Creative signal is refined today, not scattered. You will have fewer ideas but sharper ones. Edit, polish, and perfect what you already have.' };
+                return { light: 'red', text: 'Imagination is precise, not loud. This is the day your eye catches the detail everyone else misses. Sort photos, revisit old work, refine what matters.' };
             }
             function claritySentence(pct) {
                 if (pct >= 60) return { light: 'green', text: 'Your gut is sharp. If something feels right or wrong, it probably is. Make the call you have been sitting on.' };
                 if (pct >= 35) return { light: 'yellow', text: 'Your instincts are working but not loud. Slow down before deciding. Sleep on anything big.' };
-                if (pct >= 20) return { light: 'red', text: 'Your inner signal is tuned lower today. Lean on facts, notes, and checklists rather than gut feelings. Good day to verify things.' };
-                return { light: 'red', text: 'Instincts are in a quieter mode. Stay with what you can see and measure. Save the big judgment calls for a stronger signal day.' };
+                if (pct >= 20) return { light: 'red', text: 'Inner signal is running narrow and focused. You may not see the big picture, but you will see the one thing that needs fixing.' };
+                return { light: 'red', text: 'Instincts are whispering, not shouting. Pay attention to the small signals. The quiet voice is often the most accurate one.' };
             }
             function actionSentence(pct) {
                 if (pct >= 60) return { light: 'green', text: 'You have real horsepower today. Tackle the hardest thing on your list first. You will get through it.' };
                 if (pct >= 35) return { light: 'yellow', text: 'Enough energy to move things forward if you pick your battles. Do two or three things well, not ten things badly.' };
-                if (pct >= 20) return { light: 'red', text: 'Your drive is in a lower gear today. Pick fewer things and do them at your own pace. Quality over speed.' };
-                return { light: 'red', text: 'Energy is set to a gentler rhythm. Keep your list short, your pace easy, and let yourself work slowly on what matters.' };
+                if (pct >= 20) return { light: 'red', text: 'Drive is concentrated rather than wide. Pick one thing and do it with care. Precision work over brute force.' };
+                return { light: 'red', text: 'Energy favors the careful hand today. Small, deliberate moves. The kind of work that looks easy but requires real attention.' };
             }
 
             var ideas = ideaSentence(h5_pct);
@@ -437,7 +437,7 @@
                 'FLOWING': ['Reach out to someone you have been meaning to contact', 'Submit the application, send the pitch, post the thing', 'Say yes to the invitation or opportunity that showed up recently'],
                 'ACTIVE': ['Clear your to-do list of everything that takes less than 15 minutes', 'Move three things forward by one step each', 'Schedule the appointments and calls you have been postponing'],
                 'MIXED': ['Pick one small thing you can finish in an hour and do only that', 'Take a walk and see if direction becomes clearer afterward', 'Do not overcommit today, keep your schedule loose'],
-                'QUIET': ['Take a slow walk, cook a real meal, or do something physical that lets your mind wander', 'Sort and organize files, photos, or paperwork at an easy pace', 'Revisit an older project and see it with today\'s quieter, sharper focus']
+                'QUIET': ['Revisit an older project with today\'s sharper, more focused eye', 'Do the careful detail work that louder days make you rush past', 'Take a slow walk and let the quiet signal show you what you have been missing']
             };
             var course = courseMap[c.day_type] || courseMap['MIXED'];
 
