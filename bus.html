@@ -148,11 +148,7 @@
         .intensity-fill { height: 100%; border-radius: 4px; transition: width 1s ease-out; }
         .intensity-value { font-weight: 700; font-size: 0.95rem; min-width: 38px; text-align: right; }
 
-        .license-card { display: flex; align-items: center; gap: 20px; }
-        .license-icon { width: 70px; height: 70px; background: var(--bg-input); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 2.2rem; }
-        .license-info h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 4px; }
-        .license-class { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
-        .license-quote { font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--text-muted); }
+        /* v4.0.2: license card removed - archetype merged into weather card */
 
         .meter-group { margin-bottom: 20px; }
         .meter-group:last-child { margin-bottom: 0; }
@@ -353,11 +349,38 @@
         /* ============================================
            v4.0: RENDER CONDITIONS (Harmonic Weather)
            ============================================ */
-        function renderConditions(c, natal) {
+        function renderConditions(c, natal, archetype) {
             natal = natal || {h5: 10, h7: 10, h10: 10};
+            archetype = archetype || null;
             var hotAspects = c.hot_aspects || [];
             var contactCount = hotAspects.length;
             var dt = DAY_TYPES[c.day_type] || DAY_TYPES['MIXED'];
+
+            // v4.0.2: Archetype-to-day alignment
+            var alignMap = {
+                'ARCHITECT': ['BUILDER','POWERHOUSE','CHARGED'],
+                'CREATOR': ['CREATIVE','POWERHOUSE','INTENSE'],
+                'SEER': ['RECEPTIVE','FLOWING'],
+                'NAVIGATOR': ['ACTIVE','MIXED','FLOWING']
+            };
+            var archetypeDesc = {
+                'ARCHITECT': 'a natural builder',
+                'CREATOR': 'a natural creator',
+                'SEER': 'tuned to intuition',
+                'NAVIGATOR': 'built to adapt'
+            };
+            var alignLine = '';
+            if (archetype && archetypeDesc[archetype]) {
+                var aligned = alignMap[archetype] || [];
+                var dayType = c.day_type || 'MIXED';
+                if (aligned.indexOf(dayType) >= 0) {
+                    alignLine = "You're " + archetypeDesc[archetype] + ". Today's conditions support that.";
+                } else if (dayType === 'QUIET') {
+                    alignLine = "You're " + archetypeDesc[archetype] + ". Today is quieter than your wiring. Rest or prepare.";
+                } else {
+                    alignLine = "You're " + archetypeDesc[archetype] + ". Today pulls a different direction. Stay aware.";
+                }
+            }
 
             var h5_pct, h7_pct, h10_pct;
             if (c.h5_activation !== undefined) {
@@ -381,8 +404,11 @@
             var today = new Date();
             var dateStr = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
+            var alignHtml = alignLine ? '<div style="font-size:0.95rem;color:var(--text-muted);margin-bottom:16px;line-height:1.5;">' + alignLine + '</div>' : '';
+
             var html = '<div class="weather-card ' + dt.css + '">' +
                 '<div class="weather-date">' + dateStr + '</div>' +
+                alignHtml +
                 '<div class="weather-type-row"><span class="weather-type-icon">' + dt.icon + '</span><span class="weather-type-name" style="color:' + dt.color + ';">' + dt.name + '</span></div>' +
                 '<div class="weather-guidance">' + dt.meaning + '</div>' +
                 '<div class="weather-density"><span class="density-label">Field Activity</span><div class="density-bar-track"><div class="density-bar-fill" style="width:' + density.pct + '%;background:' + density.color + ';"></div></div><span class="density-value" style="color:' + density.color + ';">' + density.label + '</span></div>' +
@@ -450,18 +476,9 @@
             var archetype = status.archetype || 'NAVIGATOR';
             userNatal = { h5: status.natal_h5 || 10, h7: status.natal_h7 || 10, h10: status.natal_h10 || 10 };
             var conditionsHtml = '';
-            try { var c = await fetch(API_BASE + '/api/conditions').then(function(r){return r.json();}); conditionsHtml = renderConditions(c, userNatal); } catch(e) {}
+            try { var c = await fetch(API_BASE + '/api/conditions').then(function(r){return r.json();}); conditionsHtml = renderConditions(c, userNatal, archetype); } catch(e) {}
 
-            var types = {
-                'CREATOR':   { icon: '&#127912;', color: 'var(--orange)', title: 'CREATOR', quote: 'Ideas are your fuel today. Capture everything, edit later.' },
-                'SEER':      { icon: '&#128065;&#65039;', color: 'var(--purple)', title: 'SEER', quote: 'Trust your instincts. What feels right probably is.' },
-                'ARCHITECT': { icon: '&#128296;', color: 'var(--teal)', title: 'ARCHITECT', quote: 'Build systems. Solve problems. Finish what you started.' },
-                'NAVIGATOR': { icon: '&#128652;', color: 'var(--gold)', title: 'NAVIGATOR', quote: 'Stay flexible. Follow what pulls you.' }
-            };
-            var mc = types[archetype] || types['NAVIGATOR'];
-
-            container.innerHTML = '<div class="card license-card" style="border-color:'+mc.color+';"><div class="license-icon" style="border:2px solid '+mc.color+';">'+mc.icon+'</div><div class="license-info"><h3>Your Mode</h3><div class="license-class" style="color:'+mc.color+';">'+mc.title+'</div><div class="license-quote">"'+mc.quote+'"</div></div></div>' +
-                conditionsHtml +
+            container.innerHTML = conditionsHtml +
                 '<div class="card card-highlight"><h3 class="card-title"><span class="card-title-icon">&#128302;</span> Ask The DashBoard&#8482;</h3><form id="reading-form"><textarea class="question-textarea" id="question" placeholder="What\'s on your mind today?" rows="4"></textarea><button type="submit" class="submit-btn">Get My Reading</button></form><div id="reading-result"></div><div class="footer-links"><a href="#" id="manage-sub">Manage Subscription</a><a href="#" id="logout">Log Out</a></div></div>';
 
             document.getElementById('reading-form').addEventListener('submit', async function(e) {
