@@ -100,10 +100,10 @@
         .conditions-heading { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
         .condition-line { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; line-height: 1.5; }
         .condition-line:last-child { margin-bottom: 0; }
-        .condition-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
-        .condition-dot.strong { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
-        .condition-dot.moderate { background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.3); }
-        .condition-dot.low { background: #4b5e80; }
+        .condition-dot { width: 12px; height: 12px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+        .condition-dot.green { background: #22c55e; box-shadow: 0 0 8px rgba(34,197,94,0.5); }
+        .condition-dot.yellow { background: #eab308; box-shadow: 0 0 8px rgba(234,179,8,0.4); }
+        .condition-dot.red { background: #ef4444; box-shadow: 0 0 8px rgba(239,68,68,0.4); }
         .condition-text { flex: 1; }
         .condition-name { font-weight: 600; color: var(--text); font-size: 0.95rem; }
         .condition-desc { color: var(--text-muted); font-size: 0.95rem; }
@@ -400,43 +400,43 @@
                 }
             }
 
-            // ---- SECTION 2: Conditions (sentences from percentages) ----
+            // ---- SECTION 2: Conditions (sentences from percentages, traffic light colors) ----
             function ideaSentence(pct) {
-                if (pct >= 60) return { level: 'strong', text: 'Ideas are flowing freely. Your mind is making connections easily.' };
-                if (pct >= 35) return { level: 'moderate', text: 'Ideas are present but not rushing. Enough to work with, not overwhelming.' };
-                if (pct >= 20) return { level: 'low', text: 'Creative ideas are quiet today. Better to work with what you have than start from scratch.' };
-                return { level: 'low', text: 'Imagination is resting. Not the day for brainstorming. Edit, organize, or take a break.' };
+                if (pct >= 60) return { light: 'green', text: 'Ideas are flowing. Write them down, sketch them, record a voice memo. Capture everything before it fades.' };
+                if (pct >= 35) return { light: 'yellow', text: 'Some creative spark is there but not a flood. Work with ideas you already have rather than hunting for new ones.' };
+                if (pct >= 20) return { light: 'red', text: 'Creative thinking is sluggish. Skip brainstorming. Edit old work, clean up files, or do something with your hands.' };
+                return { light: 'red', text: 'Imagination is flat. Do not try to force new ideas. Sort photos, answer emails, clean your workspace, pay bills.' };
             }
             function claritySentence(pct) {
-                if (pct >= 60) return { level: 'strong', text: 'Your instincts are sharp. You can sense what matters and what doesn\'t.' };
-                if (pct >= 35) return { level: 'moderate', text: 'Your inner signal is steady. You can tell what\'s important if you slow down.' };
-                if (pct >= 20) return { level: 'low', text: 'Gut feelings are muted today. Rely more on facts and less on hunches.' };
-                return { level: 'low', text: 'Intuition is dim right now. Don\'t make big calls based on feelings today.' };
+                if (pct >= 60) return { light: 'green', text: 'Your gut is sharp. If something feels right or wrong, it probably is. Make the call you have been sitting on.' };
+                if (pct >= 35) return { light: 'yellow', text: 'Your instincts are working but not loud. Slow down before deciding. Sleep on anything big.' };
+                if (pct >= 20) return { light: 'red', text: 'Hard to tell what matters today. Stick to facts and lists. Do not sign contracts or make promises.' };
+                return { light: 'red', text: 'Inner compass is foggy. Avoid big decisions, difficult conversations, and anything you cannot undo tomorrow.' };
             }
             function actionSentence(pct) {
-                if (pct >= 60) return { level: 'strong', text: 'Energy for getting things done is strong. What you start will move forward.' };
-                if (pct >= 35) return { level: 'moderate', text: 'You have enough drive to make progress on things already in motion.' };
-                if (pct >= 20) return { level: 'low', text: 'Execution energy is low. Keep it to small tasks and short lists.' };
-                return { level: 'low', text: 'Not the day to push hard. Forcing it will feel like grinding gears.' };
+                if (pct >= 60) return { light: 'green', text: 'You have real horsepower today. Tackle the hardest thing on your list first. You will get through it.' };
+                if (pct >= 35) return { light: 'yellow', text: 'Enough energy to move things forward if you pick your battles. Do two or three things well, not ten things badly.' };
+                if (pct >= 20) return { light: 'red', text: 'Low fuel. Handle only what must get done today. Everything else can wait.' };
+                return { light: 'red', text: 'Tank is near empty. Cancel what you can. Do the bare minimum and stop. Tomorrow will be different.' };
             }
 
             var ideas = ideaSentence(h5_pct);
             var clarity = claritySentence(h7_pct);
             var action = actionSentence(h10_pct);
 
-            // ---- SECTION 3: Suggested Course (from day type) ----
+            // ---- SECTION 3: Suggested Course (concrete actions, not philosophy) ----
             var courseMap = {
-                'POWERHOUSE': ['Build something ambitious that you have been putting off', 'Make the important decision you have been postponing', 'Channel this energy into your biggest priority'],
-                'CHARGED': ['Take bold action on your top priority', 'Say the thing you have been holding back', 'Move fast on what matters most'],
-                'INTENSE': ['Pick one thing and stay focused on it', 'Write everything down, sort it later', 'Avoid permanent decisions in temporary intensity'],
-                'RECEPTIVE': ['Listen more than you talk', 'Follow the hunch that will not leave you alone', 'Write down or sketch what keeps surfacing'],
-                'CREATIVE': ['Capture every idea without editing', 'Try an approach you have not considered before', 'Make something with your hands'],
-                'BUILDER': ['Finish what you started this week', 'Organize and put structure around your work', 'Solve the practical problem you have been avoiding'],
-                'FRICTION': ['Face the uncomfortable thing you have been dodging', 'Use the tension to push through what is stuck', 'Do not confuse discomfort with danger'],
-                'FLOWING': ['Say yes to what shows up today', 'Reach out to someone you have been meaning to contact', 'Push through doors that were stuck before'],
-                'ACTIVE': ['Move things forward across the board', 'Clear items off your list while energy holds', 'Start the next thing on your plan'],
-                'MIXED': ['Stay flexible instead of locking into a plan', 'Do small experiments instead of big bets', 'Follow what pulls you, not what you scheduled'],
-                'QUIET': ['Rest without guilt', 'Organize what you already have', 'Prepare your tools for when energy returns']
+                'POWERHOUSE': ['Open the biggest project on your desk and work on it for two hours', 'Make the phone call or send the email you have been avoiding', 'Commit to a deadline out loud to someone who will hold you to it'],
+                'CHARGED': ['Start your day with the single most important task, nothing else first', 'Write and send the proposal, pitch, or message you have been drafting in your head', 'Say no to at least one thing that is not your priority'],
+                'INTENSE': ['Write down every thought pulling at you, then pick only one to work on', 'Set a timer for 90 minutes and do deep work with no interruptions', 'Stay off social media until after lunch'],
+                'RECEPTIVE': ['Take a walk without your phone and see what surfaces', 'Write down the idea that keeps coming back no matter how impractical it sounds', 'Have a real conversation with someone and listen more than you talk'],
+                'CREATIVE': ['Open a blank page and write, draw, or sketch for 30 minutes with no plan', 'Take your camera out and shoot something, anything', 'Try solving your stuck problem sideways instead of head-on'],
+                'BUILDER': ['Finish the thing that is 80% done and has been sitting there', 'Organize one messy folder, drawer, or workspace', 'Fix the broken thing you keep walking past'],
+                'FRICTION': ['Have the conversation you have been putting off', 'Look at the budget, the numbers, or the problem you have been ignoring', 'Do the thing that makes you uncomfortable, that is where the progress is'],
+                'FLOWING': ['Reach out to someone you have been meaning to contact', 'Submit the application, send the pitch, post the thing', 'Say yes to the invitation or opportunity that showed up recently'],
+                'ACTIVE': ['Clear your to-do list of everything that takes less than 15 minutes', 'Move three things forward by one step each', 'Schedule the appointments and calls you have been postponing'],
+                'MIXED': ['Pick one small thing you can finish in an hour and do only that', 'Take a walk and see if direction becomes clearer afterward', 'Do not overcommit today, keep your schedule loose'],
+                'QUIET': ['Clean your desk, your inbox, or your kitchen', 'Sort and organize files, photos, or paperwork', 'Go for a walk, cook a meal, or do something physical that does not require thinking']
             };
             var course = courseMap[c.day_type] || courseMap['MIXED'];
 
@@ -459,9 +459,9 @@
             // Conditions as sentences
             html += '<div class="conditions-section">' +
                 '<div class="conditions-heading">Conditions</div>' +
-                '<div class="condition-line"><span class="condition-dot ' + ideas.level + '"></span><div class="condition-text"><span class="condition-name">Ideas.</span> <span class="condition-desc">' + ideas.text + '</span></div></div>' +
-                '<div class="condition-line"><span class="condition-dot ' + clarity.level + '"></span><div class="condition-text"><span class="condition-name">Clarity.</span> <span class="condition-desc">' + clarity.text + '</span></div></div>' +
-                '<div class="condition-line"><span class="condition-dot ' + action.level + '"></span><div class="condition-text"><span class="condition-name">Action.</span> <span class="condition-desc">' + action.text + '</span></div></div>' +
+                '<div class="condition-line"><span class="condition-dot ' + ideas.light + '"></span><div class="condition-text"><span class="condition-name">Ideas.</span> <span class="condition-desc">' + ideas.text + '</span></div></div>' +
+                '<div class="condition-line"><span class="condition-dot ' + clarity.light + '"></span><div class="condition-text"><span class="condition-name">Clarity.</span> <span class="condition-desc">' + clarity.text + '</span></div></div>' +
+                '<div class="condition-line"><span class="condition-dot ' + action.light + '"></span><div class="condition-text"><span class="condition-name">Action.</span> <span class="condition-desc">' + action.text + '</span></div></div>' +
                 '</div>';
 
             // Suggested course
