@@ -93,20 +93,26 @@
         .weather-type-row { display: flex; align-items: center; gap: 16px; margin-bottom: 12px; }
         .weather-type-icon { font-size: 2.4rem; line-height: 1; }
         .weather-type-name { font-size: 1.6rem; font-weight: 800; letter-spacing: -0.02em; }
-        .weather-guidance { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px; max-width: 600px; }
+        .weather-guidance { font-size: 1.05rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; max-width: 600px; }
 
-        .weather-density { display: flex; align-items: center; gap: 12px; margin-bottom: 28px; padding: 12px 16px; background: var(--bg-input); border-radius: 10px; }
-        .density-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
-        .density-bar-track { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
-        .density-bar-fill { height: 100%; border-radius: 3px; transition: width 1s ease-out; }
-        .density-value { font-size: 0.85rem; font-weight: 600; white-space: nowrap; }
+        /* v4.1: Sentence-based conditions */
+        .conditions-section { margin-bottom: 24px; }
+        .conditions-heading { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+        .condition-line { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; line-height: 1.5; }
+        .condition-line:last-child { margin-bottom: 0; }
+        .condition-dot { width: 10px; height: 10px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+        .condition-dot.strong { background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.4); }
+        .condition-dot.moderate { background: #f59e0b; box-shadow: 0 0 6px rgba(245,158,11,0.3); }
+        .condition-dot.low { background: #4b5e80; }
+        .condition-text { flex: 1; }
+        .condition-name { font-weight: 600; color: var(--text); font-size: 0.95rem; }
+        .condition-desc { color: var(--text-muted); font-size: 0.95rem; }
 
-        .weather-meters { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-        .w-meter { background: var(--bg-input); border-radius: 12px; padding: 16px; text-align: center; }
-        .w-meter-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
-        .w-meter-value { font-size: 1.8rem; font-weight: 700; line-height: 1; margin-bottom: 8px; }
-        .w-meter-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 2px; overflow: hidden; }
-        .w-meter-fill { height: 100%; border-radius: 2px; transition: width 1s ease-out; }
+        .course-section { margin-bottom: 8px; }
+        .course-heading { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+        .course-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 0.95rem; color: var(--text-muted); line-height: 1.5; }
+        .course-item:last-child { margin-bottom: 0; }
+        .course-arrow { color: var(--text-dim); flex-shrink: 0; margin-top: 1px; }
 
         /* v4.0 EXPLAINER */
         .explainer-card { background: var(--bg-input); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; }
@@ -220,7 +226,6 @@
             .sidebar { position: static; max-width: 400px; margin: 0 auto; }
             .header-inner { flex-direction: column; gap: 12px; }
             .form-row { grid-template-columns: 1fr; }
-            .weather-meters { grid-template-columns: 1fr; }
             .weather-type-name { font-size: 1.3rem; }
         }
     </style>
@@ -338,13 +343,7 @@
             'QUIET': { icon: '&#127769;', color: '#4b5e80', css: 'type-quiet', name: 'Quiet Day', meaning: 'Low signal conditions. Best for maintenance, reflection, and rest.' }
         };
 
-        function getFieldDensity(count) {
-            if (count >= 55) return { label: 'Dense', color: '#ec4899', pct: 95 };
-            if (count >= 45) return { label: 'High', color: '#f97316', pct: 80 };
-            if (count >= 30) return { label: 'Active', color: '#fbbf24', pct: 60 };
-            if (count >= 15) return { label: 'Moderate', color: '#22c55e', pct: 40 };
-            return { label: 'Quiet', color: '#4b5e80', pct: 20 };
-        }
+        /* v4.1: renderConditions generates sentences, not meters */
 
         /* ============================================
            v4.0: RENDER CONDITIONS (Harmonic Weather)
@@ -356,32 +355,7 @@
             var contactCount = hotAspects.length;
             var dt = DAY_TYPES[c.day_type] || DAY_TYPES['MIXED'];
 
-            // v4.0.2: Archetype-to-day alignment
-            var alignMap = {
-                'ARCHITECT': ['BUILDER','POWERHOUSE','CHARGED'],
-                'CREATOR': ['CREATIVE','POWERHOUSE','INTENSE'],
-                'SEER': ['RECEPTIVE','FLOWING'],
-                'NAVIGATOR': ['ACTIVE','MIXED','FLOWING']
-            };
-            var archetypeDesc = {
-                'ARCHITECT': 'a natural builder',
-                'CREATOR': 'a natural creator',
-                'SEER': 'tuned to intuition',
-                'NAVIGATOR': 'built to adapt'
-            };
-            var alignLine = '';
-            if (archetype && archetypeDesc[archetype]) {
-                var aligned = alignMap[archetype] || [];
-                var dayType = c.day_type || 'MIXED';
-                if (aligned.indexOf(dayType) >= 0) {
-                    alignLine = "You're " + archetypeDesc[archetype] + ". Today's conditions support that.";
-                } else if (dayType === 'QUIET') {
-                    alignLine = "You're " + archetypeDesc[archetype] + ". Today is quieter than your wiring. Rest or prepare.";
-                } else {
-                    alignLine = "You're " + archetypeDesc[archetype] + ". Today pulls a different direction. Stay aware.";
-                }
-            }
-
+            // ---- Calculate channel percentages (drives sentences, never shown) ----
             var h5_pct, h7_pct, h10_pct;
             if (c.h5_activation !== undefined) {
                 h5_pct = Math.round(c.h5_activation);
@@ -400,26 +374,109 @@
             var iColor = '#71717a';
             if (intensity !== null) { if (intensity >= 65) iColor = '#ef4444'; else if (intensity >= 40) iColor = '#f59e0b'; else if (intensity >= 15) iColor = '#22c55e'; }
 
-            var density = getFieldDensity(contactCount);
+            // ---- SECTION 1: Where am I (alignment sentence) ----
+            var alignMap = {
+                'ARCHITECT': ['BUILDER','POWERHOUSE','CHARGED'],
+                'CREATOR': ['CREATIVE','POWERHOUSE','INTENSE'],
+                'SEER': ['RECEPTIVE','FLOWING'],
+                'NAVIGATOR': ['ACTIVE','MIXED','FLOWING']
+            };
+            var archetypeWiring = {
+                'ARCHITECT': 'Your wiring favors building, solving, and structuring.',
+                'CREATOR': 'Your wiring favors imagination, invention, and expression.',
+                'SEER': 'Your wiring favors intuition, perception, and reading between lines.',
+                'NAVIGATOR': 'Your wiring favors flexibility, adaptation, and finding the way.'
+            };
+            var alignLine = '';
+            if (archetype && archetypeWiring[archetype]) {
+                var aligned = alignMap[archetype] || [];
+                var dayType = c.day_type || 'MIXED';
+                if (aligned.indexOf(dayType) >= 0) {
+                    alignLine = archetypeWiring[archetype] + " Today's conditions support that.";
+                } else if (dayType === 'QUIET') {
+                    alignLine = archetypeWiring[archetype] + " Today is quieter than your wiring. Rest or prepare.";
+                } else {
+                    alignLine = archetypeWiring[archetype] + " Today pulls a different direction. Stay aware of the shift.";
+                }
+            }
+
+            // ---- SECTION 2: Conditions (sentences from percentages) ----
+            function ideaSentence(pct) {
+                if (pct >= 60) return { level: 'strong', text: 'Ideas are flowing freely. Your mind is making connections easily.' };
+                if (pct >= 35) return { level: 'moderate', text: 'Ideas are present but not rushing. Enough to work with, not overwhelming.' };
+                if (pct >= 20) return { level: 'low', text: 'Creative ideas are quiet today. Better to work with what you have than start from scratch.' };
+                return { level: 'low', text: 'Imagination is resting. Not the day for brainstorming. Edit, organize, or take a break.' };
+            }
+            function claritySentence(pct) {
+                if (pct >= 60) return { level: 'strong', text: 'Your instincts are sharp. You can sense what matters and what doesn\'t.' };
+                if (pct >= 35) return { level: 'moderate', text: 'Your inner signal is steady. You can tell what\'s important if you slow down.' };
+                if (pct >= 20) return { level: 'low', text: 'Gut feelings are muted today. Rely more on facts and less on hunches.' };
+                return { level: 'low', text: 'Intuition is dim right now. Don\'t make big calls based on feelings today.' };
+            }
+            function actionSentence(pct) {
+                if (pct >= 60) return { level: 'strong', text: 'Energy for getting things done is strong. What you start will move forward.' };
+                if (pct >= 35) return { level: 'moderate', text: 'You have enough drive to make progress on things already in motion.' };
+                if (pct >= 20) return { level: 'low', text: 'Execution energy is low. Keep it to small tasks and short lists.' };
+                return { level: 'low', text: 'Not the day to push hard. Forcing it will feel like grinding gears.' };
+            }
+
+            var ideas = ideaSentence(h5_pct);
+            var clarity = claritySentence(h7_pct);
+            var action = actionSentence(h10_pct);
+
+            // ---- SECTION 3: Suggested Course (from day type) ----
+            var courseMap = {
+                'POWERHOUSE': ['Build something ambitious that you have been putting off', 'Make the important decision you have been postponing', 'Channel this energy into your biggest priority'],
+                'CHARGED': ['Take bold action on your top priority', 'Say the thing you have been holding back', 'Move fast on what matters most'],
+                'INTENSE': ['Pick one thing and stay focused on it', 'Write everything down, sort it later', 'Avoid permanent decisions in temporary intensity'],
+                'RECEPTIVE': ['Listen more than you talk', 'Follow the hunch that will not leave you alone', 'Write down or sketch what keeps surfacing'],
+                'CREATIVE': ['Capture every idea without editing', 'Try an approach you have not considered before', 'Make something with your hands'],
+                'BUILDER': ['Finish what you started this week', 'Organize and put structure around your work', 'Solve the practical problem you have been avoiding'],
+                'FRICTION': ['Face the uncomfortable thing you have been dodging', 'Use the tension to push through what is stuck', 'Do not confuse discomfort with danger'],
+                'FLOWING': ['Say yes to what shows up today', 'Reach out to someone you have been meaning to contact', 'Push through doors that were stuck before'],
+                'ACTIVE': ['Move things forward across the board', 'Clear items off your list while energy holds', 'Start the next thing on your plan'],
+                'MIXED': ['Stay flexible instead of locking into a plan', 'Do small experiments instead of big bets', 'Follow what pulls you, not what you scheduled'],
+                'QUIET': ['Rest without guilt', 'Organize what you already have', 'Prepare your tools for when energy returns']
+            };
+            var course = courseMap[c.day_type] || courseMap['MIXED'];
+
+            // ---- BUILD HTML ----
             var today = new Date();
             var dateStr = today.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
 
-            var alignHtml = alignLine ? '<div style="font-size:0.95rem;color:var(--text-muted);margin-bottom:16px;line-height:1.5;">' + alignLine + '</div>' : '';
-
             var html = '<div class="weather-card ' + dt.css + '">' +
-                '<div class="weather-date">' + dateStr + '</div>' +
-                alignHtml +
-                '<div class="weather-type-row"><span class="weather-type-icon">' + dt.icon + '</span><span class="weather-type-name" style="color:' + dt.color + ';">' + dt.name + '</span></div>' +
-                '<div class="weather-guidance">' + dt.meaning + '</div>' +
-                '<div class="weather-density"><span class="density-label">Field Activity</span><div class="density-bar-track"><div class="density-bar-fill" style="width:' + density.pct + '%;background:' + density.color + ';"></div></div><span class="density-value" style="color:' + density.color + ';">' + density.label + '</span></div>' +
-                '<div class="weather-meters">' +
-                '<div class="w-meter"><div class="w-meter-label">Ideas</div><div class="w-meter-value" style="color:var(--orange);">' + h5_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h5_pct + '%;background:var(--orange);"></div></div></div>' +
-                '<div class="w-meter"><div class="w-meter-label">Clarity</div><div class="w-meter-value" style="color:var(--purple);">' + h7_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h7_pct + '%;background:var(--purple);"></div></div></div>' +
-                '<div class="w-meter"><div class="w-meter-label">Action</div><div class="w-meter-value" style="color:var(--teal);">' + h10_pct + '%</div><div class="w-meter-bar"><div class="w-meter-fill" style="width:' + h10_pct + '%;background:var(--teal);"></div></div></div>' +
-                '</div></div>';
+                '<div class="weather-date">' + dateStr + '</div>';
 
-            html += '<div class="explainer-card"><div class="explainer-text"><strong>The Bus reads the harmonic weather of the solar system.</strong> It measures planetary geometry relative to your birth chart and translates it into three channels that map to how your brain actually works. <strong>Ideas</strong> tracks your imagination and creative association. <strong>Clarity</strong> tracks your ability to sense what matters. <strong>Action</strong> tracks your drive to execute and build. These correspond to the three cognitive networks neuroscience identifies in creative thinking. The Bus describes conditions, not predictions.</div></div>';
+            // Alignment sentence
+            if (alignLine) {
+                html += '<div style="font-size:0.95rem;color:var(--text-muted);margin-bottom:20px;line-height:1.6;">' + alignLine + '</div>';
+            }
 
+            // Day type name
+            html += '<div class="weather-type-row"><span class="weather-type-icon">' + dt.icon + '</span><span class="weather-type-name" style="color:' + dt.color + ';">' + dt.name + '</span></div>';
+            html += '<div class="weather-guidance">' + dt.meaning + '</div>';
+
+            // Conditions as sentences
+            html += '<div class="conditions-section">' +
+                '<div class="conditions-heading">Conditions</div>' +
+                '<div class="condition-line"><span class="condition-dot ' + ideas.level + '"></span><div class="condition-text"><span class="condition-name">Ideas.</span> <span class="condition-desc">' + ideas.text + '</span></div></div>' +
+                '<div class="condition-line"><span class="condition-dot ' + clarity.level + '"></span><div class="condition-text"><span class="condition-name">Clarity.</span> <span class="condition-desc">' + clarity.text + '</span></div></div>' +
+                '<div class="condition-line"><span class="condition-dot ' + action.level + '"></span><div class="condition-text"><span class="condition-name">Action.</span> <span class="condition-desc">' + action.text + '</span></div></div>' +
+                '</div>';
+
+            // Suggested course
+            html += '<div class="course-section"><div class="course-heading">Suggested Course</div>';
+            for (var i = 0; i < course.length; i++) {
+                html += '<div class="course-item"><span class="course-arrow">&#8594;</span> ' + course[i] + '</div>';
+            }
+            html += '</div>';
+
+            html += '</div>'; // close weather-card
+
+            // Explainer
+            html += '<div class="explainer-card"><div class="explainer-text"><strong>The Bus reads the harmonic weather of the solar system.</strong> It measures planetary geometry relative to your birth chart and translates it into three signals that map to how your brain actually works: imagination, intuition, and execution. It describes conditions, not predictions.</div></div>';
+
+            // Technical details toggle (unchanged)
             if (contactCount > 0 || intensity !== null) {
                 var toggleLabel = 'Show technical details (' + contactCount + ' planetary contacts' + (intensity !== null ? ', ' + intensity + '% composite intensity' : '') + ')';
                 html += '<button class="tech-toggle" onclick="this.classList.toggle(\'open\');this.nextElementSibling.classList.toggle(\'open\');"><span class="tech-toggle-arrow">&#9654;</span> ' + toggleLabel + '</button>';
