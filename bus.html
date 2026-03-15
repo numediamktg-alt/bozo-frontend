@@ -534,7 +534,7 @@
             var archetype = status.archetype || 'NAVIGATOR';
             userNatal = { h5: status.natal_h5 || 10, h7: status.natal_h7 || 10, h10: status.natal_h10 || 10 };
             var conditionsHtml = '';
-            try { var c = await fetch(API_BASE + '/api/conditions').then(function(r){return r.json();}); conditionsHtml = renderConditions(c, userNatal, archetype); } catch(e) {}
+            try { var c = await fetch(API_BASE + '/api/conditions?email=' + encodeURIComponent(email)).then(function(r){return r.json();}); conditionsHtml = renderConditions(c, userNatal, archetype); } catch(e) {}
 
             container.innerHTML = conditionsHtml +
                 '<div class="card card-highlight"><h3 class="card-title"><span class="card-title-icon">&#128302;</span> Ask The DashBoard&#8482;</h3><form id="reading-form"><textarea class="question-textarea" id="question" placeholder="What\'s on your mind today?" rows="4"></textarea><button type="submit" class="submit-btn">Get My Reading</button></form><div id="reading-result"></div><div class="footer-links"><a href="#" id="manage-sub">Manage Subscription</a><a href="#" id="logout">Log Out</a></div></div>';
