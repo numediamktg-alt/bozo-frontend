@@ -403,21 +403,21 @@
             // ---- SECTION 2: Conditions (sentences from percentages, traffic light colors) ----
             // GREEN = strong, full flow. YELLOW = moderate, be selective. RED = refined, precise, concentrated.
             function ideaSentence(pct) {
-                if (pct >= 60) return { light: 'green', text: 'Ideas are flowing. Write them down, sketch them, record a voice memo. Capture everything before it fades.' };
-                if (pct >= 35) return { light: 'yellow', text: 'Some creative spark is there but not a flood. Work with ideas you already have rather than hunting for new ones.' };
-                if (pct >= 20) return { light: 'red', text: 'Creative signal is refined today, not scattered. You will have fewer ideas but sharper ones. Edit, polish, and perfect what you already have.' };
+                if (pct >= 55) return { light: 'green', text: 'Ideas are flowing. Write them down, sketch them, record a voice memo. Capture everything before it fades.' };
+                if (pct >= 25) return { light: 'yellow', text: 'Some creative spark is there but not a flood. Work with ideas you already have rather than hunting for new ones.' };
+                if (pct >= 12) return { light: 'red', text: 'Creative signal is refined today, not scattered. You will have fewer ideas but sharper ones. Edit, polish, and perfect what you already have.' };
                 return { light: 'red', text: 'Imagination is precise, not loud. This is the day your eye catches the detail everyone else misses. Sort photos, revisit old work, refine what matters.' };
             }
             function claritySentence(pct) {
-                if (pct >= 60) return { light: 'green', text: 'Your gut is sharp. If something feels right or wrong, it probably is. Make the call you have been sitting on.' };
-                if (pct >= 35) return { light: 'yellow', text: 'Your instincts are working but not loud. Slow down before deciding. Sleep on anything big.' };
-                if (pct >= 20) return { light: 'red', text: 'Inner signal is running narrow and focused. You may not see the big picture, but you will see the one thing that needs fixing.' };
+                if (pct >= 55) return { light: 'green', text: 'Your gut is sharp. If something feels right or wrong, it probably is. Make the call you have been sitting on.' };
+                if (pct >= 25) return { light: 'yellow', text: 'Your instincts are working but not loud. Slow down before deciding. Sleep on anything big.' };
+                if (pct >= 12) return { light: 'red', text: 'Inner signal is running narrow and focused. You may not see the big picture, but you will see the one thing that needs fixing.' };
                 return { light: 'red', text: 'Instincts are whispering, not shouting. Pay attention to the small signals. The quiet voice is often the most accurate one.' };
             }
             function actionSentence(pct) {
-                if (pct >= 60) return { light: 'green', text: 'You have real horsepower today. Tackle the hardest thing on your list first. You will get through it.' };
-                if (pct >= 35) return { light: 'yellow', text: 'Enough energy to move things forward if you pick your battles. Do two or three things well, not ten things badly.' };
-                if (pct >= 20) return { light: 'red', text: 'Drive is concentrated rather than wide. Pick one thing and do it with care. Precision work over brute force.' };
+                if (pct >= 55) return { light: 'green', text: 'You have real horsepower today. Tackle the hardest thing on your list first. You will get through it.' };
+                if (pct >= 25) return { light: 'yellow', text: 'Enough energy to move things forward if you pick your battles. Do two or three things well, not ten things badly.' };
+                if (pct >= 12) return { light: 'red', text: 'Drive is concentrated rather than wide. Pick one thing and do it with care. Precision work over brute force.' };
                 return { light: 'red', text: 'Energy favors the careful hand today. Small, deliberate moves. The kind of work that looks easy but requires real attention.' };
             }
 
