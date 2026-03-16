@@ -322,8 +322,12 @@ html, body {
 .lg-sub-html {
   color: rgba(230,225,215,0.95) !important;
   padding: 20px 32px !important; max-width: 740px !important;
+  width: 90% !important;
   margin: 0 auto !important; text-align: center !important;
   z-index: 1080 !important;
+  white-space: normal !important;
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
 }
 .lg-sub-html p {
   font-family: 'Cormorant Garamond', Georgia, serif !important;
@@ -332,6 +336,7 @@ html, body {
   color: rgba(230,225,215,0.95) !important;
   line-height: 1.8 !important;
   margin: 0 !important;
+  white-space: normal !important;
 }
 </style>
 </head>
@@ -504,7 +509,7 @@ html, body {
   });
 
   // ── Image URL helper (cache-bust to force new versions) ──
-  var cacheBust = 'v=20260316c';
+  var cacheBust = 'v=20260316d';
   function imageURL(filename) {
     return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
   }
