@@ -783,8 +783,9 @@
         <nav class="nav-pills">
             <a href="index.html">Home</a>
             <a href="ask.html" class="active">The Oracle</a>
+            <a href="the-board.html">The Board</a>
             <a href="bus.html">The DashBoard</a>
-            <a href="docs/BOZO_USERS_MANUAL_v3.pdf?v=2" target="_blank">Help</a>
+            <a href="how-it-works.html">How It Works</a>
         </nav>
     </header>
 
@@ -810,7 +811,7 @@
                         <div class="birth-field"><label>Hour</label><select id="b-hour"><option value="" disabled selected>Hr</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
                         <div class="birth-field"><label>Min</label><select id="b-min"><option value="0">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select></div>
                         <div class="birth-field"><label>AM/PM</label><select id="b-ampm"><option value="AM">AM</option><option value="PM">PM</option></select></div>
-                        <div class="birth-field"><label>Timezone</label><select id="b-tz"><option value="-5">EST</option><option value="-6">CST</option><option value="-7">MST</option><option value="-8">PST</option><option value="-9">AKST</option><option value="-10">HST</option><option value="0">GMT</option><option value="1">CET</option><option value="5.5">IST</option><option value="8">CST/SGT</option><option value="9">JST</option></select></div>
+                        <div class="birth-field"><label>Timezone</label><select id="b-tz"><option value="-5">EST</option><option value="-6">CST</option><option value="-7">MST</option><option value="-8">PST</option><option value="-9">AKST</option><option value="-10">HST</option><option value="0">GMT</option><option value="1">CET</option><option value="5.5">IST</option><option value="8">CST/SGT</option><option value="9">JST</option></select><span style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;display:block;">Standard time. If DST, add 1hr (e.g. EDT=UTC-4).</span></div>
                     </div>
                     <div class="birth-field" style="margin-bottom:12px;">
                         <label>Birthplace</label>
@@ -891,8 +892,8 @@
 
                 <!-- No-birth-data teaser for free users -->
                 <div class="resonance-teaser" id="resonance-teaser" style="display:none;">
-                    <p>The Oracle can predict your 3 most resonant photographs from the archive. Enter your birth data to see them.</p>
-                    <a href="bus.html" onclick="if(typeof gtag==='function')gtag('event','oracle_unlock_click')">Unlock Image Resonance</a>
+                    <p>The Oracle can predict your 3 most resonant photographs from the archive. Enter your birth data above to see them.</p>
+                    <a href="#" onclick="document.getElementById('birth-card').scrollIntoView({behavior:'smooth'});return false;">Enter Birth Data</a>
                 </div>
 
                 <!-- Dashboard Teaser -->
