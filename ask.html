@@ -775,7 +775,7 @@
                 <!-- No-birth-data teaser for free users -->
                 <div class="resonance-teaser" id="resonance-teaser" style="display:none;">
                     <p>The Oracle can predict your 3 most resonant photographs from the archive. Enter your birth data to see them.</p>
-                    <a href="bus.html">Unlock Image Resonance</a>
+                    <a href="bus.html" onclick="if(typeof gtag==='function')gtag('event','oracle_unlock_click')">Unlock Image Resonance</a>
                 </div>
 
                 <!-- Dashboard Teaser -->
@@ -935,6 +935,9 @@
             scoreCard.style.display = 'none';
             questionInput.value = '';
             charCount.textContent = '0';
+            document.getElementById('resonance-images').classList.remove('visible');
+            document.getElementById('resonance-image-list').innerHTML = '';
+            document.getElementById('resonance-teaser').style.display = 'none';
         }
 
         function renderReading(r) {
@@ -1000,6 +1003,16 @@
 
             if (r.resonant_images && r.resonant_images.length > 0) {
                 imgContainer.classList.add('visible');
+                /* GA: Track that images were shown */
+                if (typeof gtag === 'function') {
+                    gtag('event', 'oracle_images_shown', {
+                        image_1: r.resonant_images[0].filename,
+                        image_2: r.resonant_images[1] ? r.resonant_images[1].filename : '',
+                        image_3: r.resonant_images[2] ? r.resonant_images[2].filename : '',
+                        gallery_1: r.resonant_images[0].gallery_id,
+                        score_1: r.resonant_images[0].score
+                    });
+                }
                 var contactLabels = {
                     'ASC': 'Ascendant', 'MC': 'Midheaven', 'PoF': 'Part of Fortune', 'Moon': 'Moon',
                     'Sun': 'Sun', 'Venus': 'Venus', 'Mars': 'Mars', 'Mercury': 'Mercury',
@@ -1019,7 +1032,7 @@
                         + '<div class="resonance-image-meta">'
                         + '<span class="resonance-gallery-name">' + img.gallery_name + '</span>'
                         + '<span class="resonance-contact">' + contactText + '</span>'
-                        + '<a href="' + img.page_url + '" class="resonance-gallery-link" target="_blank">View gallery</a>'
+                        + '<a href="' + img.page_url + '" class="resonance-gallery-link" target="_blank" onclick="if(typeof gtag===\'function\')gtag(\'event\',\'oracle_gallery_click\',{image:\'' + img.filename + '\',gallery:\'' + img.gallery_id + '\',rank:' + (idx+1) + '})">View gallery</a>'
                         + '</div>';
                     imgList.appendChild(card);
                     setTimeout(function() { card.classList.add('revealed'); }, 800 + (idx * 600));
