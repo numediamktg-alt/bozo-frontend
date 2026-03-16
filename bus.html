@@ -607,6 +607,21 @@
             if(sim>=75){gA='active';lab='Signals broadly align';}else if(sim>=50){yA='active';lab='Mixed signals';}else{rA='active';lab='Signals conflict';}
             var html = '<div class="card quote-card" style="margin-top:24px;"><div class="quote-text">"'+r.quote+'"</div><div class="quote-date">Written '+r.quote_date+'</div><div class="traffic-row"><div class="traffic-lights"><div class="traffic-light red '+rA+'"></div><div class="traffic-light yellow '+yA+'"></div><div class="traffic-light green '+gA+'"></div></div><div class="traffic-info"><div class="traffic-label">'+lab+'</div><div class="traffic-pct">'+pct+'% resonance</div></div><div class="traffic-disclaimer">Signal alignment reflects resonance between question and quote, not accuracy or advice.</div></div></div>';
             if (r.interpretation) { html += '<div class="card interpretation-card"><div class="interpretation-header"><span class="interpretation-avatar">&#128202;</span><span class="interpretation-name">The DashBoard&#8482;</span></div><div class="interpretation-text">' + r.interpretation.replace(/\n/g,'<br>') + '</div></div>'; }
+            /* Oracle Image Resonance - 3 photographs */
+            if (r.resonant_images && r.resonant_images.length > 0) {
+                var contactLabels = {'ASC':'Ascendant','MC':'Midheaven','PoF':'Part of Fortune','Moon':'Moon','Sun':'Sun','Venus':'Venus','Mars':'Mars','Mercury':'Mercury','Jupiter':'Jupiter','Saturn':'Saturn','Uranus':'Uranus','Neptune':'Neptune','Pluto':'Pluto'};
+                html += '<div style="text-align:center;padding:24px 0 16px;border-top:1px solid var(--border);margin-top:24px;"><h3 style="font-family:Caveat,cursive;font-size:1.5rem;color:var(--purple);margin-bottom:4px;">These three prints were made for your sky</h3><p style="font-size:0.8rem;color:var(--text-dim);">Selected by H3 trine resonance with your birth chart</p></div>';
+                r.resonant_images.forEach(function(img) {
+                    var ct = '';
+                    if (img.best_contact) { ct = (contactLabels[img.best_contact.transit]||img.best_contact.transit) + ' trine your ' + (contactLabels[img.best_contact.natal]||img.best_contact.natal); }
+                    html += '<div style="margin-bottom:20px;"><img src="'+img.image_url+'" style="width:100%;border-radius:8px;" loading="lazy" alt="Oracle pick from '+img.gallery_name+'"><div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:8px;padding:0 4px;"><span style="font-size:0.8rem;color:var(--text-dim);">'+img.gallery_name+'</span><span style="font-size:0.75rem;color:var(--purple);font-style:italic;">'+ct+'</span><a href="'+img.page_url+'" target="_blank" style="font-size:0.8rem;color:var(--text-muted);text-decoration:none;">View gallery</a></div></div>';
+                });
+                /* Vote UI */
+                if (r.reading_id) {
+                    html += '<div style="text-align:center;padding:16px 0;border-top:1px solid var(--border);" id="bus-vote-area"><p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:12px;">Was your favorite among these three?</p><div style="display:flex;justify-content:center;gap:12px;"><button onclick="busVote(\'hit\','+r.reading_id+')" style="padding:10px 24px;border-radius:8px;border:1px solid var(--green);background:var(--bg-card);color:var(--green);cursor:pointer;font-size:0.9rem;" id="bus-vote-hit">Yes</button><button onclick="busVote(\'miss\','+r.reading_id+')" style="padding:10px 24px;border-radius:8px;border:1px solid var(--orange);background:var(--bg-card);color:var(--orange);cursor:pointer;font-size:0.9rem;" id="bus-vote-miss">No</button></div><div id="bus-vote-result" style="margin-top:10px;font-size:0.85rem;"></div></div>';
+                }
+                if (typeof gtag === 'function') { gtag('event', 'oracle_images_shown', { image_1: r.resonant_images[0].filename, source: 'dashboard' }); }
+            }
             if (r.conditions) html += renderConditions(r.conditions, userNatal);
             return html;
         }
@@ -639,6 +654,20 @@
                 md.addEventListener('click', function(e) { if (e.target === md) { md.classList.remove('active'); ifr.src = ''; } });
                 document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && md.classList.contains('active')) { md.classList.remove('active'); ifr.src = ''; } });
             }
+        }
+
+        async function busVote(voteType, readingId) {
+            var email = localStorage.getItem('bozo_email') || '';
+            if (!email) return;
+            document.getElementById('bus-vote-hit').disabled = true;
+            document.getElementById('bus-vote-miss').disabled = true;
+            try {
+                await fetch(API_BASE + '/api/vote', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email: email, reading_id: readingId, vote_type: voteType }) });
+                var el = document.getElementById('bus-vote-result');
+                if (voteType === 'hit') { el.textContent = 'Recorded. Your vote goes Up On The Board.'; el.style.color = 'var(--green)'; }
+                else { el.textContent = 'Noted. Browse the galleries and find yours.'; el.style.color = 'var(--orange)'; }
+                if (typeof gtag === 'function') { gtag('event', 'oracle_vote', { vote_type: voteType, reading_id: readingId, source: 'dashboard' }); }
+            } catch(e) { document.getElementById('bus-vote-hit').disabled = false; document.getElementById('bus-vote-miss').disabled = false; }
         }
 
         document.addEventListener('DOMContentLoaded', function() { initBusPage(); setupVideoPopup(); });
