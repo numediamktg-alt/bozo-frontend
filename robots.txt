@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://thisoldhippie.com/sitemap.xml
+Sitemap: https://thisoldhippie.com/image-sitemap.xml
