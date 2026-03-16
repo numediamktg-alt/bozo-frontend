@@ -321,11 +321,11 @@ html, body {
 }
 .lg-sub-html {
   font-family: 'Cormorant Garamond', Georgia, serif !important;
-  font-size: clamp(0.85rem, 1.4vw, 1.05rem) !important;
+  font-size: clamp(1.05rem, 2vw, 1.35rem) !important;
   font-weight: 300 !important; font-style: italic !important;
-  color: rgba(200,195,185,0.8) !important;
-  padding: 12px 24px !important; max-width: 680px !important;
-  margin: 0 auto !important; text-align: center !important; line-height: 1.6 !important;
+  color: rgba(220,215,205,0.9) !important;
+  padding: 16px 28px !important; max-width: 720px !important;
+  margin: 0 auto !important; text-align: center !important; line-height: 1.7 !important;
 }
 </style>
 </head>
@@ -392,8 +392,9 @@ html, body {
 
   var CAPTIONS = {
     'L9523923.jpg': 'The lobby. Leather chairs, gold records behind glass, photographs from the Robert Altman retrospective. The first time the public had been inside this building in 35 years.',
-    'L9523925.jpg': 'Drag shutter portrait. The motion is the technique. These rooms were not built to be seen clearly. They were built to be felt.',
-    'L9523929.jpg': 'Michael Indelicato bought the Record Plant to save it from becoming a self-storage unit. This was his night.',
+    'L9523924.jpg': 'Robert Altman. Photographer of the Summer of Love. His retrospective had drawn 600 people the night before. We talked shop, two photographers with similar shooting styles.',
+    'L9523925.jpg': 'Robert Altman in drag shutter. The motion is the technique. These rooms were not built to be seen clearly. They were built to be felt.',
+    'L9523929.jpg': 'Robert Altman. The man who documented the counterculture from the inside. His photographs of the Summer of Love were hanging on the walls behind him, forty years later.',
     'L9523940.jpg': 'Movement through the hallways. Half-second exposure, available light only. What your eye actually sees in a room lit by history.',
     'L9523945.jpg': 'Two worlds meeting. The people who were there in 1967 and the people who came to remember them, forty years later.',
     'L9523950.jpg': 'The party finding its rhythm. The Plant had never been open to the public before this weekend.',
@@ -497,7 +498,7 @@ html, body {
   });
 
   // ── Image URL helper (cache-bust to force new versions) ──
-  var cacheBust = 'v=20260316';
+  var cacheBust = 'v=20260316b';
   function imageURL(filename) {
     return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
   }
