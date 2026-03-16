@@ -1298,21 +1298,22 @@
 
         async function submitVote(voteType) {
             var email = localStorage.getItem('bozo_email') || '';
-            if (!email || !currentReadingId) return;
+            var birth = getSavedBirth();
+            var visitorHash = birth ? 'v-' + birth.birth_year + '-' + birth.birth_month + '-' + birth.birth_day + '-' + Math.round(birth.birth_hour * 100) : '';
+            if ((!email && !visitorHash) || !currentReadingId) return;
             var hitBtn = document.getElementById('vote-hit-btn');
             var missBtn = document.getElementById('vote-miss-btn');
             var resultEl = document.getElementById('vote-result');
             hitBtn.disabled = true;
             missBtn.disabled = true;
             try {
+                var voteBody = { reading_id: currentReadingId, vote_type: voteType };
+                if (email) voteBody.email = email;
+                else voteBody.visitor_hash = visitorHash;
                 var res = await fetch(API_BASE + '/api/vote', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        email: email,
-                        reading_id: currentReadingId,
-                        vote_type: voteType
-                    })
+                    body: JSON.stringify(voteBody)
                 });
                 var data = await res.json();
                 resultEl.style.display = 'block';

@@ -296,7 +296,28 @@
             try {
                 const status = await getUserStatus(email);
                 if (!status.is_active) { showSubscribePrompt(container, email); return; }
-                if (!status.has_birth_data) { showBirthDataForm(container, email); }
+                if (!status.has_birth_data) {
+                    /* Check if birth data was already entered on the Oracle (ask.html) */
+                    var oracleBirth = localStorage.getItem('oracle_birth');
+                    if (oracleBirth) {
+                        try {
+                            var bd = JSON.parse(oracleBirth);
+                            await updateUser({
+                                email: email,
+                                name: 'Passenger',
+                                birth_year: bd.birth_year,
+                                birth_month: bd.birth_month,
+                                birth_day: bd.birth_day,
+                                birth_hour: bd.birth_hour,
+                                birth_latitude: bd.birth_latitude,
+                                birth_longitude: bd.birth_longitude
+                            });
+                            initBusPage();
+                            return;
+                        } catch(te) { /* fall through to manual form */ }
+                    }
+                    showBirthDataForm(container, email);
+                }
                 else { showSubscriberDashboard(container, email, status); }
             } catch (e) { showSubscribePrompt(container, email); }
         }
@@ -361,6 +382,15 @@
                         birth_latitude: lat,
                         birth_longitude: lon
                     });
+                    /* Sync to oracle_birth so ask.html picks it up too */
+                    localStorage.setItem('oracle_birth', JSON.stringify({
+                        birth_year: parseInt(f.birth_year.value),
+                        birth_month: parseInt(f.birth_month.value),
+                        birth_day: parseInt(f.birth_day.value),
+                        birth_hour: utcDecimal,
+                        birth_latitude: lat,
+                        birth_longitude: lon
+                    }));
                     initBusPage();
                 } catch (err) {
                     statusEl.textContent = 'Error looking up location. Please try again.';
