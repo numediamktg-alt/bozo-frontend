@@ -300,6 +300,42 @@
             text-decoration: none;
             font-weight: 500;
         }
+        .resonance-vote {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+        }
+        .resonance-vote.visible { display: block; }
+        .resonance-vote p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 14px;
+        }
+        .vote-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+        }
+        .vote-btn {
+            padding: 10px 28px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text);
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .vote-btn:hover { border-color: var(--purple); }
+        .vote-btn.hit { border-color: var(--green); color: var(--green); }
+        .vote-btn.miss { border-color: var(--orange); color: var(--orange); }
+        .vote-btn:disabled { opacity: 0.5; cursor: default; }
+        .vote-result {
+            color: var(--green);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
 
         /* Quote Card */
         .quote-card {
@@ -770,6 +806,14 @@
                         <p>Selected by H3 trine resonance between this moment and your birth chart</p>
                     </div>
                     <div id="resonance-image-list"></div>
+                    <div class="resonance-vote" id="resonance-vote">
+                        <p>Was your favorite among these three?</p>
+                        <div class="vote-buttons">
+                            <button class="vote-btn hit" id="vote-hit-btn" onclick="submitVote('hit')">Yes - the Oracle was right</button>
+                            <button class="vote-btn miss" id="vote-miss-btn" onclick="submitVote('miss')">No - my favorite is elsewhere</button>
+                        </div>
+                        <div class="vote-result" id="vote-result" style="display:none;"></div>
+                    </div>
                 </div>
 
                 <!-- No-birth-data teaser for free users -->
@@ -938,6 +982,11 @@
             document.getElementById('resonance-images').classList.remove('visible');
             document.getElementById('resonance-image-list').innerHTML = '';
             document.getElementById('resonance-teaser').style.display = 'none';
+            document.getElementById('resonance-vote').classList.remove('visible');
+            document.getElementById('vote-result').style.display = 'none';
+            document.getElementById('vote-hit-btn').disabled = false;
+            document.getElementById('vote-miss-btn').disabled = false;
+            currentReadingId = null;
         }
 
         function renderReading(r) {
@@ -1003,6 +1052,7 @@
 
             if (r.resonant_images && r.resonant_images.length > 0) {
                 imgContainer.classList.add('visible');
+                currentReadingId = r.reading_id || null;
                 /* GA: Track that images were shown */
                 if (typeof gtag === 'function') {
                     gtag('event', 'oracle_images_shown', {
@@ -1037,6 +1087,12 @@
                     imgList.appendChild(card);
                     setTimeout(function() { card.classList.add('revealed'); }, 800 + (idx * 600));
                 });
+                /* Show vote UI after last image reveals */
+                if (currentReadingId) {
+                    setTimeout(function() {
+                        document.getElementById('resonance-vote').classList.add('visible');
+                    }, 800 + (r.resonant_images.length * 600) + 400);
+                }
             } else if (r.is_personalized === false) {
                 imgTeaser.style.display = 'block';
             }
@@ -1064,6 +1120,44 @@
                     updateConditions(c);
                 }
             } catch (e) {}
+        }
+
+        var currentReadingId = null;
+
+        async function submitVote(voteType) {
+            var email = localStorage.getItem('bozo_email') || '';
+            if (!email || !currentReadingId) return;
+            var hitBtn = document.getElementById('vote-hit-btn');
+            var missBtn = document.getElementById('vote-miss-btn');
+            var resultEl = document.getElementById('vote-result');
+            hitBtn.disabled = true;
+            missBtn.disabled = true;
+            try {
+                var res = await fetch(API_BASE + '/api/vote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: email,
+                        reading_id: currentReadingId,
+                        vote_type: voteType
+                    })
+                });
+                var data = await res.json();
+                resultEl.style.display = 'block';
+                if (voteType === 'hit') {
+                    resultEl.textContent = 'Recorded. Your vote goes Up On The Board.';
+                    resultEl.style.color = 'var(--green)';
+                } else {
+                    resultEl.textContent = 'Noted. Browse the galleries and find the one that speaks to you.';
+                    resultEl.style.color = 'var(--orange)';
+                }
+                if (typeof gtag === 'function') {
+                    gtag('event', 'oracle_vote', { vote_type: voteType, reading_id: currentReadingId });
+                }
+            } catch (err) {
+                hitBtn.disabled = false;
+                missBtn.disabled = false;
+            }
         }
 
         loadConditions();

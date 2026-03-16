@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-7B7R3WVPJW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-7B7R3WVPJW');
+    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Board | Oracle Image Resonance</title>
+    <meta name="description" content="Can planetary harmonics predict which photograph you'll love? The Oracle's public scoreboard. Live results, transparent methodology.">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0d0d14;
+            --bg-card: #16161f;
+            --border: rgba(255,255,255,0.08);
+            --purple: #8b5cf6;
+            --green: #22c55e;
+            --orange: #f97316;
+            --text: #f1f1f1;
+            --text-muted: #a1a1aa;
+            --text-dim: #71717a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--purple), var(--orange));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .nav-link:hover { color: var(--text); }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            font-family: 'Caveat', cursive;
+            font-size: 2.4rem;
+            font-weight: 500;
+            color: var(--purple);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .subtitle {
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-bottom: 40px;
+        }
+        .big-number {
+            text-align: center;
+            padding: 40px 0;
+        }
+        .big-number .pct {
+            font-size: 5rem;
+            font-weight: 700;
+            color: var(--green);
+            line-height: 1;
+        }
+        .big-number .label {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 32px 0;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .stat-card .num {
+            font-size: 2rem;
+            font-weight: 600;
+        }
+        .stat-card .lbl {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 40px 0 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .challenge {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px;
+            text-align: center;
+            margin: 32px 0;
+        }
+        .challenge p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+        }
+        .challenge a {
+            display: inline-block;
+            padding: 12px 32px;
+            background: var(--purple);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.2s;
+        }
+        .challenge a:hover { opacity: 0.85; }
+        .method-link {
+            text-align: center;
+            margin: 24px 0;
+        }
+        .method-link a {
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            text-decoration: none;
+            border-bottom: 1px dashed var(--text-dim);
+        }
+        .method-link a:hover { color: var(--purple); border-color: var(--purple); }
+        .loading { color: var(--text-dim); text-align: center; padding: 40px; }
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-dim);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+        @media (max-width: 600px) {
+            .stats-row { grid-template-columns: 1fr; }
+            .big-number .pct { font-size: 3.5rem; }
+            .header { padding: 16px 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo">
+            <div class="logo-icon">&#128652;</div>
+            ThisOldHippie
+        </a>
+        <a href="ask.html" class="nav-link">Ask the Oracle</a>
+    </header>
+
+    <div class="container">
+        <h1>The Board</h1>
+        <p class="subtitle">Oracle Image Resonance System - Live Results</p>
+
+        <div class="big-number">
+            <div class="pct" id="accuracy-pct">...</div>
+            <div class="label">The Oracle has been right <span id="accuracy-fraction"></span> of the time</div>
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="num" id="total-readings">-</div>
+                <div class="lbl">Readings given</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="total-votes">-</div>
+                <div class="lbl">Votes cast</div>
+            </div>
+            <div class="stat-card">
+                <div class="num" id="total-hits">-</div>
+                <div class="lbl">Confirmed hits</div>
+            </div>
+        </div>
+
+        <div class="challenge">
+            <p>The Oracle predicts your 3 most resonant photographs from a 197-image archive of the Summer of Love and the Sausalito Art Festival, 2007. Is your favorite among them?</p>
+            <a href="ask.html">Test the Oracle</a>
+        </div>
+
+        <div class="method-link">
+            <a href="how-it-works.html">How does this work? Read the full algorithm</a>
+        </div>
+
+        <div class="loading" id="loading">Loading board data...</div>
+    </div>
+
+    <footer>
+        <strong>ThisOldHippie.com</strong><br>
+        &copy; 2026 Charles P. Jones<br>
+        <span style="margin-top:4px;display:inline-block;">Oracle Image Resonance System v1.0.0 - <a href="how-it-works.html" style="color:var(--text-dim);">Algorithm</a></span>
+    </footer>
+
+    <script>
+        const API_BASE = 'https://bozo-oracle-production.up.railway.app';
+
+        async function loadBoard() {
+            try {
+                const res = await fetch(API_BASE + '/api/board');
+                if (!res.ok) throw new Error('Failed');
+                const data = await res.json();
+
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('total-readings').textContent = data.total_readings;
+                document.getElementById('total-votes').textContent = data.total_votes;
+                document.getElementById('total-hits').textContent = data.hits;
+
+                if (data.total_votes > 0) {
+                    document.getElementById('accuracy-pct').textContent = data.accuracy_pct;
+                    document.getElementById('accuracy-fraction').textContent = data.hits + ' out of ' + data.total_votes + ' readings';
+                } else {
+                    document.getElementById('accuracy-pct').textContent = '...';
+                    document.getElementById('accuracy-fraction').textContent = 'no votes yet - be the first';
+                }
+            } catch (e) {
+                document.getElementById('loading').textContent = 'Could not load board data.';
+            }
+        }
+
+        loadBoard();
+    </script>
+</body>
+</html>
