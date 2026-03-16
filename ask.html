@@ -226,6 +226,81 @@
         .reading-container { display: none; }
         .reading-container.visible { display: flex; flex-direction: column; gap: 24px; }
 
+        /* Oracle Image Resonance Display */
+        .resonance-images { display: none; }
+        .resonance-images.visible { display: flex; flex-direction: column; gap: 0; }
+        .resonance-header {
+            text-align: center;
+            padding: 32px 0 24px;
+            border-top: 1px solid var(--border);
+        }
+        .resonance-header h3 {
+            font-family: 'Caveat', cursive;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: var(--purple);
+            margin-bottom: 6px;
+        }
+        .resonance-header p {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+        }
+        .resonance-image-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            padding: 0 0 28px;
+        }
+        .resonance-image-card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .resonance-image-card img {
+            width: 100%;
+            border-radius: 8px;
+            display: block;
+        }
+        .resonance-image-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-top: 10px;
+            padding: 0 4px;
+        }
+        .resonance-gallery-name {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+        }
+        .resonance-contact {
+            font-size: 0.75rem;
+            color: var(--purple);
+            font-style: italic;
+        }
+        .resonance-gallery-link {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .resonance-gallery-link:hover { color: var(--purple); }
+        .resonance-teaser {
+            text-align: center;
+            padding: 24px;
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            margin-top: 8px;
+        }
+        .resonance-teaser p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+        }
+        .resonance-teaser a {
+            color: var(--purple);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
         /* Quote Card */
         .quote-card {
             background: linear-gradient(135deg, #1a1a24 0%, #1f1f2e 100%);
@@ -688,6 +763,21 @@
                     <p class="disclaimer">Signal alignment reflects resonance between question and quote, not accuracy or advice.</p>
                 </div>
 
+                <!-- Oracle Image Resonance: 3 Photographs -->
+                <div class="resonance-images" id="resonance-images">
+                    <div class="resonance-header">
+                        <h3>These three prints were made for your sky</h3>
+                        <p>Selected by H3 trine resonance between this moment and your birth chart</p>
+                    </div>
+                    <div id="resonance-image-list"></div>
+                </div>
+
+                <!-- No-birth-data teaser for free users -->
+                <div class="resonance-teaser" id="resonance-teaser" style="display:none;">
+                    <p>The Oracle can predict your 3 most resonant photographs from the archive. Enter your birth data to see them.</p>
+                    <a href="bus.html">Unlock Image Resonance</a>
+                </div>
+
                 <!-- Dashboard Teaser -->
                 <div class="card interpretation-card animate-in" style="animation-delay: 0.2s;">
                     <div class="interpretation-header">
@@ -810,10 +900,11 @@
             loadingState.style.display = 'block';
 
             try {
+                const email = localStorage.getItem('bozo_email') || '';
                 const response = await fetch(`${API_BASE}/api/reading`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question })
+                    body: JSON.stringify({ question, email: email || undefined })
                 });
 
                 if (!response.ok) throw new Error('Failed');
@@ -897,6 +988,44 @@
             // Update conditions if available
             if (r.conditions) {
                 updateConditions(r.conditions);
+            }
+
+            // Oracle Image Resonance
+            var imgContainer = document.getElementById('resonance-images');
+            var imgList = document.getElementById('resonance-image-list');
+            var imgTeaser = document.getElementById('resonance-teaser');
+            imgContainer.classList.remove('visible');
+            imgTeaser.style.display = 'none';
+            imgList.innerHTML = '';
+
+            if (r.resonant_images && r.resonant_images.length > 0) {
+                imgContainer.classList.add('visible');
+                var contactLabels = {
+                    'ASC': 'Ascendant', 'MC': 'Midheaven', 'PoF': 'Part of Fortune', 'Moon': 'Moon',
+                    'Sun': 'Sun', 'Venus': 'Venus', 'Mars': 'Mars', 'Mercury': 'Mercury',
+                    'Jupiter': 'Jupiter', 'Saturn': 'Saturn', 'Uranus': 'Uranus',
+                    'Neptune': 'Neptune', 'Pluto': 'Pluto'
+                };
+                r.resonant_images.forEach(function(img, idx) {
+                    var card = document.createElement('div');
+                    card.className = 'resonance-image-card';
+                    var contactText = '';
+                    if (img.best_contact) {
+                        var tr = contactLabels[img.best_contact.transit] || img.best_contact.transit;
+                        var nt = contactLabels[img.best_contact.natal] || img.best_contact.natal;
+                        contactText = tr + ' trine your ' + nt;
+                    }
+                    card.innerHTML = '<img src="' + img.image_url + '" alt="Oracle resonance image #' + (idx+1) + ' from ' + img.gallery_name + '" loading="lazy">'
+                        + '<div class="resonance-image-meta">'
+                        + '<span class="resonance-gallery-name">' + img.gallery_name + '</span>'
+                        + '<span class="resonance-contact">' + contactText + '</span>'
+                        + '<a href="' + img.page_url + '" class="resonance-gallery-link" target="_blank">View gallery</a>'
+                        + '</div>';
+                    imgList.appendChild(card);
+                    setTimeout(function() { card.classList.add('revealed'); }, 800 + (idx * 600));
+                });
+            } else if (r.is_personalized === false) {
+                imgTeaser.style.display = 'block';
             }
         }
 
