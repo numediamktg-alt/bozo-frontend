@@ -222,6 +222,51 @@
             transform: none;
         }
 
+        /* Birth Data Form (free, no subscription required) */
+        .birth-card { padding: 24px; }
+        .birth-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+        .birth-card .birth-intro { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
+        .birth-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .birth-row-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+        .birth-field select, .birth-field input {
+            width: 100%;
+            padding: 10px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 0.85rem;
+            font-family: inherit;
+        }
+        .birth-field label {
+            display: block;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+        }
+        .birth-save-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            font-family: inherit;
+            margin-top: 4px;
+        }
+        .birth-save-btn:hover { opacity: 0.85; }
+        .birth-saved {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-align: center;
+            padding: 12px;
+        }
+        .birth-saved a { color: var(--purple); cursor: pointer; text-decoration: none; }
+        .birth-status { font-size: 0.75rem; margin-top: 4px; }
+
         /* Reading Result */
         .reading-container { display: none; }
         .reading-container.visible { display: flex; flex-direction: column; gap: 24px; }
@@ -748,7 +793,35 @@
             <!-- Hero -->
             <div class="card hero-card" id="hero-card">
                 <h1 class="hero-title">The Oracle</h1>
-                <p class="hero-subtitle">@ Bozo on the Bus™ — The bus pulled up. What's on your mind?</p>
+                <p class="hero-subtitle">@ Bozo on the Bus - The bus pulled up. What's on your mind?</p>
+            </div>
+
+            <!-- Birth Data (free, stored in localStorage) -->
+            <div class="card birth-card" id="birth-card">
+                <h3>Your Birth Data</h3>
+                <p class="birth-intro">The Oracle uses your birth chart to predict which 3 photographs will resonate with you. Free. No signup.</p>
+                <div id="birth-form-area">
+                    <div class="birth-row">
+                        <div class="birth-field"><label>Month</label><select id="b-month"><option value="" disabled selected>Month</option><option value="1">January</option><option value="2">February</option><option value="3">March</option><option value="4">April</option><option value="5">May</option><option value="6">June</option><option value="7">July</option><option value="8">August</option><option value="9">September</option><option value="10">October</option><option value="11">November</option><option value="12">December</option></select></div>
+                        <div class="birth-field"><label>Day</label><input type="number" id="b-day" placeholder="Day" min="1" max="31"></div>
+                        <div class="birth-field"><label>Year</label><input type="number" id="b-year" placeholder="Year" min="1900" max="2025"></div>
+                    </div>
+                    <div class="birth-row-4">
+                        <div class="birth-field"><label>Hour</label><select id="b-hour"><option value="" disabled selected>Hr</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
+                        <div class="birth-field"><label>Min</label><select id="b-min"><option value="0">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select></div>
+                        <div class="birth-field"><label>AM/PM</label><select id="b-ampm"><option value="AM">AM</option><option value="PM">PM</option></select></div>
+                        <div class="birth-field"><label>Timezone</label><select id="b-tz"><option value="-5">EST</option><option value="-6">CST</option><option value="-7">MST</option><option value="-8">PST</option><option value="-9">AKST</option><option value="-10">HST</option><option value="0">GMT</option><option value="1">CET</option><option value="5.5">IST</option><option value="8">CST/SGT</option><option value="9">JST</option></select></div>
+                    </div>
+                    <div class="birth-field" style="margin-bottom:12px;">
+                        <label>Birthplace</label>
+                        <input type="text" id="b-location" placeholder="City, State (or City, Country)">
+                        <div class="birth-status" id="b-status"></div>
+                    </div>
+                    <button class="birth-save-btn" id="b-save" onclick="saveBirthData()">Save and Continue</button>
+                </div>
+                <div id="birth-saved-area" style="display:none;">
+                    <div class="birth-saved">Birth data saved. <a onclick="showBirthForm()">Change</a></div>
+                </div>
             </div>
 
             <!-- Question Input -->
@@ -916,6 +989,92 @@
     <script>
         const API_BASE = 'https://bozo-oracle-production.up.railway.app';
 
+        /* Birth Data - free, stored in localStorage */
+        function getSavedBirth() {
+            var d = localStorage.getItem('oracle_birth');
+            return d ? JSON.parse(d) : null;
+        }
+
+        async function saveBirthData() {
+            var month = document.getElementById('b-month').value;
+            var day = document.getElementById('b-day').value;
+            var year = document.getElementById('b-year').value;
+            var hour = document.getElementById('b-hour').value;
+            var min = document.getElementById('b-min').value;
+            var ampm = document.getElementById('b-ampm').value;
+            var tz = parseFloat(document.getElementById('b-tz').value);
+            var loc = document.getElementById('b-location').value.trim();
+            var status = document.getElementById('b-status');
+            var btn = document.getElementById('b-save');
+
+            if (!month || !day || !year || !hour || !loc) {
+                status.textContent = 'Please fill in all fields.';
+                status.style.color = '#ef4444';
+                return;
+            }
+
+            btn.textContent = 'Looking up birthplace...';
+            btn.disabled = true;
+
+            var h = parseInt(hour);
+            if (ampm === 'PM' && h !== 12) h += 12;
+            if (ampm === 'AM' && h === 12) h = 0;
+            var localDecimal = h + (parseInt(min) / 60);
+            var utcDecimal = localDecimal - tz;
+            if (utcDecimal < 0) utcDecimal += 24;
+            if (utcDecimal >= 24) utcDecimal -= 24;
+
+            try {
+                var geoRes = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc) + '&format=json&limit=1', { headers: { 'User-Agent': 'ThisOldHippie.com Oracle' } });
+                var geoData = await geoRes.json();
+                if (!geoData || geoData.length === 0) {
+                    status.textContent = 'Could not find that location. Try "City, State" or "City, Country".';
+                    status.style.color = '#ef4444';
+                    btn.textContent = 'Save and Continue';
+                    btn.disabled = false;
+                    return;
+                }
+                var lat = parseFloat(geoData[0].lat);
+                var lon = parseFloat(geoData[0].lon);
+                status.textContent = 'Found: ' + geoData[0].display_name.substring(0, 60);
+                status.style.color = '#22c55e';
+
+                var birthData = {
+                    birth_year: parseInt(year),
+                    birth_month: parseInt(month),
+                    birth_day: parseInt(day),
+                    birth_hour: utcDecimal,
+                    birth_latitude: lat,
+                    birth_longitude: lon,
+                    display: month + '/' + day + '/' + year
+                };
+                localStorage.setItem('oracle_birth', JSON.stringify(birthData));
+                document.getElementById('birth-form-area').style.display = 'none';
+                document.getElementById('birth-saved-area').style.display = 'block';
+            } catch (err) {
+                status.textContent = 'Error looking up location. Try again.';
+                status.style.color = '#ef4444';
+                btn.textContent = 'Save and Continue';
+                btn.disabled = false;
+            }
+        }
+
+        function showBirthForm() {
+            document.getElementById('birth-form-area').style.display = 'block';
+            document.getElementById('birth-saved-area').style.display = 'none';
+            document.getElementById('b-save').textContent = 'Save and Continue';
+            document.getElementById('b-save').disabled = false;
+        }
+
+        /* On page load: check for saved birth data */
+        (function() {
+            var saved = getSavedBirth();
+            if (saved) {
+                document.getElementById('birth-form-area').style.display = 'none';
+                document.getElementById('birth-saved-area').style.display = 'block';
+            }
+        })();
+
         // Elements
         const questionInput = document.getElementById('question-input');
         const charCount = document.getElementById('char-count');
@@ -940,15 +1099,27 @@
             // Show loading
             heroCard.style.display = 'none';
             questionCard.style.display = 'none';
+            document.getElementById('birth-card').style.display = 'none';
             readingContainer.classList.remove('visible');
             loadingState.style.display = 'block';
 
             try {
                 const email = localStorage.getItem('bozo_email') || '';
+                var birth = getSavedBirth();
+                var body = { question: question };
+                if (email) body.email = email;
+                if (birth) {
+                    body.birth_year = birth.birth_year;
+                    body.birth_month = birth.birth_month;
+                    body.birth_day = birth.birth_day;
+                    body.birth_hour = birth.birth_hour;
+                    body.birth_latitude = birth.birth_latitude;
+                    body.birth_longitude = birth.birth_longitude;
+                }
                 const response = await fetch(`${API_BASE}/api/reading`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question, email: email || undefined })
+                    body: JSON.stringify(body)
                 });
 
                 if (!response.ok) throw new Error('Failed');
@@ -974,6 +1145,7 @@
         function resetForm() {
             heroCard.style.display = 'block';
             questionCard.style.display = 'block';
+            document.getElementById('birth-card').style.display = 'block';
             loadingState.style.display = 'none';
             readingContainer.classList.remove('visible');
             scoreCard.style.display = 'none';
