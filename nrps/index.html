@@ -638,7 +638,7 @@ html, body {
       })
       .catch(function(e) {
         console.error('Could not load manifest:', e);
-        $loading.querySelector('.spinner').style.background = '#8a3030';
+        $loading.classList.add('hidden');
       });
   }
 
