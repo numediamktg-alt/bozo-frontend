@@ -137,7 +137,7 @@
 <p style="color:var(--text-muted);margin:10px 0;line-height:1.7;">The Midheaven (MC), the degree of the zodiac at the top of the sky, moves at a similar rate.</p>
 <p style="color:var(--text-muted);margin:10px 0;line-height:1.7;">The Part of Fortune (PoF), an ancient Arabic calculated point defined as ASC + Moon - Sun, combines the Ascendant's speed with the Moon's slower drift, creating a third high-velocity variable with its own unique trajectory.</p>
 <p style="color:var(--text-muted);margin:10px 0;line-height:1.7;">These three fast-movers (ASC, MC, PoF) provide the "seconds hand" that the planets cannot. Every image taken even 4 minutes apart has a measurably different Ascendant. In the third harmonic (H3), the Ascendant moves 45 arc-minutes per minute of clock time. Two images shot 2 minutes apart have H3 Ascendants that differ by 1.5 degrees. That is enough to change which natal planet is being aspected.</p>
-<p style="color:var(--text-muted);margin:10px 0;line-height:1.7;"><strong>Credit:</strong> This insight came from a Gemini Deep Research report commissioned March 16, 2026: "Harmonic Temporal Differentiation and the Architecture of Aesthetic Resonance: High-Resolution Astrological Fingerprinting for Short-Interval Photographic Events."</p>
+
 <h3 style="font-size:1.15rem;font-weight:600;margin:28px 0 10px;">Why The Third Harmonic (H3)</h3>
 <p style="color:var(--text-muted);margin:10px 0;line-height:1.7;">The harmonic number determines what KIND of resonance is being measured.</p>
 <p style="color:var(--text-muted);margin:4px 0 4px 20px;">&bull; <strong>H1 (Conjunction):</strong> Identity, raw force, direct connection</p>
@@ -222,19 +222,6 @@ amplitude = exp(-(deviation^2) / (2 * orb^2))
 <p style="color:var(--text-muted);margin:4px 0 4px 20px;">&bull; All EXIF verified: DateTimeOriginal, Artist, Copyright present on every image</p>
 <p style="color:var(--text-muted);margin:4px 0 4px 20px;">&bull; Camera timezone corrections: Leica M8 on CDT (UTC-5), subtract 2h for PDT. Leaf Aptus on CET (UTC+1), subtract 8h for PDT.</p>
 <p style="color:var(--text-muted);margin:4px 0 4px 20px;">&bull; Corrected time span: September 2, 2007 11:42 AM to September 3, 2007 8:30 PM PDT</p>
-<h3 style="font-size:1.15rem;font-weight:600;margin:28px 0 10px;">Rebuilding the Image Charts</h3>
-<p style="color:var(--text-muted);margin:10px 0;line-height:1.7;">If images are added, removed, or corrected:</p>
-<pre style="background:var(--bg-card);padding:16px;border-radius:8px;overflow-x:auto;font-size:0.8rem;color:var(--text-muted);margin:16px 0;">
-# Step 1: Extract EXIF from R2 (reads gallery_config.json)
-python build_image_fingerprints.py
-
-# Step 2: Recalculate charts (would need a rebuild script - TODO)
-# Currently image_charts.json is built inline. Separate script needed.
-
-# Step 3: Test
-python image_resonance.py --top 5
-</pre>
-<p style="color:var(--text-muted);margin:10px 0;line-height:1.7;">Adding a new gallery requires only adding an entry to `gallery_config.json`. No code changes.</p>
         <div style="text-align:center;margin:40px 0;">
             <a href="ask.html" style="display:inline-block;padding:12px 32px;background:var(--purple);color:white;border-radius:8px;text-decoration:none;font-weight:500;">Test the Oracle</a>
         </div>
