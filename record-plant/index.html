@@ -6,7 +6,7 @@
 <title>The Record Plant - Sausalito, September 2007</title>
 <meta name="description" content="The Record Plant, Sausalito. First public opening in 35 years. Photographs by Chuck Jones. Leica M8, drag shutter, available light.">
 <meta property="og:title" content="The Record Plant - Sausalito 2007">
-<meta property="og:description" content="27 photographs by Chuck Jones. Leica M8 drag shutter. The Record Plant, Sausalito, September 3, 2007.">
+<meta property="og:description" content="28 photographs by Chuck Jones. Leica M8 drag shutter. The Record Plant, Sausalito, September 3, 2007.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://thisoldhippie.com/record-plant/">
 <meta property="og:image" content="https://pub-9726db74cbb0458d90c09be23ae5502c.r2.dev/L9523923.jpg">
@@ -320,12 +320,18 @@ html, body {
   background-color: rgba(0,0,0,0.85) !important;
 }
 .lg-sub-html {
+  color: rgba(230,225,215,0.95) !important;
+  padding: 20px 32px !important; max-width: 740px !important;
+  margin: 0 auto !important; text-align: center !important;
+  z-index: 1080 !important;
+}
+.lg-sub-html p {
   font-family: 'Cormorant Garamond', Georgia, serif !important;
-  font-size: clamp(1.05rem, 2vw, 1.35rem) !important;
+  font-size: clamp(1.1rem, 2.2vw, 1.45rem) !important;
   font-weight: 300 !important; font-style: italic !important;
-  color: rgba(220,215,205,0.9) !important;
-  padding: 16px 28px !important; max-width: 720px !important;
-  margin: 0 auto !important; text-align: center !important; line-height: 1.7 !important;
+  color: rgba(230,225,215,0.95) !important;
+  line-height: 1.8 !important;
+  margin: 0 !important;
 }
 </style>
 </head>
@@ -498,7 +504,7 @@ html, body {
   });
 
   // ── Image URL helper (cache-bust to force new versions) ──
-  var cacheBust = 'v=20260316b';
+  var cacheBust = 'v=20260316c';
   function imageURL(filename) {
     return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
   }
