@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>The Record Plant - Sausalito, September 2007</title>
+<meta name="description" content="The Record Plant, Sausalito. First public opening in 35 years. Photographs by Chuck Jones. Leica M8, drag shutter, available light.">
+<meta property="og:title" content="The Record Plant - Sausalito 2007">
+<meta property="og:description" content="27 photographs by Chuck Jones. Leica M8 drag shutter. The Record Plant, Sausalito, September 3, 2007.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thisoldhippie.com/record-plant/">
+<meta property="og:image" content="https://pub-9726db74cbb0458d90c09be23ae5502c.r2.dev/L9523923.jpg">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pub-9726db74cbb0458d90c09be23ae5502c.r2.dev/L9523923.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7B7R3WVPJW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7B7R3WVPJW');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery-bundle.min.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+#title-card {
+  position: fixed; inset: 0; z-index: 200; background: #000;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+  padding-top: 6vh; overflow-y: auto; opacity: 1; transition: opacity 1.8s ease;
+}
+#title-card.fade-out { opacity: 0; pointer-events: none; }
+#title-card h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300;
+  font-size: clamp(1.6rem, 4vw, 3.2rem); color: #d4d0c8;
+  letter-spacing: 0.12em; text-transform: uppercase; text-align: center;
+  line-height: 1.5; padding: 0 2rem;
+}
+#title-card .subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; font-style: italic;
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem); color: #8a8478;
+  margin-top: 1.5rem; letter-spacing: 0.08em;
+}
+#title-card .enter {
+  font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400;
+  font-size: clamp(1.2rem, 2vw, 1.6rem); color: #d4d0c8;
+  margin-top: 3rem; letter-spacing: 0.15em; text-transform: uppercase;
+  cursor: pointer; transition: color 0.4s ease, border-color 0.4s ease;
+  border: 1px solid rgba(200, 195, 185, 0.3); padding: 0.8rem 2.5rem; border-radius: 2px;
+}
+#title-card .enter:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
+.review { max-width: 680px; margin: 3rem auto 4rem; padding: 0 2rem; text-align: left; }
+.review-label {
+  font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400;
+  font-size: 0.75rem; color: rgba(200,195,185,0.4); text-transform: uppercase;
+  letter-spacing: 0.2em; margin-bottom: 1.5rem;
+}
+.review h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300;
+  font-size: clamp(1.1rem, 2vw, 1.5rem); color: #c8c0b4; margin-bottom: 1.2rem;
+}
+.review p {
+  font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300;
+  font-size: clamp(0.95rem, 1.6vw, 1.15rem); color: rgba(200,195,185,0.7);
+  line-height: 1.9; margin-bottom: 1rem;
+}
+.video-wrap { max-width: 680px; margin: 2rem auto 3rem; padding: 0 2rem; }
+.video-container {
+  position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+  border-radius: 4px; box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+}
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+#inline-gallery { position: fixed; inset: 0; z-index: 100; display: none; }
+#inline-gallery .lg-container { background: #000 !important; }
+.lg-sub-html {
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: clamp(0.85rem, 1.4vw, 1.05rem) !important;
+  font-weight: 300 !important; font-style: italic !important;
+  color: rgba(200,195,185,0.8) !important;
+  padding: 12px 24px !important; max-width: 680px !important;
+  margin: 0 auto !important; text-align: center !important; line-height: 1.6 !important;
+}
+#like-wrap {
+  position: fixed; bottom: 24px; right: 24px; z-index: 300;
+  display: none; flex-direction: column; align-items: center; gap: 4px;
+}
+#like-btn { background: none; border: none; cursor: pointer; padding: 8px; transition: transform 0.2s ease; }
+#like-btn:hover { transform: scale(1.15); }
+#like-btn svg { width: 28px; height: 28px; fill: none; stroke: rgba(255,255,255,0.6); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#like-btn.liked svg { fill: #ef4444; stroke: #ef4444; }
+#like-count { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 0.8rem; color: rgba(255,255,255,0.5); min-height: 1.2em; text-align: center; }
+#like-btn.liked ~ #like-count { color: #ef4444; }
+@keyframes pop { 0% { transform: scale(1); } 50% { transform: scale(1.4); } 100% { transform: scale(1); } }
+#like-btn.pop { animation: pop 0.3s ease; }
+#logout-wrap { position: fixed; bottom: 8px; left: 12px; z-index: 300; display: none; }
+#logout-wrap a { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 0.7rem; color: rgba(255,255,255,0.25); text-decoration: none; }
+</style>
+</head>
+<body>
+<div id="title-card">
+  <h1>The Record<br>Plant</h1>
+  <div class="subtitle">Sausalito, California</div>
+  <div class="subtitle">September 3, 2007</div>
+  <div class="subtitle" style="margin-top: 2rem;">Photographs by Chuck Jones</div>
+  <div class="enter" id="enter-btn">Enter Gallery</div>
+  <div class="review">
+    <div class="review-label">Artist's Statement</div>
+    <p>The Record Plant opened in 1972 with a Halloween party. The Grateful Dead were the house band. John Lennon and Yoko Ono came dressed as trees. In the 35 years that followed, Fleetwood Mac recorded Rumours here, Stevie Wonder recorded Songs in the Key of Life, Santana recorded Supernatural, and Bob Marley made his first American recording in this building.</p>
+    <p>On September 3, 2007, the Plant opened its doors to the public for the first time in its history. Michael Indelicato, who had purchased the building to save it from becoming a self-storage unit, was fighting to keep it alive as a working studio and community music center.</p>
+    <p>I shot these images in near-darkness using drag shutter technique on the Leica M8. No flash. The motion blur is deliberate. These rooms were not built to be seen clearly. They were built to be felt. The technique lets the camera record what your eye actually experiences in a space like this: warmth, color, movement, and the ghosts of everyone who passed through before you.</p>
+    <p style="color: rgba(200,195,185,0.5); margin-top: 0.5rem; margin-bottom: 0;">- Chuck Jones</p>
+  </div>
+  <div class="review">
+    <div class="review-label">The Interview</div>
+    <p>On the same day, an interview was recorded with Michael Indelicato about the history and future of the Record Plant. He spoke about the Bridgeway Music Foundation, the loss of Bill Graham, the closing of the Sweetwater and Tower Records and Village Music, and why someone had to stand up before it was all gone.</p>
+    <p>The studio closed in 2008. The bank foreclosed. It sat shuttered for 16 years. But in 2024, new owners reopened it as 2200 Studios, a nonprofit recording facility. The fight was not wasted. It just took longer than anyone expected.</p>
+  </div>
+  <div class="video-wrap">
+    <div class="video-container">
+      <iframe src="https://www.youtube.com/embed/XOnK34Jp_xU" title="Interview with Michael Indelicato at The Record Plant, Sausalito" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+  <div class="review">
+    <div class="review-label">Technical Notes</div>
+    <h2>Leica M8 Digital Camera</h2>
+    <p>All images shot on the Leica M8. Available light only, no flash. Drag shutter technique: slow shutter speeds with deliberate camera movement during exposure. The CCD sensor's response to mixed tungsten, neon, and ambient light produces the deep reds, ambers, and purples that define this set.</p>
+  </div>
+</div>
+<div id="inline-gallery"></div>
+<div id="like-wrap">
+  <button id="like-btn" aria-label="Like this image">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  </button>
+  <div id="like-count"></div>
+</div>
+<div id="logout-wrap"><a href="/">thisoldhippie.com</a></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/lightgallery.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/autoplay/lg-autoplay.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/fullscreen/lg-fullscreen.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/zoom/lg-zoom.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js"></script>
+<script>
+(function() {
+  'use strict';
+  var R2_BASE = 'https://pub-9726db74cbb0458d90c09be23ae5502c.r2.dev';
+  var LIKES_API = 'https://rp-likes.chuck-3ba.workers.dev';
+  var CAPTIONS = {
+    'L9523923.jpg': 'The lobby. Leather chairs, gold records behind glass, photographs from the Robert Altman retrospective. The first time the public had been inside this building in 35 years.',
+    'L9523925.jpg': 'Drag shutter portrait. The motion is the technique. These rooms were not built to be seen clearly. They were built to be felt.',
+    'L9523929.jpg': 'Michael Indelicato bought the Record Plant to save it from becoming a self-storage unit. This was his night.',
+    'L9523940.jpg': 'Movement through the hallways. Half-second exposure, available light only. What your eye actually sees in a room lit by history.',
+    'L9523945.jpg': 'Two worlds meeting. The people who were there in 1967 and the people who came to remember them, forty years later.',
+    'L9523950.jpg': 'The party finding its rhythm. The Plant had never been open to the public before this weekend.',
+    'L9523977.jpg': 'Guitar against the redwood walls. The building is clad in diagonal redwood siding inside and out.',
+    'L9523982.jpg': 'Detail. Everything in this building has been touched by someone whose records you own.',
+    'L9523988.jpg': 'Purple light in the hallways. The Plant was famous for its waterbed floor, its jacuzzi, and organic chefs on call for the musicians.',
+    'L9523993.jpg': 'People finding each other in the colored light. Six hundred showed up the night before for the Robert Altman retrospective.',
+    'L9523995.jpg': 'Playing guitar in the studio. Gold records on the wall behind her. This is the room.',
+    'L9523997.jpg': 'Standing where the magic happened. The gold and platinum records are still on the walls. Rumours. Supernatural. Songs in the Key of Life.',
+    'L9524010.jpg': 'A vending machine full of Doritos in the room where Stevie Wonder recorded Songs in the Key of Life. This is rock and roll.',
+    'L9524011.jpg': 'Settling in. The redwood walls, the low light, the warmth. Studios are living rooms for musicians. That was the whole idea.',
+    'L9524013.jpg': 'Cowboy hat in warm light. The Sausalito crowd dressed for the occasion.',
+    'L9524019.jpg': 'Portrait in red. No filter, no post-processing. Just the light that was there.',
+    'L9524021.jpg': 'The Plant was not just a studio. It was a community. Musicians lived here. They brought their dogs.',
+    'L9524023.jpg': 'The spirit of the evening. A woman, a guitar, and the energy of a place that remembers everything that happened inside it.',
+    'L9524029.jpg': 'Two men laughing in the red light. This is what Michael Indelicato was fighting to preserve. Not the equipment. The feeling.',
+    'L9524064.jpg': 'The control room. Blue neon ceiling, studio monitors, mixing console behind them. This is where the producers sat.',
+    'L9524105.jpg': 'Studio A. The famous sunburst wall, designed by Tom Hidley. This room has held the Grateful Dead, Metallica, Fleetwood Mac, Santana, Sly Stone, Bob Marley.',
+    'L9524114.jpg': 'In front of the Robert Altman retrospective. Photographs of the Summer of Love, forty years old, hanging in a building that opened the same year that generation started making records.',
+    'L9524134.jpg': 'The guitar memorial. Velvet ropes, a framed photograph, instruments displayed like relics. Because that is what they are.',
+    'L9524135.jpg': 'The psychedelic staircase. Curved walls, deep red light.',
+    'L9524143.jpg': 'Surrounded by history. Every photograph on these walls is someone who changed what music sounds like.',
+    'L9524148.jpg': 'Hallway. Guitars on the walls, amber light, the warmth of redwood. Stevie Nicks walked down this hall the day she wrote Dreams.',
+    'L9524155.jpg': 'Last light. The evening winding down inside a building that was fighting to survive. It closed the next year. It took sixteen years to reopen.'
+  };
+  var manifest = [];
+  var galleryInstance = null;
+  var currentFilename = '';
+  var myLikes = {};
+  var likeCounts = {};
+  var $titleCard = document.getElementById('title-card');
+  var $enterBtn = document.getElementById('enter-btn');
+  var $inlineGallery = document.getElementById('inline-gallery');
+  var $likeWrap = document.getElementById('like-wrap');
+  var $likeBtn = document.getElementById('like-btn');
+  var $likeCount = document.getElementById('like-count');
+  var $logoutWrap = document.getElementById('logout-wrap');
+  try { myLikes = JSON.parse(localStorage.getItem('rp-likes') || '{}'); } catch(e) {}
+  function saveMyLikes() { try { localStorage.setItem('rp-likes', JSON.stringify(myLikes)); } catch(e) {} }
+  function updateLikeUI() {
+    if (!currentFilename) return;
+    $likeBtn.classList.toggle('liked', !!myLikes[currentFilename]);
+    var count = likeCounts[currentFilename] || 0;
+    $likeCount.textContent = count > 0 ? count : '';
+  }
+  function fetchAllLikes() {
+    return fetch(LIKES_API + '/likes').then(function(r) { return r.ok ? r.json() : {}; }).then(function(d) { likeCounts = d; }).catch(function() {});
+  }
+  function toggleLike() {
+    if (!currentFilename) return;
+    var isLiked = !!myLikes[currentFilename];
+    if (isLiked) { delete myLikes[currentFilename]; likeCounts[currentFilename] = Math.max(0, (likeCounts[currentFilename] || 1) - 1); }
+    else { myLikes[currentFilename] = true; likeCounts[currentFilename] = (likeCounts[currentFilename] || 0) + 1; $likeBtn.classList.remove('pop'); void $likeBtn.offsetHeight; $likeBtn.classList.add('pop'); }
+    saveMyLikes(); updateLikeUI();
+    fetch(LIKES_API + '/like', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filename: currentFilename, delta: isLiked ? -1 : 1 }) })
+    .then(function(r) { return r.ok ? r.json() : null; }).then(function(d) { if (d) { likeCounts[currentFilename] = d.likes; updateLikeUI(); } }).catch(function() {});
+  }
+  $likeBtn.addEventListener('click', function(e) { e.stopPropagation(); toggleLike(); });
+  var cacheBust = 'v=20260316';
+  function imageURL(f) { return R2_BASE + '/' + encodeURIComponent(f) + '?' + cacheBust; }
+  function buildGallery() {
+    var dynamicEl = manifest.map(function(f) {
+      return { src: imageURL(f), thumb: imageURL(f), subHtml: '<p>' + (CAPTIONS[f] || '') + '</p>' };
+    });
+    galleryInstance = lightGallery($inlineGallery, {
+      container: $inlineGallery, dynamic: true, dynamicEl: dynamicEl,
+      plugins: [lgAutoplay, lgFullscreen, lgZoom, lgThumbnail],
+      mode: 'lg-fade', speed: 1000, autoplay: true, slideDelay: 8000,
+      loop: true, counter: true, download: false, mousewheel: true,
+      getCaptionFromTitleOrAlt: false, appendSubHtmlTo: '.lg-item',
+      subHtmlSelectorRelative: true,
+      thumbnail: true, thumbWidth: 80, thumbHeight: 'auto', thumbMargin: 4,
+      animateThumb: true, showThumbByDefault: false,
+    });
+    $inlineGallery.addEventListener('lgAfterSlide', function(e) {
+      currentFilename = manifest[e.detail.index] || '';
+      updateLikeUI();
+    });
+    currentFilename = manifest[0] || '';
+    updateLikeUI();
+  }
+  $enterBtn.addEventListener('click', function() {
+    $titleCard.classList.add('fade-out');
+    $inlineGallery.style.display = 'block';
+    $likeWrap.style.display = 'flex';
+    $logoutWrap.style.display = 'block';
+    setTimeout(function() { $titleCard.style.display = 'none'; }, 2000);
+    if (galleryInstance) { galleryInstance.openGallery(0); }
+  });
+  fetch(R2_BASE + '/manifest.json?t=' + Date.now())
+    .then(function(r) { if (!r.ok) throw new Error('No manifest'); return r.json(); })
+    .then(function(d) { manifest = d.images || d; if (manifest.length === 0) return; fetchAllLikes().then(buildGallery); })
+    .catch(function(e) { console.error('Failed to load manifest:', e); });
+})();
+</script>
+</body>
+</html>
