@@ -252,6 +252,37 @@ html, body {
   animation: heart-pop 0.35s ease;
 }
 
+/* ── Mute button ── */
+#mute-btn {
+  position: fixed;
+  bottom: 130px;
+  right: 20px;
+  z-index: 2147483647;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+#mute-btn:hover {
+  background: rgba(0,0,0,0.6);
+  transform: scale(1.1);
+}
+
+#mute-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.6);
+  stroke-width: 1.5;
+}
+
 /* ── One-click share buttons in toolbar ── */
 .lg-share-btn {
   background: none;
@@ -809,10 +840,20 @@ html, body {
     <div class="review-label">Technical Notes</div>
     <h2>Leica M8 Digital Camera</h2>
     <p>All images shot on the Leica M8. Available light only, no flash. Drag shutter technique: slow shutter speeds with deliberate camera movement during exposure. The CCD sensor&rsquo;s response to mixed tungsten, neon, and ambient light produces the deep reds, ambers, and purples that define this set.</p>
+    <p style="margin-top:1.5rem; font-size:0.85rem; color:rgba(255,255,255,0.4);">Music: &ldquo;November&rdquo; by Benjamin Tissot (<a href="https://www.bensound.com" style="color:rgba(255,255,255,0.5);">Bensound.com</a>)</p>
   </div>
 </div>
 
 <div id="inline-gallery"></div>
+
+<audio id="gallery-audio" preload="auto" loop>
+  <source src="https://pub-9726db74cbb0458d90c09be23ae5502c.r2.dev/bensound-november.mp3" type="audio/mpeg">
+</audio>
+
+<button id="mute-btn" aria-label="Mute/Unmute" style="display:none">
+  <svg id="vol-on" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+  <svg id="vol-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+</button>
 
 <div id="like-wrap">
   <button id="like-btn" aria-label="Like this image">
@@ -879,6 +920,10 @@ html, body {
   var $likeWrap = document.getElementById('like-wrap');
   var $likeBtn = document.getElementById('like-btn');
   var $likeCount = document.getElementById('like-count');
+  var $audio = document.getElementById('gallery-audio');
+  var $muteBtn = document.getElementById('mute-btn');
+  var $volOn = document.getElementById('vol-on');
+  var $volOff = document.getElementById('vol-off');
 
   // ── Likes system ──
   try { myLikes = JSON.parse(localStorage.getItem('rp-likes') || '{}'); } catch(e) {}
@@ -1111,13 +1156,29 @@ html, body {
     setTimeout(function() {
       $titleCard.style.display = 'none';
       buildGallery();
+      // Start audio (user click satisfies autoplay policy)
+      $audio.play().catch(function() {});
+      $muteBtn.style.display = 'flex';
     }, 1800);
   }
 
-  // K key for like
+  // Mute toggle
+  $muteBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    $audio.muted = !$audio.muted;
+    $volOn.style.display = $audio.muted ? 'none' : 'block';
+    $volOff.style.display = $audio.muted ? 'block' : 'none';
+  });
+
+  // K key for like, M key for mute
   document.addEventListener('keydown', function(e) {
     if (e.key === 'k' || e.key === 'K') {
       toggleLike();
+    }
+    if (e.key === 'm' || e.key === 'M') {
+      $audio.muted = !$audio.muted;
+      $volOn.style.display = $audio.muted ? 'none' : 'block';
+      $volOff.style.display = $audio.muted ? 'block' : 'none';
     }
   });
 
