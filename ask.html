@@ -966,6 +966,18 @@
     <script>
         const API_BASE = 'https://bozo-oracle-production.up.railway.app';
 
+        /* Cookie helpers for vote dedup */
+        function setVotedCookie() {
+            var d = new Date();
+            d.setFullYear(d.getFullYear() + 1);
+            document.cookie = 'oracle_voted=1; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+        }
+        function hasVotedCookie() {
+            return document.cookie.split(';').some(function(c) {
+                return c.trim().indexOf('oracle_voted=') === 0;
+            });
+        }
+
         /* Birth Data - free, stored in localStorage */
         function getSavedBirth() {
             var d = localStorage.getItem('oracle_birth');
@@ -1236,7 +1248,16 @@
                 /* Show vote UI after last image reveals */
                 if (currentReadingId) {
                     setTimeout(function() {
-                        document.getElementById('resonance-vote').classList.add('visible');
+                        var voteDiv = document.getElementById('resonance-vote');
+                        if (hasVotedCookie()) {
+                            document.getElementById('vote-hit-btn').style.display = 'none';
+                            document.getElementById('vote-miss-btn').style.display = 'none';
+                            var resultEl = document.getElementById('vote-result');
+                            resultEl.style.display = 'block';
+                            resultEl.textContent = "You've already cast your vote. Thank you.";
+                            resultEl.style.color = 'var(--text-muted)';
+                        }
+                        voteDiv.classList.add('visible');
                     }, 800 + (r.resonant_images.length * 600) + 400);
                 }
                 /* Show resonance summary in sidebar */
@@ -1312,6 +1333,7 @@
                     body: JSON.stringify(voteBody)
                 });
                 var data = await res.json();
+                setVotedCookie();
                 resultEl.style.display = 'block';
                 if (voteType === 'hit') {
                     resultEl.textContent = 'Recorded. Your vote goes Up On The Board.';

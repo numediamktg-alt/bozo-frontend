@@ -278,6 +278,18 @@
 
     <script>
         const API_BASE = 'https://bozo-oracle-production.up.railway.app';
+
+        /* Cookie helpers for vote dedup */
+        function setVotedCookie() {
+            var d = new Date();
+            d.setFullYear(d.getFullYear() + 1);
+            document.cookie = 'oracle_voted=1; expires=' + d.toUTCString() + '; path=/; SameSite=Lax';
+        }
+        function hasVotedCookie() {
+            return document.cookie.split(';').some(function(c) {
+                return c.trim().indexOf('oracle_voted=') === 0;
+            });
+        }
         let userNatal = {h5: 10, h7: 10, h10: 10};
 
         async function getReading(question, email) {
@@ -653,7 +665,11 @@
                 });
                 /* Vote UI */
                 if (r.reading_id) {
-                    html += '<div style="text-align:center;padding:16px 0;border-top:1px solid var(--border);" id="bus-vote-area"><p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:12px;">Was your favorite among these three?</p><div style="display:flex;justify-content:center;gap:12px;"><button onclick="busVote(\'hit\','+r.reading_id+')" style="padding:10px 24px;border-radius:8px;border:1px solid var(--green);background:var(--bg-card);color:var(--green);cursor:pointer;font-size:0.9rem;" id="bus-vote-hit">Yes</button><button onclick="busVote(\'miss\','+r.reading_id+')" style="padding:10px 24px;border-radius:8px;border:1px solid var(--orange);background:var(--bg-card);color:var(--orange);cursor:pointer;font-size:0.9rem;" id="bus-vote-miss">No</button></div><div id="bus-vote-result" style="margin-top:10px;font-size:0.85rem;"></div></div>';
+                    if (hasVotedCookie()) {
+                        html += '<div style="text-align:center;padding:16px 0;border-top:1px solid var(--border);"><p style="color:var(--text-dim);font-size:0.85rem;">You\'ve already cast your vote. Thank you.</p></div>';
+                    } else {
+                        html += '<div style="text-align:center;padding:16px 0;border-top:1px solid var(--border);" id="bus-vote-area"><p style="color:var(--text-muted);font-size:0.9rem;margin-bottom:12px;">Was your favorite among these three?</p><div style="display:flex;justify-content:center;gap:12px;"><button onclick="busVote(\'hit\','+r.reading_id+')" style="padding:10px 24px;border-radius:8px;border:1px solid var(--green);background:var(--bg-card);color:var(--green);cursor:pointer;font-size:0.9rem;" id="bus-vote-hit">Yes</button><button onclick="busVote(\'miss\','+r.reading_id+')" style="padding:10px 24px;border-radius:8px;border:1px solid var(--orange);background:var(--bg-card);color:var(--orange);cursor:pointer;font-size:0.9rem;" id="bus-vote-miss">No</button></div><div id="bus-vote-result" style="margin-top:10px;font-size:0.85rem;"></div></div>';
+                    }
                 }
                 if (typeof gtag === 'function') { gtag('event', 'oracle_images_shown', { image_1: r.resonant_images[0].filename, source: 'dashboard' }); }
             }
@@ -698,6 +714,7 @@
             document.getElementById('bus-vote-miss').disabled = true;
             try {
                 await fetch(API_BASE + '/api/vote', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ email: email, reading_id: readingId, vote_type: voteType }) });
+                setVotedCookie();
                 var el = document.getElementById('bus-vote-result');
                 if (voteType === 'hit') { el.textContent = 'Recorded. Your vote goes Up On The Board.'; el.style.color = 'var(--green)'; }
                 else { el.textContent = 'Noted. Browse the galleries and find yours.'; el.style.color = 'var(--orange)'; }
