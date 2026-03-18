@@ -562,54 +562,49 @@
             gap: 24px;
         }
 
-        /* Conditions Card */
-        .conditions-card .card-header {
-            margin-bottom: 24px;
+        /* Resonance Summary Card */
+        .resonance-summary {
+            display: none;
+            padding: 28px 24px;
         }
-
-        .meter-group {
-            margin-bottom: 20px;
+        .resonance-summary.visible { display: block; }
+        .resonance-summary .summary-header {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 16px;
         }
-
-        .meter-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .meter-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .meter-icon {
-            font-size: 1rem;
-        }
-
-        .meter-value {
-            font-weight: 600;
+        .resonance-summary .confidence-line {
+            font-size: 1.05rem;
             color: var(--text);
+            line-height: 1.6;
+            margin-bottom: 16px;
         }
-
-        .meter-bar {
-            height: 8px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 4px;
+        .resonance-summary .contact-detail {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .resonance-summary .contact-detail em {
+            color: var(--purple);
+            font-style: normal;
+            font-weight: 500;
+        }
+        .strength-bar {
+            margin-top: 16px;
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
             overflow: hidden;
-            position: relative;
         }
-
-        .meter-fill {
+        .strength-fill {
             height: 100%;
-            border-radius: 4px;
-            transition: width 1s ease-out;
+            border-radius: 2px;
+            background: linear-gradient(90deg, var(--purple), var(--orange));
+            transition: width 1.5s ease-out;
+            width: 0%;
         }
-
-        .meter-fill.creative { background: linear-gradient(90deg, var(--orange), #fb923c); }
-        .meter-fill.intuition { background: linear-gradient(90deg, var(--purple), #a855f7); }
-        .meter-fill.drive { background: linear-gradient(90deg, var(--green), #4ade80); }
 
         /* Score Circle */
         .score-card {
@@ -924,37 +919,13 @@
         </section>
 
         <aside class="sidebar">
-            <!-- Conditions -->
-            <div class="card conditions-card">
-                <div class="card-header">
-                    <span class="card-title">📡 Transmission Levels</span>
-                </div>
-                <div class="meter-group">
-                    <div class="meter-header">
-                        <span class="meter-label"><span class="meter-icon">🎨</span> Creative Flow</span>
-                        <span class="meter-value" id="h5-value">--</span>
-                    </div>
-                    <div class="meter-bar">
-                        <div class="meter-fill creative" id="h5-bar" style="width: 50%"></div>
-                    </div>
-                </div>
-                <div class="meter-group">
-                    <div class="meter-header">
-                        <span class="meter-label"><span class="meter-icon">👁️</span> Intuition</span>
-                        <span class="meter-value" id="h7-value">--</span>
-                    </div>
-                    <div class="meter-bar">
-                        <div class="meter-fill intuition" id="h7-bar" style="width: 50%"></div>
-                    </div>
-                </div>
-                <div class="meter-group" style="margin-bottom: 0;">
-                    <div class="meter-header">
-                        <span class="meter-label"><span class="meter-icon">🔨</span> Drive</span>
-                        <span class="meter-value" id="h10-value">--</span>
-                    </div>
-                    <div class="meter-bar">
-                        <div class="meter-fill drive" id="h10-bar" style="width: 50%"></div>
-                    </div>
+            <!-- Resonance Summary (shown after images reveal) -->
+            <div class="card resonance-summary" id="resonance-summary">
+                <div class="summary-header">Your Resonance</div>
+                <div class="confidence-line" id="confidence-line"></div>
+                <div class="contact-detail" id="contact-detail"></div>
+                <div class="strength-bar">
+                    <div class="strength-fill" id="strength-fill"></div>
                 </div>
             </div>
 
@@ -1161,6 +1132,8 @@
             document.getElementById('resonance-image-list').innerHTML = '';
             document.getElementById('resonance-teaser').style.display = 'none';
             document.getElementById('resonance-vote').classList.remove('visible');
+            document.getElementById('resonance-summary').classList.remove('visible');
+            document.getElementById('strength-fill').style.width = '0%';
             document.getElementById('vote-result').style.display = 'none';
             document.getElementById('vote-hit-btn').disabled = false;
             document.getElementById('vote-miss-btn').disabled = false;
@@ -1215,11 +1188,6 @@
                 scoreNumber.textContent = Math.round(sim);
             }, 300);
 
-            // Update conditions if available
-            if (r.conditions) {
-                updateConditions(r.conditions);
-            }
-
             // Oracle Image Resonance
             var imgContainer = document.getElementById('resonance-images');
             var imgList = document.getElementById('resonance-image-list');
@@ -1271,33 +1239,55 @@
                         document.getElementById('resonance-vote').classList.add('visible');
                     }, 800 + (r.resonant_images.length * 600) + 400);
                 }
+                /* Show resonance summary in sidebar */
+                showResonanceSummary(r.resonant_images);
             } else if (r.is_personalized === false) {
                 imgTeaser.style.display = 'block';
             }
         }
 
-        function updateConditions(c) {
-            const toPercent = (gain) => Math.max(5, Math.min(100, ((gain - 0.85) / 0.3) * 100));
-            
-            document.getElementById('h5-value').textContent = `${Math.round(toPercent(c.h5_gain))}%`;
-            document.getElementById('h5-bar').style.width = `${toPercent(c.h5_gain)}%`;
-            
-            document.getElementById('h7-value').textContent = `${Math.round(toPercent(c.h7_gain))}%`;
-            document.getElementById('h7-bar').style.width = `${toPercent(c.h7_gain)}%`;
-            
-            document.getElementById('h10-value').textContent = `${Math.round(toPercent(c.h10_gain))}%`;
-            document.getElementById('h10-bar').style.width = `${toPercent(c.h10_gain)}%`;
-        }
+        function showResonanceSummary(images) {
+            var summary = document.getElementById('resonance-summary');
+            var confLine = document.getElementById('confidence-line');
+            var detail = document.getElementById('contact-detail');
+            var fill = document.getElementById('strength-fill');
+            if (!images || images.length < 3) { summary.classList.remove('visible'); return; }
 
-        // Load initial conditions
-        async function loadConditions() {
-            try {
-                const response = await fetch(`${API_BASE}/api/conditions`);
-                if (response.ok) {
-                    const c = await response.json();
-                    updateConditions(c);
-                }
-            } catch (e) {}
+            var top = images[0];
+            var spread = top.score - images[2].score;
+            var pct = Math.min(98, Math.max(40, Math.round((top.score / 10) * 100)));
+
+            var strengthWord;
+            if (spread > 1.0) strengthWord = 'strongly';
+            else if (spread > 0.5) strengthWord = 'clearly';
+            else if (spread > 0.2) strengthWord = 'distinctly';
+            else strengthWord = 'from a close field';
+
+            if (strengthWord === 'from a close field') {
+                confLine.textContent = 'Selected ' + strengthWord + ' of 197 photographs.';
+            } else {
+                confLine.textContent = 'These three stood out ' + strengthWord + ' from 197 photographs.';
+            }
+
+            var contactLabels = {
+                'ASC': 'Ascendant', 'MC': 'Midheaven', 'PoF': 'Part of Fortune', 'Moon': 'Moon',
+                'Sun': 'Sun', 'Venus': 'Venus', 'Mars': 'Mars', 'Mercury': 'Mercury',
+                'Jupiter': 'Jupiter', 'Saturn': 'Saturn', 'Uranus': 'Uranus',
+                'Neptune': 'Neptune', 'Pluto': 'Pluto'
+            };
+
+            if (top.best_contact) {
+                var tr = contactLabels[top.best_contact.transit] || top.best_contact.transit;
+                var nt = contactLabels[top.best_contact.natal] || top.best_contact.natal;
+                var dev = top.best_contact.deviation;
+                var devText = dev < 0.3 ? 'near-exact' : dev < 1.0 ? 'tight' : 'close';
+                detail.innerHTML = 'Strongest connection: <em>' + devText + ' ' + tr + ' trine your ' + nt + '</em>';
+            } else {
+                detail.textContent = '';
+            }
+
+            summary.classList.add('visible');
+            setTimeout(function() { fill.style.width = pct + '%'; }, 200);
         }
 
         var currentReadingId = null;
@@ -1339,7 +1329,6 @@
             }
         }
 
-        loadConditions();
     </script>
 </body>
 </html>
