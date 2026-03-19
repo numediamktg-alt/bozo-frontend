@@ -657,7 +657,7 @@
             /* Oracle Image Resonance - 3 photographs */
             if (r.resonant_images && r.resonant_images.length > 0) {
                 var contactLabels = {'ASC':'Ascendant','MC':'Midheaven','PoF':'Part of Fortune','Moon':'Moon','Sun':'Sun','Venus':'Venus','Mars':'Mars','Mercury':'Mercury','Jupiter':'Jupiter','Saturn':'Saturn','Uranus':'Uranus','Neptune':'Neptune','Pluto':'Pluto'};
-                html += '<div style="text-align:center;padding:24px 0 16px;border-top:1px solid var(--border);margin-top:24px;"><h3 style="font-family:Caveat,cursive;font-size:1.5rem;color:var(--purple);margin-bottom:4px;">These three prints were made for your sky</h3><p style="font-size:0.8rem;color:var(--text-dim);">The Oracle looked at all 197 photographs and chose these for you.</p></div>';
+                html += '<div style="text-align:center;padding:24px 0 16px;border-top:1px solid var(--border);margin-top:24px;"><h3 style="font-family:Caveat,cursive;font-size:1.5rem;color:var(--purple);margin-bottom:4px;">These Images Were Chosen For You</h3><p style="font-size:0.8rem;color:var(--text-dim);">The Oracle looked at all 197 photographs and chose these for you.</p></div>';
                 r.resonant_images.forEach(function(img) {
                     var ct = '';
                     if (img.best_contact) { ct = (contactLabels[img.best_contact.transit]||img.best_contact.transit) + ' trine your ' + (contactLabels[img.best_contact.natal]||img.best_contact.natal); }
