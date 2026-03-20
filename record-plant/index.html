@@ -369,6 +369,15 @@ html, body {
   margin: 0 !important;
   white-space: normal !important;
 }
+
+/* ── Mobile: move Enter Gallery above hero photo ── */
+@media (max-width: 768px) {
+  #title-card h1 { order: -3; }
+  #title-card .subtitle { order: -2; }
+  #title-card #enter-btn { order: -1; margin-top: 2rem; margin-bottom: 1rem; }
+  #title-card .hero-photo { margin-top: 2rem; }
+}
+
 </style>
 <script type="application/ld+json">
 {
