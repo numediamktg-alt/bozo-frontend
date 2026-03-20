@@ -2338,6 +2338,7 @@ html, body {
       $titleCard.style.display = 'none';
       buildGallery();
       // Start audio (user click satisfies autoplay policy)
+      $audio.volume = 0.5;
       $audio.play().catch(function() {});
       $muteBtn.style.display = 'flex';
     }, 1800);
