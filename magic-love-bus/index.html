@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>The Magic Love Bus - Deep Green Festival, Richmond 2012</title>
+<meta name="description" content="The Magic Love Bus. Deep Green Festival, Craneway Pavilion, Richmond, California, April 2012. 75 photographs by Chuck Jones. Leica M9, Summilux 21mm.">
+<meta property="og:title" content="The Magic Love Bus - Deep Green Festival 2012">
+<meta property="og:description" content="75 photographs by Chuck Jones. Leica M9, Summilux-M 21mm f/1.4. Deep Green Festival, Craneway Pavilion, Richmond, April 2012.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://thisoldhippie.com/magic-love-bus/">
+<meta property="og:image" content="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530417.jpg">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530417.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-7B7R3WVPJW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-7B7R3WVPJW');
+</script>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+
+<!-- lightGallery core + plugin CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery-bundle.min.css">
+
+<style>
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+
+/* -- Title card -- */
+#title-card {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 8vh;
+  overflow-y: auto;
+  opacity: 1;
+  transition: opacity 1.8s ease;
+}
+
+#title-card.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#title-card h1 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 4vw, 3.2rem);
+  color: #d4d0c8;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-align: center;
+  line-height: 1.5;
+  padding: 0 2rem;
+}
+
+#title-card .subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(0.9rem, 1.8vw, 1.3rem);
+  color: #8a8478;
+  margin-top: 1.5rem;
+  letter-spacing: 0.08em;
+}
+
+#title-card .enter {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1.2rem, 2vw, 1.6rem);
+  color: #d4d0c8;
+  margin-top: 3.5rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.4s ease, border-color 0.4s ease;
+  border: 1px solid rgba(200, 195, 185, 0.3);
+  padding: 0.8rem 2.5rem;
+  border-radius: 2px;
+}
+
+#title-card .enter:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* -- Review section -- */
+.review {
+  max-width: 680px;
+  margin: 4rem auto 6rem;
+  padding: 0 2rem;
+  text-align: left;
+}
+
+.review .review-label {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: rgba(200, 195, 185, 0.7);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.review h2 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.8vw, 2.2rem);
+  color: #e8e4dc;
+  letter-spacing: 0.06em;
+  margin-bottom: 1.2rem;
+  line-height: 1.4;
+}
+
+.review p {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-size: clamp(1.15rem, 1.8vw, 1.35rem);
+  color: rgba(220, 215, 205, 0.85);
+  line-height: 1.9;
+  margin-bottom: 1.4rem;
+}
+
+.review h3 {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 400;
+  font-size: clamp(1rem, 1.4vw, 1.15rem);
+  color: rgba(220, 215, 205, 0.7);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.review .pullquote {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  color: #e8e4dc;
+  line-height: 1.6;
+  text-align: center;
+  padding: 2rem 0;
+  margin: 2rem 0;
+  border-top: 1px solid rgba(200, 195, 185, 0.15);
+  border-bottom: 1px solid rgba(200, 195, 185, 0.15);
+}
+
+/* -- Inline gallery (lightGallery fills this) -- */
+#inline-gallery {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+}
+
+#inline-gallery .lg-backdrop {
+  background: #000;
+}
+
+/* -- Loading spinner -- */
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 2px solid rgba(255,255,255,0.15);
+  border-top-color: #d4d0c8;
+  border-radius: 50%;
+  animation: load-pulse 1.2s ease-in-out infinite;
+}
+@keyframes load-pulse {
+  0% { transform: rotate(0deg); opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { transform: rotate(360deg); opacity: 0.6; }
+}
+
+/* -- Like button overlay -- */
+#like-wrap {
+  position: fixed;
+  bottom: 80px;
+  right: 24px;
+  z-index: 1060;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+#like-btn {
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+#like-btn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: rgba(255,255,255,0.6);
+  stroke-width: 1.5;
+  transition: fill 0.3s, stroke 0.3s;
+}
+#like-btn.liked svg {
+  fill: #e25555;
+  stroke: #e25555;
+}
+#like-btn.pop {
+  animation: pop-heart 0.35s ease;
+}
+@keyframes pop-heart {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+#like-count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.5);
+  text-align: center;
+  min-height: 1em;
+}
+
+/* -- Mute button -- */
+#mute-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1060;
+  background: rgba(0,0,0,0.45);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+#mute-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: rgba(255,255,255,0.5);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* -- Mobile: move Enter Gallery above hero photo -- */
+@media (max-width: 768px) {
+  #title-card h1 { order: -3; }
+  #title-card .subtitle { order: -2; }
+  #title-card #enter-btn { order: -1; margin-top: 2rem; margin-bottom: 1rem; }
+}
+
+</style>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ImageGallery",
+  "name": "The Magic Love Bus - Deep Green Festival",
+  "description": "75 photographs from the Deep Green Festival at Craneway Pavilion, Richmond, California. April 2012. Leica M9, Summilux-M 21mm f/1.4 ASPH.",
+  "url": "https://thisoldhippie.com/magic-love-bus/",
+  "author": {
+    "@type": "Person",
+    "name": "Chuck Jones"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Birrell Jones Productions",
+    "url": "https://thisoldhippie.com"
+  },
+  "datePublished": "2026-03-20",
+  "numberOfItems": 75
+}
+</script>
+</head>
+<body>
+
+<div id="loading"><div class="spinner"></div></div>
+
+<div id="title-card">
+  <h1>The Magic<br>Love Bus</h1>
+  <div class="subtitle">Deep Green Festival</div>
+  <div class="subtitle">Craneway Pavilion, Richmond, California</div>
+  <div class="subtitle">April 2012</div>
+  <div class="subtitle" style="margin-top: 2rem;">Photographs by Chuck Jones</div>
+  <div class="enter" id="enter-btn">Enter Gallery</div>
+
+  <div class="review">
+    <div class="review-label">The Event</div>
+    <h2>Deep Green Festival</h2>
+    <p>The first ever Deep Green Festival, co-sponsored by Earth Dance, combined entertainment, panels on ecology and legalization, and an exhibition of green cultivation techniques at the Craneway Pavilion in Richmond. Organizer Michael Gosney of the Green Center Institute said the festival was part of a reimagining of cannabis' often negative image, designed to supplant the clich&eacute;d pictures and, in the context of Earth Day, really take a close look at cannabis beyond the political and public relations limitations.</p>
+    <p>The Craneway Pavilion was a deliberate choice. The former Ford factory is bathed in natural light from copious skylights, with an airy lightness enhanced by its location along the glimmering San Francisco Bay. LEED-certified and solar-powered.</p>
+    <p>The Coup, Heavyweight Dub Champion, MC Yogi, and Bay Area DJs entertained the crowd. Panels featured Oaksterdam founder Richard Lee, David Bronner of Dr. Bronner's Magic Soaps on industrial hemp, and Harborside Health Center founder Stephen DeAngelo on the ecological paradox of indoor cultivation. Chris Van Hook of the Clean Green Certified Agriculture Program spoke about the environmental impact on both sides.</p>
+
+    <div class="pullquote">&ldquo;We are never going to win public acceptance if our community is perceived as doing harm.&rdquo;<br><span style="font-size:0.8em; color:rgba(200,195,185,0.5);">- Stephen DeAngelo, Harborside Health Center</span></div>
+  </div>
+
+  <div class="review">
+    <div class="review-label">Technical Notes</div>
+    <h2>Leica M9</h2>
+    <p>All 75 images shot on the Leica M9 with Summilux-M 21mm f/1.4 ASPH. One camera, one lens, one day. The shooting spans from early afternoon into deep night, with ISOs ranging from 160 to 640 and exposures from 1/1000th of a second in daylight to 3 seconds after dark.</p>
+  </div>
+
+  <div class="review" style="text-align:center; margin:6rem auto 2rem;">
+    <div class="review-label">The Experiment</div>
+    <p>These photographs are part of a living experiment. An astrological Oracle predicts which three images from this archive will resonate most with you, based on the exact moment each was captured and the sky at your birth.</p>
+    <p>The math is published. The results are public. You decide if it works.</p>
+    <a href="/ask.html" style="display:inline-block; margin-top:1.5rem; padding:0.8rem 2.5rem; font-family:'Cormorant Garamond', Georgia, serif; font-size:1.1rem; letter-spacing:0.15em; color:#e8e4dc; border:1px solid rgba(200,195,185,0.3); text-decoration:none; transition:border-color 0.3s;">Ask the Oracle</a>
+  </div>
+
+  <p style="text-align:center; font-family:'Cormorant Garamond', Georgia, serif; font-size:0.85rem; color:rgba(200,195,185,0.4); margin:2rem 0 4rem; letter-spacing:0.05em;">&copy;2026 Charles Paul Jones. All Rights Reserved.</p>
+</div>
+
+<div id="inline-gallery"></div>
+
+<div id="like-wrap">
+  <button id="like-btn" aria-label="Like this image">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  </button>
+  <div id="like-count"></div>
+</div>
+
+<!-- lightGallery core + plugins -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/lightgallery.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/autoplay/lg-autoplay.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/fullscreen/lg-fullscreen.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/zoom/lg-zoom.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  var R2_BASE = 'https://pub-da2e115648834f6494b469cc52296f8a.r2.dev';
+
+  // -- State --
+  var manifest = [];
+  var galleryInstance = null;
+  var currentFilename = '';
+
+  // -- Elements --
+  var $loading = document.getElementById('loading');
+  var $titleCard = document.getElementById('title-card');
+  var $enterBtn = document.getElementById('enter-btn');
+  var $inlineGallery = document.getElementById('inline-gallery');
+  var $likeWrap = document.getElementById('like-wrap');
+  var $likeBtn = document.getElementById('like-btn');
+  var $likeCount = document.getElementById('like-count');
+
+  // -- Image URL helper --
+  var cacheBust = 'v=20260320';
+  function imageURL(filename) {
+    return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
+  }
+
+  // -- Build gallery with lightGallery --
+  function buildGallery() {
+    var dynamicEl = manifest.map(function(filename) {
+      return {
+        src: imageURL(filename),
+        thumb: imageURL(filename),
+        subHtml: '',
+      };
+    });
+
+    galleryInstance = lightGallery($inlineGallery, {
+      container: $inlineGallery,
+      dynamic: true,
+      dynamicEl: dynamicEl,
+
+      // Plugins
+      plugins: [lgAutoplay, lgFullscreen, lgZoom, lgThumbnail],
+
+      // Core
+      mode: 'lg-fade',
+      speed: 1400,
+      loop: true,
+      counter: true,
+      download: false,
+      mousewheel: true,
+      keyPress: true,
+      controls: true,
+      closable: false,
+      showCloseIcon: false,
+      showMaximizeIcon: false,
+      preload: 3,
+      swipeToClose: false,
+      closeOnTap: false,
+
+      // Autoplay
+      autoplay: true,
+      slideShowAutoplay: true,
+      slideShowInterval: 8000,
+      progressBar: true,
+      forceSlideShowAutoplay: false,
+
+      // Fullscreen
+      fullScreen: true,
+
+      // Zoom
+      scale: 1,
+      zoom: true,
+      actualSize: true,
+
+      // Thumbnails
+      thumbnail: true,
+      showThumbByDefault: false,
+      toggleThumb: true,
+      thumbWidth: 80,
+      thumbHeight: '60px',
+      thumbMargin: 5,
+    });
+
+    // Track current slide
+    $inlineGallery.addEventListener('lgAfterSlide', function(event) {
+      var index = event.detail.index;
+      currentFilename = manifest[index] || '';
+    });
+
+    // Set initial filename
+    currentFilename = manifest[0] || '';
+
+    // Show like button
+    document.getElementById('like-wrap').style.display = 'block';
+  }
+
+  // -- Start gallery (after Enter Gallery click) --
+  function startGallery() {
+    $titleCard.classList.add('fade-out');
+    setTimeout(function() {
+      $titleCard.style.display = 'none';
+      document.body.style.overflow = 'hidden';
+      buildGallery();
+      galleryInstance.openGallery(0);
+      $loading.style.display = 'none';
+    }, 600);
+  }
+
+  // -- Init: fetch manifest --
+  function init() {
+    fetch(R2_BASE + '/manifest.json?t=' + Date.now())
+      .then(function(resp) {
+        if (!resp.ok) throw new Error('No manifest');
+        return resp.json();
+      })
+      .then(function(data) {
+        manifest = data.images || data;
+        if (manifest.length === 0) return;
+
+        // Preload first image, then remove loading screen
+        var img = new Image();
+        img.onload = function() { $loading.style.display = 'none'; };
+        img.onerror = function() { $loading.style.display = 'none'; };
+        img.src = imageURL(manifest[0]);
+      })
+      .catch(function(e) {
+        console.error('Could not load manifest:', e);
+        $loading.style.display = 'none';
+      });
+  }
+
+  $enterBtn.addEventListener('click', startGallery);
+
+  // Keyboard shortcut: Enter to start
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && $titleCard.style.display !== 'none' && !$titleCard.classList.contains('fade-out')) {
+      startGallery();
+    }
+  });
+
+  init();
+
+})();
+</script>
+
+<noscript>
+<div style="background:#000;color:#d4d0c8;padding:2rem;font-family:Georgia,serif;text-align:center;">
+<h1>The Magic Love Bus</h1>
+<p>Deep Green Festival - Craneway Pavilion, Richmond, California - April 2012</p>
+<p>Photographs by Chuck Jones</p>
+<p style="margin-top:2rem;color:#8a8478;">This gallery requires JavaScript to display. Please enable JavaScript in your browser.</p>
+</div>
+</noscript>
+</body>
+</html>
