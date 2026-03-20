@@ -353,6 +353,15 @@ html, body {
 
 <div id="inline-gallery"></div>
 
+<audio id="gallery-audio" preload="auto" loop>
+  <source src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/09_The_End.m4a" type="audio/mp4">
+</audio>
+
+<button id="mute-btn" aria-label="Mute/Unmute" style="display:none">
+  <svg id="vol-on" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+  <svg id="vol-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+</button>
+
 <div id="like-wrap">
   <button id="like-btn" aria-label="Like this image">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -386,6 +395,10 @@ html, body {
   var $likeWrap = document.getElementById('like-wrap');
   var $likeBtn = document.getElementById('like-btn');
   var $likeCount = document.getElementById('like-count');
+  var $audio = document.getElementById('gallery-audio');
+  var $muteBtn = document.getElementById('mute-btn');
+  var $volOn = document.getElementById('vol-on');
+  var $volOff = document.getElementById('vol-off');
 
   // -- Image URL helper --
   var cacheBust = 'v=20260320';
@@ -473,8 +486,20 @@ html, body {
       buildGallery();
       galleryInstance.openGallery(0);
       $loading.style.display = 'none';
+
+      // Start audio at 50% volume (user click satisfies autoplay policy)
+      $audio.volume = 0.5;
+      $audio.play().catch(function() {});
+      $muteBtn.style.display = 'flex';
     }, 600);
   }
+
+  // -- Mute toggle --
+  $muteBtn.addEventListener('click', function() {
+    $audio.muted = !$audio.muted;
+    $volOn.style.display = $audio.muted ? 'none' : 'block';
+    $volOff.style.display = $audio.muted ? 'block' : 'none';
+  });
 
   // -- Init: fetch manifest --
   function init() {
@@ -505,6 +530,12 @@ html, body {
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && $titleCard.style.display !== 'none' && !$titleCard.classList.contains('fade-out')) {
       startGallery();
+    }
+    // M to toggle mute
+    if (e.key === 'm' || e.key === 'M') {
+      $audio.muted = !$audio.muted;
+      $volOn.style.display = $audio.muted ? 'none' : 'block';
+      $volOff.style.display = $audio.muted ? 'block' : 'none';
     }
   });
 
