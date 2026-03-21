@@ -187,6 +187,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 1s ease;
 }
 .spinner {
   width: 32px;
@@ -564,10 +565,7 @@ html, body {
       .then(function(data) {
         manifest = data.images || data;
         if (manifest.length === 0) return;
-        var img = new Image();
-        img.onload = function() { $loading.classList.add('hidden'); };
-        img.onerror = function() { $loading.classList.add('hidden'); };
-        img.src = imageURL(manifest[0]);
+        $loading.classList.add('hidden');
       })
       .catch(function(e) {
         console.error('Could not load manifest:', e);
@@ -586,7 +584,7 @@ html, body {
       $audio.volume = 0.5;
       $audio.play().catch(function() {});
       $muteBtn.style.display = 'flex';
-    }, 600);
+    }, 1800);
   }
 
   // Mute toggle
