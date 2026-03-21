@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
 
-<!-- lightGallery core + plugin CSS -->
+<!-- lightGallery core + plugin CSS (bundle includes all plugin styles) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/css/lightgallery-bundle.min.css">
 
 <style>
@@ -42,7 +42,7 @@ html, body {
   background: #000;
 }
 
-/* -- Title card -- */
+/* ── Title card ── */
 #title-card {
   position: fixed;
   inset: 0;
@@ -105,7 +105,25 @@ html, body {
   border-color: rgba(255, 255, 255, 0.5);
 }
 
-/* -- Review section -- */
+#title-card .hero-photo {
+  max-width: 680px;
+  width: 90%;
+  border-radius: 4px;
+  margin-top: 2.5rem;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+}
+#title-card .hero-caption {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(0.8rem, 1.4vw, 1rem);
+  color: rgba(200, 195, 185, 0.5);
+  margin-top: 0.8rem;
+  text-align: center;
+  padding: 0 2rem;
+}
+
+/* ── Review section ── */
 .review {
   max-width: 680px;
   margin: 4rem auto 6rem;
@@ -160,133 +178,112 @@ html, body {
   font-size: clamp(1.3rem, 2.2vw, 1.7rem);
   color: #e8e4dc;
   line-height: 1.6;
-  text-align: center;
-  padding: 2rem 0;
-  margin: 2rem 0;
-  border-top: 1px solid rgba(200, 195, 185, 0.15);
-  border-bottom: 1px solid rgba(200, 195, 185, 0.15);
+  margin-top: 2.5rem;
+  padding-left: 1.5rem;
+  border-left: 2px solid rgba(200, 195, 185, 0.4);
 }
 
-/* -- Inline gallery (lightGallery fills this) -- */
+/* ── Inline gallery container ── */
 #inline-gallery {
   width: 100%;
   height: 100%;
 }
 
-/* -- Loading spinner -- */
-#loading {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: #000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 1s ease;
-}
-.spinner {
-  width: 32px;
-  height: 32px;
-  border: 2px solid rgba(255,255,255,0.15);
-  border-top-color: #d4d0c8;
-  border-radius: 50%;
-  animation: load-pulse 1.2s ease-in-out infinite;
-}
-@keyframes load-pulse {
-  0% { transform: rotate(0deg); opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { transform: rotate(360deg); opacity: 0.6; }
-}
-
-/* -- Like button overlay -- */
+/* ── Like button ── */
 #like-wrap {
   position: fixed;
-  bottom: 80px;
-  right: 24px;
-  z-index: 1060;
+  bottom: 70px;
+  right: 20px;
+  z-index: 2147483647;
   display: none;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
+  text-align: center;
 }
 
 #like-btn {
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.15);
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 50%;
   width: 44px;
   height: 44px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: transform 0.2s;
-  -webkit-tap-highlight-color: transparent;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
+
+#like-btn:hover {
+  background: rgba(0,0,0,0.6);
+  transform: scale(1.1);
+}
+
 #like-btn svg {
   width: 22px;
   height: 22px;
   fill: none;
-  stroke: rgba(255,255,255,0.6);
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-width: 1.5;
-  transition: fill 0.3s, stroke 0.3s;
+  transition: fill 0.3s ease, stroke 0.3s ease;
 }
+
 #like-btn.liked svg {
-  fill: #e25555;
-  stroke: #e25555;
-}
-#like-btn.pop {
-  animation: pop-heart 0.35s ease;
-}
-@keyframes pop-heart {
-  0% { transform: scale(1); }
-  40% { transform: scale(1.35); }
-  100% { transform: scale(1); }
+  fill: rgba(220, 60, 60, 0.9);
+  stroke: rgba(220, 60, 60, 1);
 }
 
 #like-count {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: rgba(255,255,255,0.5);
-  text-align: center;
-  min-height: 1em;
+  margin-top: 0.25rem;
 }
 
-/* -- Mute button -- */
+#like-btn.liked ~ #like-count {
+  color: rgba(220, 60, 60, 0.7);
+}
+
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+#like-btn.pop {
+  animation: heart-pop 0.35s ease;
+}
+
+/* ── Mute button ── */
 #mute-btn {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 1060;
-  background: rgba(0,0,0,0.45);
-  border: 1px solid rgba(255,255,255,0.15);
+  bottom: 130px;
+  right: 20px;
+  z-index: 2147483647;
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.1);
   border-radius: 50%;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
+
+#mute-btn:hover {
+  background: rgba(0,0,0,0.6);
+  transform: scale(1.1);
+}
+
 #mute-btn svg {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   fill: none;
-  stroke: rgba(255,255,255,0.5);
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-width: 1.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
 }
 
-/* -- Mobile: move Enter Gallery above hero photo -- */
-@media (max-width: 768px) {
-  #title-card h1 { order: -3; }
-  #title-card .subtitle { order: -2; }
-  #title-card #enter-btn { order: -1; margin-top: 2rem; margin-bottom: 1rem; }
-}
-
-/* -- One-click share buttons in toolbar -- */
+/* ── One-click share buttons in toolbar ── */
 .lg-share-btn {
   background: none;
   border: none;
@@ -312,7 +309,36 @@ html, body {
   fill: #fff;
 }
 
-/* -- lightGallery overrides for dark gallery aesthetic -- */
+/* ── Loading ── */
+#loading {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1s ease;
+}
+
+#loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+#loading .spinner {
+  width: 2px;
+  height: 24px;
+  background: #5a5650;
+  animation: load-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes load-pulse {
+  0%, 100% { opacity: 0.2; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ── lightGallery overrides for dark gallery aesthetic ── */
 .lg-backdrop {
   background-color: #000 !important;
 }
@@ -324,14 +350,7 @@ html, body {
 .lg-outer .lg-thumb-outer {
   background-color: rgba(0,0,0,0.85) !important;
 }
-
-#loading.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
 </style>
-
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -341,16 +360,12 @@ html, body {
   "url": "https://thisoldhippie.com/magic-love-bus/",
   "author": {
     "@type": "Person",
-    "name": "Chuck Jones"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "Birrell Jones Productions",
+    "name": "Chuck Jones",
     "url": "https://thisoldhippie.com"
   },
-  "datePublished": "2026-03-20",
-  "numberOfItems": 75
-}
+  "dateCreated": "2012-04-21",
+  "numberOfItems": 75,
+  }
 </script>
 </head>
 <body>
@@ -371,7 +386,6 @@ html, body {
     <p>The first ever Deep Green Festival, co-sponsored by Earth Dance, combined entertainment, panels on ecology and legalization, and an exhibition of green cultivation techniques at the Craneway Pavilion in Richmond. Organizer Michael Gosney of the Green Center Institute said the festival was part of a reimagining of cannabis' often negative image, designed to supplant the clich&eacute;d pictures and, in the context of Earth Day, really take a close look at cannabis beyond the political and public relations limitations.</p>
     <p>The Craneway Pavilion was a deliberate choice. The former Ford factory is bathed in natural light from copious skylights, with an airy lightness enhanced by its location along the glimmering San Francisco Bay. LEED-certified and solar-powered.</p>
     <p>The Coup, Heavyweight Dub Champion, MC Yogi, and Bay Area DJs entertained the crowd. Panels featured Oaksterdam founder Richard Lee, David Bronner of Dr. Bronner's Magic Soaps on industrial hemp, and Harborside Health Center founder Stephen DeAngelo on the ecological paradox of indoor cultivation. Chris Van Hook of the Clean Green Certified Agriculture Program spoke about the environmental impact on both sides.</p>
-
     <div class="pullquote">&ldquo;We are never going to win public acceptance if our community is perceived as doing harm.&rdquo;<br><span style="font-size:0.8em; color:rgba(200,195,185,0.5);">- Stephen DeAngelo, Harborside Health Center</span></div>
   </div>
 
@@ -397,11 +411,6 @@ html, body {
   <source src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/09_The_End.m4a" type="audio/mp4">
 </audio>
 
-<button id="mute-btn" aria-label="Mute/Unmute" style="display:none">
-  <svg id="vol-on" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-  <svg id="vol-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
-</button>
-
 <div id="like-wrap">
   <button id="like-btn" aria-label="Like this image">
     <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -409,7 +418,12 @@ html, body {
   <div id="like-count"></div>
 </div>
 
-<!-- lightGallery core + plugins -->
+<button id="mute-btn" aria-label="Mute/Unmute" style="display:none">
+  <svg id="vol-on" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+  <svg id="vol-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
+</button>
+
+<!-- lightGallery core + plugins from cdnjs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/lightgallery.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/autoplay/lg-autoplay.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/fullscreen/lg-fullscreen.umd.min.js"></script>
@@ -421,13 +435,16 @@ html, body {
   'use strict';
 
   var R2_BASE = 'https://pub-da2e115648834f6494b469cc52296f8a.r2.dev';
+  // var LIKES_API = ''; // No likes worker yet
 
-  // -- State --
+  // ── State ──
   var manifest = [];
   var galleryInstance = null;
   var currentFilename = '';
+  var myLikes = {};
+  var likeCounts = {};
 
-  // -- Elements --
+  // ── Elements ──
   var $loading = document.getElementById('loading');
   var $titleCard = document.getElementById('title-card');
   var $enterBtn = document.getElementById('enter-btn');
@@ -440,13 +457,73 @@ html, body {
   var $volOn = document.getElementById('vol-on');
   var $volOff = document.getElementById('vol-off');
 
-  // -- Image URL helper (cache-bust) --
+  // ── Likes system ──
+  try { myLikes = JSON.parse(localStorage.getItem('mlb-likes') || '{}'); } catch(e) {}
+
+  function saveMyLikes() {
+    try { localStorage.setItem('mlb-likes', JSON.stringify(myLikes)); } catch(e) {}
+  }
+
+  function updateLikeUI() {
+    if (!currentFilename) return;
+    var isLiked = !!myLikes[currentFilename];
+    var count = likeCounts[currentFilename] || 0;
+    $likeBtn.classList.toggle('liked', isLiked);
+    $likeCount.textContent = count > 0 ? count : '';
+  }
+
+  function fetchAllLikes() {
+    return fetch(LIKES_API + '/likes')
+      .then(function(resp) { return resp.ok ? resp.json() : {}; })
+      .then(function(data) { likeCounts = data; })
+      .catch(function() {});
+  }
+
+  function toggleLike() {
+    if (!currentFilename) return;
+    var isLiked = !!myLikes[currentFilename];
+    var action = isLiked ? 'unlike' : 'like';
+
+    if (isLiked) {
+      delete myLikes[currentFilename];
+      likeCounts[currentFilename] = Math.max(0, (likeCounts[currentFilename] || 1) - 1);
+    } else {
+      myLikes[currentFilename] = true;
+      likeCounts[currentFilename] = (likeCounts[currentFilename] || 0) + 1;
+      $likeBtn.classList.remove('pop');
+      void $likeBtn.offsetHeight;
+      $likeBtn.classList.add('pop');
+    }
+    saveMyLikes();
+    updateLikeUI();
+
+    fetch(LIKES_API + '/like', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image: currentFilename, action: action }),
+    })
+    .then(function(resp) { return resp.ok ? resp.json() : null; })
+    .then(function(data) {
+      if (data) {
+        likeCounts[currentFilename] = data.count;
+        updateLikeUI();
+      }
+    })
+    .catch(function() {});
+  }
+
+  $likeBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    toggleLike();
+  });
+
+  // ── Image URL helper (cache-bust to force new versions) ──
   var cacheBust = 'v=20260320';
   function imageURL(filename) {
     return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
   }
 
-  // -- Build gallery with lightGallery --
+  // ── Build gallery with lightGallery ──
   function buildGallery() {
     var dynamicEl = manifest.map(function(filename) {
       return {
@@ -460,7 +537,11 @@ html, body {
       container: $inlineGallery,
       dynamic: true,
       dynamicEl: dynamicEl,
+
+      // Plugins
       plugins: [lgAutoplay, lgFullscreen, lgZoom, lgThumbnail],
+
+      // Core
       mode: 'lg-fade',
       speed: 1400,
       loop: true,
@@ -475,15 +556,23 @@ html, body {
       preload: 3,
       swipeToClose: false,
       closeOnTap: false,
+
+      // Autoplay
       autoplay: true,
       slideShowAutoplay: true,
       slideShowInterval: 8000,
       progressBar: true,
       forceSlideShowAutoplay: false,
+
+      // Fullscreen
       fullScreen: true,
+
+      // Zoom
       scale: 1,
       zoom: true,
       actualSize: true,
+
+      // Thumbnails
       thumbnail: true,
       showThumbByDefault: false,
       toggleThumb: true,
@@ -492,17 +581,21 @@ html, body {
       thumbMargin: 5,
     });
 
+    // Track current slide for the like button
     $inlineGallery.addEventListener('lgAfterSlide', function(event) {
       var index = event.detail.index;
       currentFilename = manifest[index] || '';
+      updateLikeUI();
     });
 
+    // Set initial filename
     currentFilename = manifest[0] || '';
+    updateLikeUI();
 
-    // Open gallery
+    // Open gallery at first slide
     galleryInstance.openGallery(0);
 
-    // Inject share buttons into toolbar
+    // Inject one-click share buttons into lightGallery toolbar
     setTimeout(function() {
       var toolbar = document.querySelector('.lg-toolbar');
       if (!toolbar) return;
@@ -514,43 +607,54 @@ html, body {
         return imageURL(currentFilename || manifest[0]);
       }
 
+      // Facebook
       var fbBtn = document.createElement('button');
       fbBtn.className = 'lg-share-btn';
       fbBtn.title = 'Share on Facebook';
       fbBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>';
       fbBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl), '_blank', 'width=600,height=400');
+        var url = encodeURIComponent(pageUrl);
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + url, '_blank', 'width=600,height=400');
       });
 
+      // X (Twitter)
       var twBtn = document.createElement('button');
       twBtn.className = 'lg-share-btn';
       twBtn.title = 'Share on X';
       twBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
       twBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(pageTitle) + '&url=' + encodeURIComponent(pageUrl), '_blank', 'width=600,height=400');
+        var text = encodeURIComponent(pageTitle);
+        var url = encodeURIComponent(pageUrl);
+        window.open('https://twitter.com/intent/tweet?text=' + text + '&url=' + url, '_blank', 'width=600,height=400');
       });
 
+      // Pinterest
       var pinBtn = document.createElement('button');
       pinBtn.className = 'lg-share-btn';
       pinBtn.title = 'Pin on Pinterest';
       pinBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>';
       pinBtn.addEventListener('click', function(e) {
         e.stopPropagation();
-        window.open('https://pinterest.com/pin/create/button/?url=' + encodeURIComponent(pageUrl) + '&media=' + encodeURIComponent(currentImageUrl()) + '&description=' + encodeURIComponent(pageTitle), '_blank', 'width=600,height=400');
+        var imgUrl = encodeURIComponent(currentImageUrl());
+        var url = encodeURIComponent(pageUrl);
+        var desc = encodeURIComponent(pageTitle);
+        window.open('https://pinterest.com/pin/create/button/?url=' + url + '&media=' + imgUrl + '&description=' + desc, '_blank', 'width=600,height=400');
       });
 
+      // Insert before the first existing button
       var firstBtn = toolbar.firstChild;
       toolbar.insertBefore(pinBtn, firstBtn);
       toolbar.insertBefore(twBtn, firstBtn);
       toolbar.insertBefore(fbBtn, firstBtn);
 
+      // Show like button
       document.getElementById('like-wrap').style.display = 'block';
     }, 300);
   }
 
-  // -- Initialize --
+  // ── Initialize ──
   function init() {
     fetch(R2_BASE + '/manifest.json?t=' + Date.now())
       .then(function(resp) {
@@ -560,6 +664,11 @@ html, body {
       .then(function(data) {
         manifest = data.images || data;
         if (manifest.length === 0) return;
+
+        // Load like counts in background
+        fetchAllLikes().then(updateLikeUI);
+
+        // Ready
         $loading.classList.add('hidden');
       })
       .catch(function(e) {
@@ -568,7 +677,7 @@ html, body {
       });
   }
 
-  // -- Enter gallery --
+  // ── Enter gallery ──
   $enterBtn.addEventListener('click', startGallery);
 
   function startGallery() {
@@ -576,6 +685,7 @@ html, body {
     setTimeout(function() {
       $titleCard.style.display = 'none';
       buildGallery();
+      // Start audio at 50% volume (user click satisfies autoplay policy)
       $audio.volume = 0.5;
       $audio.play().catch(function() {});
       $muteBtn.style.display = 'flex';
@@ -583,16 +693,17 @@ html, body {
   }
 
   // Mute toggle
-  $muteBtn.addEventListener('click', function() {
+  $muteBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
     $audio.muted = !$audio.muted;
     $volOn.style.display = $audio.muted ? 'none' : 'block';
     $volOff.style.display = $audio.muted ? 'block' : 'none';
   });
 
-  // Keyboard shortcuts
+  // K key for like, M key for mute
   document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter' && $titleCard.style.display !== 'none' && !$titleCard.classList.contains('fade-out')) {
-      startGallery();
+    if (e.key === 'k' || e.key === 'K') {
+      toggleLike();
     }
     if (e.key === 'm' || e.key === 'M') {
       $audio.muted = !$audio.muted;
@@ -601,16 +712,91 @@ html, body {
     }
   });
 
+  // Go
   init();
+
 })();
 </script>
-
+<!-- SEO: Static image references for crawlers that do not execute JavaScript -->
 <noscript>
 <div style="background:#000;color:#d4d0c8;padding:2rem;font-family:Georgia,serif;text-align:center;">
 <h1>The Magic Love Bus</h1>
-<p>Deep Green Festival - Craneway Pavilion, Richmond, California - April 2012</p>
-<p>Photographs by Chuck Jones</p>
-<p style="margin-top:2rem;color:#8a8478;">This gallery requires JavaScript to display. Please enable JavaScript in your browser.</p>
+<p>Deep Green Festival, Craneway Pavilion, Richmond, California. April 2012. 75 photographs by Chuck Jones.</p>
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530454.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530454.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530486.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530486.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530491.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530491.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530503.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530503.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530508.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530508.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530513.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530513.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530546.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530546.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530558.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530558.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530618.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530618.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530663.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530663.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530670.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530670.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530705.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530705.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530734.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530734.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530743.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530743.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530748.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530748.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530773.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530773.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530776.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530776.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530830.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530830.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530857.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530857.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530866.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530866.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530905.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530905.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530966.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530966.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9530997.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9530997.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9531060.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9531060.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9531100.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9531100.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9531135.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9531135.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep Green-9531194.jpg" alt="The Magic Love Bus - Deep Green Festival - Deep Green-9531194.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530378.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530378.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530384.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530384.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530390.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530390.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530393.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530393.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530394.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530394.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530400.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530400.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530404.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530404.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530405.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530405.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530409.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530409.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530411.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530411.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530417.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530417.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530420.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530420.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530423.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530423.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530424.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530424.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530425.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530425.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530434.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530434.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530438.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530438.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530439.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530439.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530440.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530440.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530447.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530447.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530463.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530463.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530466.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530466.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530467.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530467.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530468.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530468.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530469.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530469.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530474.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530474.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530475.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530475.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530490.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530490.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530493.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530493.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530498.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530498.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530503-Edit.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530503-Edit.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530792.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530792.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530807.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530807.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530819.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530819.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530820.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530820.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530825.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530825.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530847.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530847.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530861.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530861.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530991A.jpg" alt="The Magic Love Bus - Deep Green Festival - L9530991A.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531111.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531111.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531118.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531118.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531128A.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531128A.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531135A.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531135A.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531150.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531150.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531152.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531152.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531156.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531156.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531157.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531157.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
+<img src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9531163.jpg" alt="The Magic Love Bus - Deep Green Festival - L9531163.jpg - Photograph by Chuck Jones" width="600" loading="lazy">
 </div>
 </noscript>
 </body>
