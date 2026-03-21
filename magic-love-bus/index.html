@@ -9,10 +9,10 @@
 <meta property="og:description" content="75 photographs by Chuck Jones. Leica M9, Summilux-M 21mm f/1.4. Deep Green Festival, Craneway Pavilion, Richmond, April 2012.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://thisoldhippie.com/magic-love-bus/">
-<meta property="og:image" content="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530417.jpg">
+<meta property="og:image" content="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep%20Green-9530503.jpg">
 <meta property="og:image:width" content="1200">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/L9530417.jpg">
+<meta name="twitter:image" content="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep%20Green-9530503.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-7B7R3WVPJW"></script>
@@ -350,6 +350,14 @@ html, body {
 .lg-outer .lg-thumb-outer {
   background-color: rgba(0,0,0,0.85) !important;
 }
+
+/* -- Mobile: move Enter Gallery above hero photo -- */
+@media (max-width: 768px) {
+  #title-card h1 { order: -3; }
+  #title-card .subtitle { order: -2; }
+  #title-card #enter-btn { order: -1; margin-top: 2rem; margin-bottom: 1rem; }
+  #title-card .hero-photo { margin-top: 2rem; }
+}
 </style>
 <script type="application/ld+json">
 {
@@ -377,6 +385,8 @@ html, body {
   <div class="subtitle">Deep Green Festival</div>
   <div class="subtitle">Craneway Pavilion, Richmond, California</div>
   <div class="subtitle">April 2012</div>
+  <img class="hero-photo" src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/Deep%20Green-9530503.jpg" alt="Hula hooper in front of the Magic Love Bus at the Deep Green Festival, Craneway Pavilion, Richmond, April 2012">
+  <div class="hero-caption">The Magic Love Bus. &ldquo;Free Up The Herb! Get On Board For The Lovevolution.&rdquo; Craneway Pavilion, April 2012.</div>
   <div class="subtitle" style="margin-top: 2rem;">Photographs by Chuck Jones</div>
   <div class="enter" id="enter-btn">Enter Gallery</div>
 
