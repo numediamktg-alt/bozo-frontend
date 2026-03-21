@@ -290,6 +290,50 @@ html, body {
   #title-card #enter-btn { order: -1; margin-top: 2rem; margin-bottom: 1rem; }
 }
 
+/* -- One-click share buttons in toolbar -- */
+.lg-share-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 6px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  vertical-align: middle;
+}
+
+.lg-share-btn:hover {
+  opacity: 1;
+}
+
+.lg-share-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: #999;
+  transition: fill 0.2s ease;
+}
+
+.lg-share-btn:hover svg {
+  fill: #fff;
+}
+
+/* -- lightGallery overrides for dark gallery aesthetic -- */
+.lg-backdrop {
+  background-color: #000 !important;
+}
+
+.lg-progress-bar .lg-progress {
+  background-color: rgba(200, 195, 185, 0.4) !important;
+}
+
+.lg-outer .lg-thumb-outer {
+  background-color: rgba(0,0,0,0.85) !important;
+}
+
+#loading.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 </style>
 
 <script type="application/ld+json">
@@ -400,7 +444,7 @@ html, body {
   var $volOn = document.getElementById('vol-on');
   var $volOff = document.getElementById('vol-off');
 
-  // -- Image URL helper --
+  // -- Image URL helper (cache-bust) --
   var cacheBust = 'v=20260320';
   function imageURL(filename) {
     return R2_BASE + '/' + encodeURIComponent(filename) + '?' + cacheBust;
@@ -420,11 +464,7 @@ html, body {
       container: $inlineGallery,
       dynamic: true,
       dynamicEl: dynamicEl,
-
-      // Plugins
       plugins: [lgAutoplay, lgFullscreen, lgZoom, lgThumbnail],
-
-      // Core
       mode: 'lg-fade',
       speed: 1400,
       loop: true,
@@ -439,23 +479,15 @@ html, body {
       preload: 3,
       swipeToClose: false,
       closeOnTap: false,
-
-      // Autoplay
       autoplay: true,
       slideShowAutoplay: true,
       slideShowInterval: 8000,
       progressBar: true,
       forceSlideShowAutoplay: false,
-
-      // Fullscreen
       fullScreen: true,
-
-      // Zoom
       scale: 1,
       zoom: true,
       actualSize: true,
-
-      // Thumbnails
       thumbnail: true,
       showThumbByDefault: false,
       toggleThumb: true,
@@ -464,44 +496,65 @@ html, body {
       thumbMargin: 5,
     });
 
-    // Track current slide
     $inlineGallery.addEventListener('lgAfterSlide', function(event) {
       var index = event.detail.index;
       currentFilename = manifest[index] || '';
     });
 
-    // Set initial filename
     currentFilename = manifest[0] || '';
 
-    // Show like button
-    document.getElementById('like-wrap').style.display = 'block';
-  }
+    // Open gallery
+    galleryInstance.openGallery(0);
 
-  // -- Start gallery (after Enter Gallery click) --
-  function startGallery() {
-    $titleCard.classList.add('fade-out');
+    // Inject share buttons into toolbar
     setTimeout(function() {
-      $titleCard.style.display = 'none';
-      document.body.style.overflow = 'hidden';
-      buildGallery();
-      galleryInstance.openGallery(0);
-      $loading.style.display = 'none';
+      var toolbar = document.querySelector('.lg-toolbar');
+      if (!toolbar) return;
 
-      // Start audio at 50% volume (user click satisfies autoplay policy)
-      $audio.volume = 0.5;
-      $audio.play().catch(function() {});
-      $muteBtn.style.display = 'flex';
-    }, 600);
+      var pageTitle = 'The Magic Love Bus - Deep Green Festival 2012 - Photographs by Chuck Jones';
+      var pageUrl = window.location.href;
+
+      function currentImageUrl() {
+        return imageURL(currentFilename || manifest[0]);
+      }
+
+      var fbBtn = document.createElement('button');
+      fbBtn.className = 'lg-share-btn';
+      fbBtn.title = 'Share on Facebook';
+      fbBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>';
+      fbBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(pageUrl), '_blank', 'width=600,height=400');
+      });
+
+      var twBtn = document.createElement('button');
+      twBtn.className = 'lg-share-btn';
+      twBtn.title = 'Share on X';
+      twBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+      twBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(pageTitle) + '&url=' + encodeURIComponent(pageUrl), '_blank', 'width=600,height=400');
+      });
+
+      var pinBtn = document.createElement('button');
+      pinBtn.className = 'lg-share-btn';
+      pinBtn.title = 'Pin on Pinterest';
+      pinBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.372 0 12c0 5.084 3.163 9.426 7.627 11.174-.105-.949-.2-2.405.042-3.441.218-.937 1.407-5.965 1.407-5.965s-.359-.719-.359-1.782c0-1.668.967-2.914 2.171-2.914 1.023 0 1.518.769 1.518 1.69 0 1.029-.655 2.568-.994 3.995-.283 1.194.599 2.169 1.777 2.169 2.133 0 3.772-2.249 3.772-5.495 0-2.873-2.064-4.882-5.012-4.882-3.414 0-5.418 2.561-5.418 5.207 0 1.031.397 2.138.893 2.738a.36.36 0 0 1 .083.345l-.333 1.36c-.053.22-.174.267-.402.161-1.499-.698-2.436-2.889-2.436-4.649 0-3.785 2.75-7.262 7.929-7.262 4.163 0 7.398 2.967 7.398 6.931 0 4.136-2.607 7.464-6.227 7.464-1.216 0-2.359-.632-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24 12 24c6.627 0 12-5.373 12-12 0-6.628-5.373-12-12-12z"/></svg>';
+      pinBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        window.open('https://pinterest.com/pin/create/button/?url=' + encodeURIComponent(pageUrl) + '&media=' + encodeURIComponent(currentImageUrl()) + '&description=' + encodeURIComponent(pageTitle), '_blank', 'width=600,height=400');
+      });
+
+      var firstBtn = toolbar.firstChild;
+      toolbar.insertBefore(pinBtn, firstBtn);
+      toolbar.insertBefore(twBtn, firstBtn);
+      toolbar.insertBefore(fbBtn, firstBtn);
+
+      document.getElementById('like-wrap').style.display = 'block';
+    }, 300);
   }
 
-  // -- Mute toggle --
-  $muteBtn.addEventListener('click', function() {
-    $audio.muted = !$audio.muted;
-    $volOn.style.display = $audio.muted ? 'none' : 'block';
-    $volOff.style.display = $audio.muted ? 'block' : 'none';
-  });
-
-  // -- Init: fetch manifest --
+  // -- Initialize --
   function init() {
     fetch(R2_BASE + '/manifest.json?t=' + Date.now())
       .then(function(resp) {
@@ -511,27 +564,43 @@ html, body {
       .then(function(data) {
         manifest = data.images || data;
         if (manifest.length === 0) return;
-
-        // Preload first image, then remove loading screen
         var img = new Image();
-        img.onload = function() { $loading.style.display = 'none'; };
-        img.onerror = function() { $loading.style.display = 'none'; };
+        img.onload = function() { $loading.classList.add('hidden'); };
+        img.onerror = function() { $loading.classList.add('hidden'); };
         img.src = imageURL(manifest[0]);
       })
       .catch(function(e) {
         console.error('Could not load manifest:', e);
-        $loading.style.display = 'none';
+        $loading.classList.add('hidden');
       });
   }
 
+  // -- Enter gallery --
   $enterBtn.addEventListener('click', startGallery);
 
-  // Keyboard shortcut: Enter to start
+  function startGallery() {
+    $titleCard.classList.add('fade-out');
+    setTimeout(function() {
+      $titleCard.style.display = 'none';
+      buildGallery();
+      $audio.volume = 0.5;
+      $audio.play().catch(function() {});
+      $muteBtn.style.display = 'flex';
+    }, 600);
+  }
+
+  // Mute toggle
+  $muteBtn.addEventListener('click', function() {
+    $audio.muted = !$audio.muted;
+    $volOn.style.display = $audio.muted ? 'none' : 'block';
+    $volOff.style.display = $audio.muted ? 'block' : 'none';
+  });
+
+  // Keyboard shortcuts
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' && $titleCard.style.display !== 'none' && !$titleCard.classList.contains('fade-out')) {
       startGallery();
     }
-    // M to toggle mute
     if (e.key === 'm' || e.key === 'M') {
       $audio.muted = !$audio.muted;
       $volOn.style.display = $audio.muted ? 'none' : 'block';
@@ -540,7 +609,6 @@ html, body {
   });
 
   init();
-
 })();
 </script>
 
