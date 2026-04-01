@@ -2298,37 +2298,45 @@ html, body {
       // Insert before the first existing button
       var firstBtn = toolbar.firstChild;
       toolbar.insertBefore(pinBtn, firstBtn);
-      // Buy Print button - opens size picker, sends to Shopify checkout
-      var buyBtn = document.createElement('button');
-      buyBtn.className = 'lg-share-btn';
-      buyBtn.title = 'Buy This Print';
-      buyBtn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z M3 6h18 M16 10a4 4 0 0 1-8 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      buyBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var fname = currentFilename || manifest[0];
-        // Size picker overlay
-        var overlay = document.createElement('div');
-        overlay.id = 'buy-print-overlay';
-        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99999;display:flex;align-items:center;justify-content:center;';
-        overlay.innerHTML = '<div style="background:#1a1a1a;border:1px solid #333;border-radius:12px;padding:32px;max-width:400px;width:90%;text-align:center;font-family:sans-serif;">' +
-          '<h3 style="color:#fff;margin:0 0 8px 0;font-size:20px;">Order This Print</h3>' +
-          '<p style="color:#aaa;margin:0 0 4px 0;font-size:13px;">Edition of 25. Signed & Numbered.</p>' +
-          '<p style="color:#aaa;margin:0 0 4px 0;font-size:13px;">Crane Museo Max Fine Art Paper</p>' +
-          '<p style="color:#666;margin:0 0 20px 0;font-size:11px;">' + fname + '</p>' +
-          '<a href="https://birrell-jones.myshopify.com/cart/42272284737611:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:#fff;color:#000;text-decoration:none;padding:14px;margin:8px 0;border-radius:8px;font-size:16px;font-weight:600;">16" x 20" - $395</a>' +
-          '<a href="https://birrell-jones.myshopify.com/cart/42272284770379:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:#fff;color:#000;text-decoration:none;padding:14px;margin:8px 0;border-radius:8px;font-size:16px;font-weight:600;">20" x 24" - $495</a>' +
-          '<a href="https://birrell-jones.myshopify.com/cart/42272284803147:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:#fff;color:#000;text-decoration:none;padding:14px;margin:8px 0;border-radius:8px;font-size:16px;font-weight:600;">24" x 36" - $750</a>' +
-          '<button onclick="document.getElementById(\'buy-print-overlay\').remove()" style="background:none;border:1px solid #555;color:#888;padding:10px 24px;margin-top:16px;border-radius:8px;cursor:pointer;font-size:14px;">Cancel</button>' +
-          '</div>';
-        document.body.appendChild(overlay);
-        overlay.addEventListener('click', function(ev) { if (ev.target === overlay) overlay.remove(); });
-      });
-      toolbar.insertBefore(buyBtn, firstBtn);
       toolbar.insertBefore(twBtn, firstBtn);
       toolbar.insertBefore(fbBtn, firstBtn);
 
       // Show like button
       document.getElementById('like-wrap').style.display = 'block';
+
+      // Buy Print - prominent floating button with Chuck's graphic
+      var buyWrap = document.createElement('div');
+      buyWrap.id = 'buy-print-wrap';
+      buyWrap.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99998;cursor:pointer;transition:transform 0.2s ease;';
+      var buyImg = document.createElement('img');
+      buyImg.src = '/buy-print-button.png';
+      buyImg.alt = 'Pick Your Size & Buy This Print';
+      buyImg.style.cssText = 'width:320px;height:auto;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.6);';
+      buyWrap.appendChild(buyImg);
+      buyWrap.addEventListener('mouseenter', function() { buyWrap.style.transform = 'translateX(-50%) scale(1.05)'; });
+      buyWrap.addEventListener('mouseleave', function() { buyWrap.style.transform = 'translateX(-50%) scale(1)'; });
+      buyWrap.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var fname = currentFilename || manifest[0];
+        var overlay = document.createElement('div');
+        overlay.id = 'buy-print-overlay';
+        overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:99999;display:flex;align-items:center;justify-content:center;';
+        overlay.innerHTML = '<div style="background:linear-gradient(135deg,#1a1a2e,#16213e);border:2px solid rgba(255,200,100,0.3);border-radius:16px;padding:40px;max-width:420px;width:90%;text-align:center;font-family:Georgia,serif;">' +
+          '<h2 style="color:#fff;margin:0 0 6px 0;font-size:24px;font-weight:normal;letter-spacing:1px;">Limited Edition Print</h2>' +
+          '<p style="color:#d4af37;margin:0 0 4px 0;font-size:15px;font-style:italic;">Edition of 25 - Signed & Numbered</p>' +
+          '<p style="color:#ccc;margin:0 0 4px 0;font-size:13px;">Crane Museo Max Fine Art Paper</p>' +
+          '<p style="color:#ccc;margin:0 0 4px 0;font-size:13px;">Barry Norris Studio, Taos NM</p>' +
+          '<p style="color:#666;margin:0 0 24px 0;font-size:11px;font-family:monospace;">' + fname + '</p>' +
+          '<a href="https://birrell-jones.myshopify.com/cart/42272284737611:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:10px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">16\u2033 \u00d7 20\u2033 \u2014 $395</a>' +
+          '<a href="https://birrell-jones.myshopify.com/cart/42272284770379:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:10px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">20\u2033 \u00d7 24\u2033 \u2014 $495</a>' +
+          '<a href="https://birrell-jones.myshopify.com/cart/42272284803147:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:10px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">24\u2033 \u00d7 36\u2033 \u2014 $750</a>' +
+          '<button onclick="document.getElementById(\'buy-print-overlay\').remove()" style="background:none;border:1px solid #555;color:#888;padding:12px 32px;margin-top:20px;border-radius:8px;cursor:pointer;font-size:14px;font-family:Georgia,serif;">Continue Browsing</button>' +
+          '</div>';
+        document.body.appendChild(overlay);
+        overlay.addEventListener('click', function(ev) { if (ev.target === overlay) overlay.remove(); });
+      });
+      document.body.appendChild(buyWrap);
+
     }, 300);
   }
 
