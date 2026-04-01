@@ -1099,7 +1099,7 @@ html, body {
             var status = document.getElementById('sub-status');
             if (!email || email.indexOf('@') === -1) { status.textContent = 'Please enter a valid email.'; status.style.color = '#ff6b6b'; return; }
             status.textContent = 'Subscribing...'; status.style.color = '#d4af37';
-            fetch('https://sol-likes.chuck-3ba.workers.dev/subscribe?email=' + encodeURIComponent(email) + '&source=gallery')
+            fetch('https://toh-subscribe.chuck-3ba.workers.dev/subscribe?email=' + encodeURIComponent(email) + '&source=gallery')
             .then(function() {
               status.textContent = 'Welcome aboard.';
               status.style.color = '#4ecdc4';
