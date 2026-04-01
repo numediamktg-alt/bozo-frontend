@@ -829,6 +829,7 @@ html, body {
   var manifest = [];
   var galleryInstance = null;
   var currentFilename = '';
+  var currentIndex = 0;
   var myLikes = {};
   var likeCounts = {};
 
@@ -973,6 +974,7 @@ html, body {
     $inlineGallery.addEventListener('lgAfterSlide', function(event) {
       var index = event.detail.index;
       currentFilename = manifest[index] || '';
+      currentIndex = index;
       updateLikeUI();
     });
 
@@ -990,6 +992,7 @@ html, body {
 
       var pageTitle = 'New Riders of the Purple Sage - Sausalito Art Festival 2007 - Photographs by Chuck Jones';
       var pageUrl = window.location.href;
+      var galleryShortName = 'New Riders of the Purple Sage';
 
       function currentImageUrl() {
         return imageURL(currentFilename || manifest[0]);
@@ -1025,9 +1028,9 @@ html, body {
           '<h2 style="color:#fff;margin:0 0 6px 0;font-size:22px;font-weight:normal;letter-spacing:1px;">Limited Edition Print</h2>' +
           '<p style="color:#d4af37;margin:0 0 4px 0;font-size:14px;font-style:italic;">Edition of 25 - Signed & Numbered by Chuck Jones</p>' +
           '<p style="color:#ccc;margin:0 0 20px 0;font-size:13px;">Artist Pigments on Crane Museo Max</p>' +
-          '<a href="https://birrell-jones.myshopify.com/cart/42272284737611:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:8px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">16\u2033 \u00d7 20\u2033 \u2014 $395</a>' +
-          '<a href="https://birrell-jones.myshopify.com/cart/42272284770379:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:8px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">20\u2033 \u00d7 24\u2033 \u2014 $495</a>' +
-          '<a href="https://birrell-jones.myshopify.com/cart/42272284803147:1?attributes[image]=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:8px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">24\u2033 \u00d7 36\u2033 \u2014 $750</a>' +
+          '<a href="https://birrell-jones.myshopify.com/cart/42272284737611:1?' + 'properties%5BSelected%20Photograph%5D=' + encodeURIComponent(galleryShortName + ' - Image ' + (currentIndex+1) + ' of ' + manifest.length) + '&properties%5BFile%20Reference%5D=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:8px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">16\u2033 \u00d7 20\u2033 \u2014 $395</a>' +
+          '<a href="https://birrell-jones.myshopify.com/cart/42272284770379:1?' + 'properties%5BSelected%20Photograph%5D=' + encodeURIComponent(galleryShortName + ' - Image ' + (currentIndex+1) + ' of ' + manifest.length) + '&properties%5BFile%20Reference%5D=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:8px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">20\u2033 \u00d7 24\u2033 \u2014 $495</a>' +
+          '<a href="https://birrell-jones.myshopify.com/cart/42272284803147:1?' + 'properties%5BSelected%20Photograph%5D=' + encodeURIComponent(galleryShortName + ' - Image ' + (currentIndex+1) + ' of ' + manifest.length) + '&properties%5BFile%20Reference%5D=' + encodeURIComponent(fname) + '" style="display:block;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;text-decoration:none;padding:16px;margin:8px 0;border-radius:10px;font-size:18px;font-weight:bold;font-family:Georgia,serif;letter-spacing:1px;">24\u2033 \u00d7 36\u2033 \u2014 $750</a>' +
           '<button onclick="document.getElementById(\'buy-print-overlay\').remove()" style="background:none;border:1px solid #555;color:#888;padding:12px 32px;margin-top:16px;border-radius:8px;cursor:pointer;font-size:14px;font-family:Georgia,serif;">Continue Browsing</button>' +
           '</div>';
         document.body.appendChild(overlay);
