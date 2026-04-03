@@ -375,7 +375,7 @@
                 /* Geocode birthplace via OpenStreetMap Nominatim */
                 var location = f.birth_location.value.trim();
                 try {
-                    var geoRes = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(location) + '&format=json&limit=1', { headers: { 'User-Agent': 'ThisOldHippie.com Oracle (chuck@numeridian.technology)' } });
+                    var geoRes = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(location) + '&format=json&limit=1', { headers: { 'User-Agent': 'ThisOldHippie.com Oracle (chuck@fairwitnessai.com)' } });
                     var geoData = await geoRes.json();
                     if (!geoData || geoData.length === 0) {
                         statusEl.textContent = 'Could not find that location. Try "City, State" or "City, Country".';
