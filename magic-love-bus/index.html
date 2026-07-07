@@ -480,7 +480,37 @@ html, body {
     trackIndex = (trackIndex + 1) % playlist.length;
     $audio.src = playlist[trackIndex];
     $audio.play().catch(function() {});
+    scheduleBeatAdvance();
   });
+
+  // ── Beat sync: slides advance every 2 bars, locked to the music's clock ──
+  // V1: 89.1 BPM measured -> 8 beats = 5.387s, first downbeat at 2.28s
+  // V2: 86.1 BPM felt (172.3 detected, double-time) -> 2 bars = 5.573s, first downbeat at 0.46s
+  var trackBeat = [
+    { period: 5.387, offset: 2.28 },
+    { period: 5.573, offset: 0.46 }
+  ];
+  var beatTimer = null;
+  function scheduleBeatAdvance() {
+    clearTimeout(beatTimer);
+    var tb = trackBeat[trackIndex] || trackBeat[0];
+    var waitMs;
+    if ($audio.paused) {
+      // Audio not running (e.g. autoplay blocked): free-run at the same cadence
+      waitMs = tb.period * 1000;
+    } else {
+      // Schedule the next advance on the next 2-bar boundary of actual playback time
+      var t = $audio.currentTime;
+      var k = Math.max(0, Math.ceil((t - tb.offset) / tb.period + 0.000001));
+      var next = tb.offset + k * tb.period;
+      if (next <= t + 0.02) next = tb.offset + (k + 1) * tb.period;
+      waitMs = Math.max(50, (next - t) * 1000);
+    }
+    beatTimer = setTimeout(function() {
+      if (galleryInstance) galleryInstance.goToNextSlide();
+      scheduleBeatAdvance();
+    }, waitMs);
+  }
 
   // ── Likes system ──
   try { myLikes = JSON.parse(localStorage.getItem('mlb-likes') || '{}'); } catch(e) {}
@@ -564,7 +594,7 @@ html, body {
       dynamicEl: dynamicEl,
 
       // Plugins
-      plugins: [lgAutoplay, lgFullscreen, lgZoom, lgThumbnail],
+      plugins: [lgFullscreen, lgZoom, lgThumbnail],
 
       // Core
       mode: 'lg-fade',
@@ -582,12 +612,11 @@ html, body {
       swipeToClose: false,
       closeOnTap: false,
 
-      // Autoplay
-      autoplay: true,
-      slideShowAutoplay: true,
-      slideShowInterval: 8400,
-      progressBar: true,
-      forceSlideShowAutoplay: false,
+      // Autoplay: disabled - slide advance is beat-synced to the music,
+      // driven by scheduleBeatAdvance() below (2 bars per image)
+      autoplay: false,
+      slideShowAutoplay: false,
+      progressBar: false,
 
       // Fullscreen
       fullScreen: true,
@@ -857,6 +886,7 @@ html, body {
       // Start audio at 50% volume (user click satisfies autoplay policy)
       $audio.volume = 0.5;
       $audio.play().catch(function() {});
+      scheduleBeatAdvance();
       $muteBtn.style.display = 'flex';
     }, 1800);
   }
