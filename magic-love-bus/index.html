@@ -418,8 +418,8 @@ html, body {
 
 <div id="inline-gallery"></div>
 
-<audio id="gallery-audio" preload="auto" loop>
-  <source src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/09_The_End.m4a" type="audio/mp4">
+<audio id="gallery-audio" preload="auto">
+  <source src="https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/The_Magic_Love_Bus_V1.mp3" type="audio/mpeg">
 </audio>
 
 <div id="like-wrap">
@@ -469,6 +469,19 @@ html, body {
   var $muteBtn = document.getElementById('mute-btn');
   var $volOn = document.getElementById('vol-on');
   var $volOff = document.getElementById('vol-off');
+
+  // ── Playlist: V1, V2, V3 in sequence, then loop back to V1 ──
+  var playlist = [
+    'https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/The_Magic_Love_Bus_V1.mp3',
+    'https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/The_Magic_Love_Bus_V2.mp3',
+    'https://pub-da2e115648834f6494b469cc52296f8a.r2.dev/The_Magic_Love_Bus_V3.mp3'
+  ];
+  var trackIndex = 0;
+  $audio.addEventListener('ended', function() {
+    trackIndex = (trackIndex + 1) % playlist.length;
+    $audio.src = playlist[trackIndex];
+    $audio.play().catch(function() {});
+  });
 
   // ── Likes system ──
   try { myLikes = JSON.parse(localStorage.getItem('mlb-likes') || '{}'); } catch(e) {}
