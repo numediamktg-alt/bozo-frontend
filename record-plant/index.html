@@ -1101,6 +1101,21 @@ html, body {
         var fname = currentFilename || manifest[0];
         var imgSrc = imageURL(fname);
         var variants = productMap[fname];
+        if (!variants) {
+          // Self-heal: if the map failed to load earlier, fetch it now and
+          // re-open with real prices. Coming Soon only if truly unmapped.
+          fetch('/js/product-map-record-plant.json?t=' + Date.now())
+            .then(function(r) { return r.ok ? r.json() : {}; })
+            .then(function(map) {
+              productMap = map;
+              if (map[fname]) {
+                var stale = document.getElementById('buy-print-overlay');
+                if (stale) stale.remove();
+                openBuyOverlay(e);
+              }
+            })
+            .catch(function() {});
+        }
         var overlay = document.createElement('div');
         overlay.id = 'buy-print-overlay';
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;';
@@ -1238,14 +1253,15 @@ html, body {
         manifest = data.images || data;
         if (manifest.length === 0) return;
 
-        // Load like counts in background
-        fetchAllLikes().then(updateLikeUI);
-
-        // Load product map for buy buttons
+        // Load product map for buy buttons (revenue path: runs FIRST and is
+        // never gated on the likes system or anything else)
         fetch('/js/product-map-record-plant.json?t=' + Date.now())
           .then(function(r) { return r.ok ? r.json() : {}; })
           .then(function(map) { productMap = map; })
           .catch(function() { console.warn('Product map not loaded'); });
+
+        // Load like counts in background (must never break the buy path)
+        try { fetchAllLikes().then(updateLikeUI); } catch (e) { console.warn('Likes unavailable:', e); }
 
         // Ready
         $loading.classList.add('hidden');
