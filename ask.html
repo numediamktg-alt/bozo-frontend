@@ -816,6 +816,7 @@
                     <div id="b-std-wrap" style="display:none;margin:-2px 0 10px;">
                         <label style="font-size:0.9rem;color:#e0dcd2;cursor:pointer;"><input type="checkbox" id="b-std" style="margin-right:8px;transform:scale(1.2);vertical-align:middle;">My birth record shows standard time (some pre-1966 US areas did not observe daylight saving)</label>
                     </div>
+                    <div style="font-size:0.85rem;color:#c8c3b9;margin:2px 0 10px;">Buying a print as a gift? Enter <em>their</em> birth details instead - the Oracle picks the print made for their sky.</div>
                     <div class="birth-field" style="margin-bottom:12px;">
                         <label>Birthplace</label>
                         <input type="text" id="b-location" placeholder="City, State (or City, Country)">
@@ -1231,6 +1232,7 @@
                 var savedArea = document.getElementById('birth-saved-area');
                 if (savedArea) savedArea.innerHTML = '<div class="birth-saved" style="color:#f0c674;">We upgraded how birth times are handled. Please <a onclick="showBirthForm()" style="text-decoration:underline;cursor:pointer;">re-confirm your birth details</a> so your chart is exact.</div>';
             }
+            currentReadingScope = (r.image_scope && r.image_scope !== 'all') ? r.image_scope : 'all';
             if (r.image_scope && r.image_scope !== 'all') {
                 var scopeNames = {'summer-of-love':'Summer of Love','nrps':'New Riders of the Purple Sage','marshall-tucker':'Marshall Tucker Band','record-plant':'Record Plant','magic-love-bus':'Magic Love Bus'};
                 var scopeDiv = document.createElement('div');
@@ -1343,19 +1345,91 @@
         }
 
         var currentReadingId = null;
+        var currentReadingScope = 'all';
 
-        async function submitVote(voteType) {
+        var GALLERY_META = {
+            'summer-of-love':   { name: 'Summer of Love',                base: 'https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev' },
+            'nrps':             { name: 'New Riders of the Purple Sage', base: 'https://pub-7cccd121d52d4449a991c87cd59f7a71.r2.dev' },
+            'marshall-tucker':  { name: 'Marshall Tucker Band',          base: 'https://pub-de166a2832bb42dd9ac5a600d2d12103.r2.dev' },
+            'record-plant':     { name: 'Record Plant',                  base: 'https://pub-9726db74cbb0458d90c09be23ae5502c.r2.dev' },
+            'magic-love-bus':   { name: 'Magic Love Bus',                base: 'https://pub-da2e115648834f6494b469cc52296f8a.r2.dev' }
+        };
+
+        function voteIdentity() {
             var email = localStorage.getItem('bozo_email') || '';
             var birth = getSavedBirth();
-            var visitorHash = birth ? 'v-' + birth.birth_year + '-' + birth.birth_month + '-' + birth.birth_day + '-' + Math.round(birth.birth_hour * 100) : '';
-            if ((!email && !visitorHash) || !currentReadingId) return;
+            var visitorHash = birth ? 'v-' + birth.birth_year + '-' + birth.birth_month + '-' + birth.birth_day + '-' + Math.round((birth.birth_hour || 0) * 100) : '';
+            return { email: email, visitorHash: visitorHash };
+        }
+
+        function submitVote(voteType) {
+            if (voteType === 'miss') { openFavoritePicker(); return; }
+            postVote('hit', null);
+        }
+
+        function openFavoritePicker(galleryId) {
+            var gid = galleryId || (currentReadingScope !== 'all' ? currentReadingScope : null);
+            var ov = document.getElementById('fav-picker');
+            if (ov) ov.remove();
+            ov = document.createElement('div');
+            ov.id = 'fav-picker';
+            ov.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.94);z-index:99999;overflow-y:auto;padding:24px;font-family:Georgia,serif;';
+            var inner = '<div style="max-width:920px;margin:0 auto;">'
+                + '<h2 style="color:#fff;font-weight:normal;font-size:1.4rem;margin:0 0 6px;">Which image is your true favorite?</h2>'
+                + '<p style="color:#c8c3b9;font-size:1rem;margin:0 0 18px;">Tap it. Your pick goes on the record next to what the Oracle chose. This is how the experiment learns.</p>';
+            if (!gid) {
+                inner += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">';
+                Object.keys(GALLERY_META).forEach(function(k) {
+                    inner += '<button onclick="openFavoritePicker(\'' + k + '\')" style="padding:20px;background:#16213e;border:1px solid rgba(200,195,185,0.3);color:#e8e4dc;border-radius:10px;font-size:1.05rem;cursor:pointer;font-family:Georgia,serif;">' + GALLERY_META[k].name + '</button>';
+                });
+                inner += '</div>';
+            } else {
+                inner += '<div id="fav-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;"><p style="color:#c8c3b9;">Loading ' + GALLERY_META[gid].name + '...</p></div>';
+            }
+            inner += '<div style="margin-top:20px;"><button onclick="postVote(\'miss\', null)" style="background:none;border:1px solid #666;color:#b8b3a9;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:0.95rem;font-family:Georgia,serif;">My favorite is not here - just record the miss</button>'
+                + ' <button onclick="document.getElementById(\'fav-picker\').remove()" style="background:none;border:1px solid #444;color:#888;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:0.95rem;font-family:Georgia,serif;margin-left:8px;">Cancel</button></div></div>';
+            ov.innerHTML = inner;
+            document.body.appendChild(ov);
+            if (gid) {
+                fetch(GALLERY_META[gid].base + '/manifest.json?t=' + Date.now())
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        var names = data.images || data;
+                        var grid = document.getElementById('fav-grid');
+                        if (!grid) return;
+                        grid.innerHTML = '';
+                        names.forEach(function(fn) {
+                            var img = document.createElement('img');
+                            img.src = GALLERY_META[gid].base + '/' + encodeURIComponent(fn);
+                            img.loading = 'lazy';
+                            img.style.cssText = 'width:100%;height:150px;object-fit:cover;border-radius:8px;cursor:pointer;border:2px solid transparent;';
+                            img.onmouseenter = function() { img.style.borderColor = '#d4af37'; };
+                            img.onmouseleave = function() { img.style.borderColor = 'transparent'; };
+                            img.onclick = function() { postVote('miss', fn); };
+                            grid.appendChild(img);
+                        });
+                    })
+                    .catch(function() {
+                        var grid = document.getElementById('fav-grid');
+                        if (grid) grid.innerHTML = '<p style="color:#ef4444;">Could not load the gallery. Use the button below to record the miss.</p>';
+                    });
+            }
+        }
+
+        async function postVote(voteType, actualFavorite) {
+            var id = voteIdentity();
+            if ((!id.email && !id.visitorHash) || !currentReadingId) return;
             var hitBtn = document.getElementById('vote-hit-btn');
             var missBtn = document.getElementById('vote-miss-btn');
             var resultEl = document.getElementById('vote-result');
             hitBtn.disabled = true;
             missBtn.disabled = true;
+            var picker = document.getElementById('fav-picker');
+            if (picker) picker.remove();
             try {
                 var voteBody = { reading_id: currentReadingId, vote_type: voteType };
+                if (actualFavorite) voteBody.actual_favorite = actualFavorite;
+                var email = id.email, visitorHash = id.visitorHash;
                 if (email) voteBody.email = email;
                 else voteBody.visitor_hash = visitorHash;
                 var res = await fetch(API_BASE + '/api/vote', {
@@ -1369,12 +1443,15 @@
                 if (voteType === 'hit') {
                     resultEl.textContent = 'Recorded. Your vote goes Up On The Board.';
                     resultEl.style.color = 'var(--green)';
+                } else if (actualFavorite) {
+                    resultEl.textContent = 'Recorded. Your true favorite is on the record - this is how the Oracle gets tested.';
+                    resultEl.style.color = 'var(--green)';
                 } else {
-                    resultEl.textContent = 'Noted. Browse the galleries and find the one that speaks to you.';
+                    resultEl.textContent = 'Noted. The miss goes Up On The Board.';
                     resultEl.style.color = 'var(--orange)';
                 }
                 if (typeof gtag === 'function') {
-                    gtag('event', 'oracle_vote', { vote_type: voteType, reading_id: currentReadingId });
+                    gtag('event', 'oracle_vote', { vote_type: voteType, reading_id: currentReadingId, has_favorite: actualFavorite ? 1 : 0 });
                 }
             } catch (err) {
                 hitBtn.disabled = false;
