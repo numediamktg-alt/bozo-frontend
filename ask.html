@@ -807,11 +807,14 @@
                         <div class="birth-field"><label>Day</label><input type="number" id="b-day" placeholder="Day" min="1" max="31"></div>
                         <div class="birth-field"><label>Year</label><input type="number" id="b-year" placeholder="Year" min="1900" max="2025"></div>
                     </div>
-                    <div class="birth-row-4">
+                    <div class="birth-row">
                         <div class="birth-field"><label>Hour</label><select id="b-hour"><option value="" disabled selected>Hr</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select></div>
                         <div class="birth-field"><label>Min</label><select id="b-min"><option value="0">00</option><option value="15">15</option><option value="30">30</option><option value="45">45</option></select></div>
                         <div class="birth-field"><label>AM/PM</label><select id="b-ampm"><option value="AM">AM</option><option value="PM">PM</option></select></div>
-                        <div class="birth-field"><label>Timezone</label><select id="b-tz"><option value="-5">EST</option><option value="-6">CST</option><option value="-7">MST</option><option value="-8">PST</option><option value="-9">AKST</option><option value="-10">HST</option><option value="0">GMT</option><option value="1">CET</option><option value="5.5">IST</option><option value="8">CST/SGT</option><option value="9">JST</option></select><span style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;display:block;">Standard time. If DST, add 1hr (e.g. EDT=UTC-4).</span></div>
+                    </div>
+                    <div style="font-size:0.85rem;color:#c8c3b9;margin:-4px 0 10px;">Enter the local time on your birth record. We handle the timezone and daylight saving for the date and place you were born.</div>
+                    <div id="b-std-wrap" style="display:none;margin:-2px 0 10px;">
+                        <label style="font-size:0.9rem;color:#e0dcd2;cursor:pointer;"><input type="checkbox" id="b-std" style="margin-right:8px;transform:scale(1.2);vertical-align:middle;">My birth record shows standard time (some pre-1966 US areas did not observe daylight saving)</label>
                     </div>
                     <div class="birth-field" style="margin-bottom:12px;">
                         <label>Birthplace</label>
@@ -985,6 +988,15 @@
             return d ? JSON.parse(d) : null;
         }
 
+        (function() {
+            var yearEl = document.getElementById('b-year');
+            if (yearEl) yearEl.addEventListener('input', function() {
+                var w = document.getElementById('b-std-wrap');
+                var y = parseInt(this.value);
+                if (w) w.style.display = (y && y < 1966) ? 'block' : 'none';
+            });
+        })();
+
         async function saveBirthData() {
             var month = document.getElementById('b-month').value;
             var day = document.getElementById('b-day').value;
@@ -992,7 +1004,6 @@
             var hour = document.getElementById('b-hour').value;
             var min = document.getElementById('b-min').value;
             var ampm = document.getElementById('b-ampm').value;
-            var tz = parseFloat(document.getElementById('b-tz').value);
             var loc = document.getElementById('b-location').value.trim();
             var status = document.getElementById('b-status');
             var btn = document.getElementById('b-save');
@@ -1009,10 +1020,9 @@
             var h = parseInt(hour);
             if (ampm === 'PM' && h !== 12) h += 12;
             if (ampm === 'AM' && h === 12) h = 0;
-            var localDecimal = h + (parseInt(min) / 60);
-            var utcDecimal = localDecimal - tz;
-            if (utcDecimal < 0) utcDecimal += 24;
-            if (utcDecimal >= 24) utcDecimal -= 24;
+            var localTime = (h < 10 ? '0' : '') + h + ':' + (parseInt(min) < 10 ? '0' : '') + parseInt(min);
+            var stdWrap = document.getElementById('b-std-wrap');
+            var stdChecked = stdWrap && stdWrap.style.display !== 'none' && document.getElementById('b-std').checked;
 
             try {
                 var geoRes = await fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(loc) + '&format=json&limit=1', { headers: { 'User-Agent': 'ThisOldHippie.com Oracle' } });
@@ -1033,11 +1043,12 @@
                     birth_year: parseInt(year),
                     birth_month: parseInt(month),
                     birth_day: parseInt(day),
-                    birth_hour: utcDecimal,
+                    birth_local_time: localTime,
                     birth_latitude: lat,
                     birth_longitude: lon,
-                    display: month + '/' + day + '/' + year
+                    display: month + '/' + day + '/' + year + ' ' + localTime
                 };
+                if (stdChecked) birthData.dst_override = false;
                 localStorage.setItem('oracle_birth', JSON.stringify(birthData));
                 document.getElementById('birth-form-area').style.display = 'none';
                 document.getElementById('birth-saved-area').style.display = 'block';
@@ -1102,7 +1113,12 @@
                     body.birth_year = birth.birth_year;
                     body.birth_month = birth.birth_month;
                     body.birth_day = birth.birth_day;
-                    body.birth_hour = birth.birth_hour;
+                    if (birth.birth_local_time) {
+                        body.birth_local_time = birth.birth_local_time;
+                        if (birth.dst_override === false) body.dst_override = false;
+                    } else {
+                        body.birth_hour = birth.birth_hour;
+                    }
                     body.birth_latitude = birth.birth_latitude;
                     body.birth_longitude = birth.birth_longitude;
                 }
@@ -1209,6 +1225,10 @@
             imgTeaser.style.display = 'none';
             imgList.innerHTML = '';
 
+            if (r.verify_birth) {
+                var savedArea = document.getElementById('birth-saved-area');
+                if (savedArea) savedArea.innerHTML = '<div class="birth-saved" style="color:#f0c674;">We upgraded how birth times are handled. Please <a onclick="showBirthForm()" style="text-decoration:underline;cursor:pointer;">re-confirm your birth details</a> so your chart is exact.</div>';
+            }
             if (r.resonant_images && r.resonant_images.length > 0) {
                 imgContainer.classList.add('visible');
                 currentReadingId = r.reading_id || null;
