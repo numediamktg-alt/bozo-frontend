@@ -1106,8 +1106,10 @@
 
             try {
                 const email = localStorage.getItem('bozo_email') || '';
+                var scopeGallery = new URLSearchParams(location.search).get('gallery') || '';
                 var birth = getSavedBirth();
                 var body = { question: question };
+                if (scopeGallery) body.gallery = scopeGallery;
                 if (email) body.email = email;
                 if (birth) {
                     body.birth_year = birth.birth_year;
@@ -1228,6 +1230,14 @@
             if (r.verify_birth) {
                 var savedArea = document.getElementById('birth-saved-area');
                 if (savedArea) savedArea.innerHTML = '<div class="birth-saved" style="color:#f0c674;">We upgraded how birth times are handled. Please <a onclick="showBirthForm()" style="text-decoration:underline;cursor:pointer;">re-confirm your birth details</a> so your chart is exact.</div>';
+            }
+            if (r.image_scope && r.image_scope !== 'all') {
+                var scopeNames = {'summer-of-love':'Summer of Love','nrps':'New Riders of the Purple Sage','marshall-tucker':'Marshall Tucker Band','record-plant':'Record Plant','magic-love-bus':'Magic Love Bus'};
+                var scopeDiv = document.createElement('div');
+                scopeDiv.style.cssText = 'margin:10px 0 4px;font-size:0.95rem;color:#d8d3c9;';
+                scopeDiv.innerHTML = 'Reading scoped to the <strong>' + (scopeNames[r.image_scope] || r.image_scope) + '</strong> archive. <a href="/ask.html" style="color:#d4af37;text-decoration:underline;">Ask across all five galleries</a>';
+                var anchorEl = document.getElementById('reading-images') || document.getElementById('reading-card') || document.body;
+                anchorEl.insertBefore ? anchorEl.insertBefore(scopeDiv, anchorEl.firstChild) : anchorEl.appendChild(scopeDiv);
             }
             if (r.resonant_images && r.resonant_images.length > 0) {
                 imgContainer.classList.add('visible');
