@@ -298,6 +298,43 @@ html, body {
 #fs-btn:hover { background: rgba(0,0,0,0.85); transform: scale(1.06); }
 #fs-btn svg { width: 26px; height: 26px; }
 
+/* Captions: top band under the gallery menu, to the right of the frame counter.
+   Empty captions render nothing. Uniform across all five galleries. */
+.lg-sub-html {
+  position: absolute !important;
+  top: 64px !important;
+  bottom: auto !important;
+  left: 210px !important;
+  right: 130px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
+  max-width: none !important;
+  background: none !important;
+  text-align: left !important;
+  z-index: 1080 !important;
+  pointer-events: none !important;
+}
+.lg-sub-html p {
+  display: inline-block;
+  margin: 0 !important;
+  padding: 8px 16px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 10px;
+  font-family: 'Cormorant Garamond', Georgia, serif !important;
+  font-size: 19px !important;
+  font-weight: 400 !important;
+  font-style: italic;
+  color: #e8e4dc !important;
+  line-height: 1.4 !important;
+  white-space: normal !important;
+}
+.lg-sub-html p:empty { display: none; }
+@media (max-width: 640px) {
+  .lg-sub-html { top: 100px !important; left: 10px !important; right: 10px !important; }
+  .lg-sub-html p { font-size: 18px !important; }
+}
+
 #pause-btn {
   position: fixed;
   bottom: 190px;
