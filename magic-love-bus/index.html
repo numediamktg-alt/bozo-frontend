@@ -253,6 +253,25 @@ html, body {
 }
 
 /* ── Mute button ── */
+#pause-btn {
+  position: fixed;
+  bottom: 190px;
+  right: 10px;
+  z-index: 2147483647;
+  background: rgba(0,0,0,0.55);
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+#pause-btn:hover { background: rgba(0,0,0,0.85); transform: scale(1.06); }
+#pause-btn svg { width: 30px; height: 30px; fill: #ffffff; stroke: none; }
+
 #mute-btn {
   position: fixed;
   bottom: 130px;
@@ -429,6 +448,11 @@ html, body {
   <div id="like-count"></div>
 </div>
 
+<button id="pause-btn" aria-label="Pause slideshow and music" style="display:none">
+  <svg id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+  <svg id="icon-play" viewBox="0 0 24 24" style="display:none"><polygon points="7 4 21 12 7 20 7 4"/></svg>
+</button>
+
 <button id="mute-btn" aria-label="Mute/Unmute" style="display:none">
   <svg id="vol-on" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
   <svg id="vol-off" viewBox="0 0 24 24" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
@@ -494,6 +518,7 @@ html, body {
   var beatTimer = null;
   function scheduleBeatAdvance() {
     clearTimeout(beatTimer);
+    if (userPaused) return;
     var tb = trackBeat[trackIndex] || trackBeat[0];
     var waitMs;
     if ($audio.paused) {
@@ -512,6 +537,27 @@ html, body {
       scheduleBeatAdvance();
     }, waitMs);
   }
+
+  // ── Unified play/pause: one obvious control stops and starts music AND slides together ──
+  var $pauseBtn = document.getElementById('pause-btn');
+  var $iconPause = document.getElementById('icon-pause');
+  var $iconPlay = document.getElementById('icon-play');
+  var userPaused = false;
+  function setPaused(p) {
+    userPaused = p;
+    if (p) { $audio.pause(); clearTimeout(beatTimer); }
+    else { $audio.play().catch(function() {}); scheduleBeatAdvance(); }
+    $iconPause.style.display = p ? 'none' : 'block';
+    $iconPlay.style.display = p ? 'block' : 'none';
+    $pauseBtn.setAttribute('aria-label', p ? 'Play slideshow and music' : 'Pause slideshow and music');
+  }
+  $pauseBtn.addEventListener('click', function(e) { e.stopPropagation(); setPaused(!userPaused); });
+  document.addEventListener('keydown', function(e) {
+    if ((e.code === 'Space' || e.key === ' ') && $pauseBtn.style.display !== 'none') {
+      e.preventDefault(); e.stopPropagation(); setPaused(!userPaused);
+    }
+  }, true);
+
 
   // ── Likes system ──
   try { myLikes = JSON.parse(localStorage.getItem('mlb-likes') || '{}'); } catch(e) {}
@@ -905,6 +951,7 @@ html, body {
       $audio.play().catch(function() {});
       scheduleBeatAdvance();
       $muteBtn.style.display = 'flex';
+      $pauseBtn.style.display = 'flex';
     }, 1800);
   }
 
