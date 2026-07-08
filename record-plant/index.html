@@ -253,6 +253,51 @@ html, body {
 }
 
 /* ── Mute button ── */
+#gallery-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 2147483646;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  background: rgba(0,0,0,0.78);
+  border-bottom: 1px solid rgba(212,175,55,0.25);
+  overflow-x: auto;
+  white-space: nowrap;
+  font-family: Georgia, serif;
+}
+#gallery-nav a {
+  color: #e0e0e0;
+  text-decoration: none;
+  font-size: 18px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  flex: 0 0 auto;
+}
+#gallery-nav a:hover { color: #d4af37; background: rgba(212,175,55,0.12); }
+#gallery-nav a.gn-home { color: #d4af37; font-weight: bold; letter-spacing: 0.08em; margin-right: 8px; }
+#gallery-nav a.gn-current { color: #d4af37; border: 1px solid rgba(212,175,55,0.5); }
+.lg-toolbar { margin-top: 56px; }
+#fs-btn {
+  position: fixed;
+  bottom: 264px;
+  right: 14px;
+  z-index: 2147483647;
+  background: rgba(0,0,0,0.55);
+  border: 2px solid rgba(255,255,255,0.6);
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+#fs-btn:hover { background: rgba(0,0,0,0.85); transform: scale(1.06); }
+#fs-btn svg { width: 26px; height: 26px; }
+
 #pause-btn {
   position: fixed;
   bottom: 190px;
@@ -865,6 +910,20 @@ html, body {
   <source src="https://pub-9726db74cbb0458d90c09be23ae5502c.r2.dev/bensound-november.mp3" type="audio/mpeg">
 </audio>
 
+<nav id="gallery-nav" style="display:none" aria-label="Gallery navigation">
+  <a href="https://thisoldhippie.com/" class="gn-home">THIS OLD HIPPIE</a>
+  <a href="/summer-of-love/">Summer of Love</a>
+  <a href="/nrps/">New Riders</a>
+  <a href="/marshall-tucker/">Marshall Tucker</a>
+  <a href="/record-plant/" class="gn-current">Record Plant</a>
+  <a href="/magic-love-bus/">Magic Love Bus</a>
+</nav>
+
+<button id="fs-btn" aria-label="Enter fullscreen" style="display:none">
+  <svg id="icon-fs-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/></svg>
+  <svg id="icon-fs-compress" viewBox="0 0 24 24" style="display:none"><path d="M9 4v5H4M15 4v5h5M9 20v-5H4M15 20v-5h5" fill="none" stroke="#ffffff" stroke-width="2.4" stroke-linecap="round"/></svg>
+</button>
+
 <button id="pause-btn" aria-label="Pause slideshow and music" style="display:none">
   <svg id="icon-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
   <svg id="icon-play" viewBox="0 0 24 24" style="display:none"><polygon points="7 4 21 12 7 20 7 4"/></svg>
@@ -885,8 +944,6 @@ html, body {
 <!-- lightGallery core + plugins from cdnjs -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/lightgallery.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/autoplay/lg-autoplay.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/fullscreen/lg-fullscreen.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/zoom/lg-zoom.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightgallery/2.8.3/plugins/thumbnail/lg-thumbnail.umd.min.js"></script>
 
 <script>
@@ -969,10 +1026,32 @@ html, body {
   }
   $pauseBtn.addEventListener('click', function(e) { e.stopPropagation(); setPaused(!userPaused); });
   document.addEventListener('keydown', function(e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
     if ((e.code === 'Space' || e.key === ' ') && $pauseBtn.style.display !== 'none') {
       e.preventDefault(); e.stopPropagation(); setPaused(!userPaused);
     }
   }, true);
+  // ── Fullscreen: big obvious control in the cluster, native API ──
+  var $fsBtn = document.getElementById('fs-btn');
+  var $fsExpand = document.getElementById('icon-fs-expand');
+  var $fsCompress = document.getElementById('icon-fs-compress');
+  function fsActive() { return !!(document.fullscreenElement || document.webkitFullscreenElement); }
+  function updateFsIcons() {
+    var on = fsActive();
+    $fsExpand.style.display = on ? 'none' : 'block';
+    $fsCompress.style.display = on ? 'block' : 'none';
+    $fsBtn.setAttribute('aria-label', on ? 'Exit fullscreen' : 'Enter fullscreen');
+  }
+  $fsBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    var el = document.documentElement;
+    if (fsActive()) { (document.exitFullscreen || document.webkitExitFullscreen).call(document); }
+    else if (el.requestFullscreen) { el.requestFullscreen(); }
+    else if (el.webkitRequestFullscreen) { el.webkitRequestFullscreen(); }
+  });
+  document.addEventListener('fullscreenchange', updateFsIcons);
+  document.addEventListener('webkitfullscreenchange', updateFsIcons);
+
 
   var $muteBtn = document.getElementById('mute-btn');
   var $volOn = document.getElementById('vol-on');
@@ -1060,7 +1139,7 @@ html, body {
       dynamicEl: dynamicEl,
 
       // Plugins
-      plugins: [lgFullscreen, lgZoom, lgThumbnail],
+      plugins: [lgThumbnail],
 
       // Core
       mode: 'lg-fade',
@@ -1086,13 +1165,7 @@ html, body {
       autoplay: false,
       slideShowAutoplay: false,
       progressBar: false,
-      // Fullscreen
-      fullScreen: true,
 
-      // Zoom
-      scale: 1,
-      zoom: true,
-      actualSize: true,
 
       // Thumbnails
       thumbnail: true,
@@ -1250,6 +1323,13 @@ html, body {
       subBtn.addEventListener('mouseleave', function() { subBtn.style.transform = 'scale(1)'; subBtn.style.background = 'rgba(0,0,0,0.7)'; });
       subBtn.addEventListener('click', function(e) {
         e.stopPropagation();
+        var wasPausedBeforeSub = userPaused;
+        if (!userPaused) setPaused(true);
+        window.__closeSubscribe = function() {
+          var o = document.getElementById('subscribe-overlay');
+          if (o) o.remove();
+          if (!wasPausedBeforeSub) setPaused(false);
+        };
         var overlay = document.createElement('div');
         overlay.id = 'subscribe-overlay';
         overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.9);z-index:99999;display:flex;align-items:center;justify-content:center;';
@@ -1259,10 +1339,10 @@ html, body {
           '<input type="email" id="sub-email" placeholder="your@email.com" style="width:100%;padding:14px;border:1px solid #444;border-radius:8px;background:#111;color:#fff;font-size:16px;font-family:Georgia,serif;box-sizing:border-box;text-align:center;margin-bottom:12px;" />' +
           '<button id="sub-submit" style="width:100%;padding:14px;background:linear-gradient(135deg,#d4af37,#aa8a2e);color:#000;border:none;border-radius:8px;font-size:16px;font-weight:bold;font-family:Georgia,serif;cursor:pointer;letter-spacing:1px;">JOIN</button>' +
           '<p id="sub-status" style="color:#888;margin:12px 0 0 0;font-size:13px;min-height:20px;"></p>' +
-          '<button onclick="document.getElementById(\'subscribe-overlay\').remove()" style="background:none;border:none;color:#666;padding:8px;margin-top:8px;cursor:pointer;font-size:13px;">Not now</button>' +
+          '<button onclick="window.__closeSubscribe()" style="background:none;border:none;color:#666;padding:8px;margin-top:8px;cursor:pointer;font-size:13px;">Not now</button>' +
           '</div>';
         document.body.appendChild(overlay);
-        overlay.addEventListener('click', function(ev) { if (ev.target === overlay) overlay.remove(); });
+        overlay.addEventListener('click', function(ev) { if (ev.target === overlay) window.__closeSubscribe(); });
         setTimeout(function() {
           document.getElementById('sub-submit').addEventListener('click', function() {
             var email = document.getElementById('sub-email').value.trim();
@@ -1338,6 +1418,8 @@ html, body {
       scheduleSlideAdvance();
       $muteBtn.style.display = 'flex';
       $pauseBtn.style.display = 'flex';
+      if (document.documentElement.requestFullscreen || document.documentElement.webkitRequestFullscreen) $fsBtn.style.display = 'flex';
+      document.getElementById('gallery-nav').style.display = 'flex';
     }, 1800);
   }
 
