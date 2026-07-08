@@ -1027,7 +1027,7 @@ html, body {
       $titleCard.style.display = 'none';
       buildGallery();
       // Start audio at 50% volume (user click satisfies autoplay policy)
-      $audio.volume = 0.5;
+      $audio.volume = 1.0;  // uniform level, +6dB per Chuck 2026-07-08
       $audio.play().catch(function() {});
       scheduleBeatAdvance();
       $muteBtn.style.display = 'flex';

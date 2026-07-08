@@ -2100,7 +2100,7 @@ html, body {
 <div id="inline-gallery"></div>
 
 <audio id="gallery-audio" preload="auto">
-  <source src="https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/dan-hicks.webm?v=20260309b" type="audio/webm">
+  <source src="https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/Still_Here_In_The_Light_V1.mp3" type="audio/mpeg">
 </audio>
 
 <div id="like-wrap">
@@ -2164,6 +2164,19 @@ html, body {
   var $likeBtn = document.getElementById('like-btn');
   var $likeCount = document.getElementById('like-count');
   var $audio = document.getElementById('gallery-audio');
+
+  // ── Playlist: Still Here In The Light V1, V2, V3 in sequence, then loop back to V1 ──
+  var playlist = [
+    'https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/Still_Here_In_The_Light_V1.mp3',
+    'https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/Still_Here_In_The_Light_V2.mp3',
+    'https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/Still_Here_In_The_Light_V3.mp3'
+  ];
+  var trackIndex = 0;
+  $audio.addEventListener('ended', function() {
+    trackIndex = (trackIndex + 1) % playlist.length;
+    $audio.src = playlist[trackIndex];
+    $audio.play().catch(function() {});
+  });
   var SLIDE_MS = 8000;
   var slideTimer = null;
   function scheduleSlideAdvance() {
@@ -2575,7 +2588,7 @@ html, body {
       $titleCard.style.display = 'none';
       buildGallery();
       // Start audio (user click satisfies autoplay policy)
-      $audio.volume = 0.5;
+      $audio.volume = 1.0;  // uniform level, +6dB per Chuck 2026-07-08
       $audio.play().catch(function() {});
       scheduleSlideAdvance();
       $muteBtn.style.display = 'flex';

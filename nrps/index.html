@@ -1335,6 +1335,7 @@ html, body {
       $titleCard.style.display = 'none';
       buildGallery();
       // Start audio (user click satisfies autoplay policy)
+      $audio.volume = 1.0;  // uniform level across galleries per Chuck 2026-07-08
       $audio.play().catch(function() {});
       scheduleSlideAdvance();
       $muteBtn.style.display = 'flex';
