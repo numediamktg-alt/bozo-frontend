@@ -14,7 +14,7 @@
     <title>The Oracle | Bozo on the Bus™</title>
     <meta name="description" content="The Oracle @ Bozo on the Bus™ — Ask the oracle. Get wisdom matched to this exact cosmic moment.">
     <meta property="og:title" content="The Oracle | Can it predict your favorite photograph?">
-    <meta property="og:description" content="The Oracle uses planetary harmonics to predict which 3 photographs from a 197-image archive will resonate with your birth chart. Test it free.">
+    <meta property="og:description" content="The Oracle uses planetary harmonics to predict which 3 photographs from a 260-image archive will resonate with your birth chart. Test it free.">
     <meta property="og:image" content="https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev/L_000453.jpg">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://thisoldhippie.com/ask.html">
@@ -882,7 +882,7 @@
                 <div class="resonance-images" id="resonance-images">
                     <div class="resonance-header">
                         <h3>These Images Were Chosen For You</h3>
-                        <p>The Oracle looked at all 197 photographs and chose these for you.</p>
+                        <p id="resonance-pool-line">The Oracle looked at all 260 photographs and chose these for you.</p>
                     </div>
                     <div id="resonance-image-list"></div>
                     <div class="resonance-vote" id="resonance-vote">
@@ -1233,11 +1233,16 @@
                 if (savedArea) savedArea.innerHTML = '<div class="birth-saved" style="color:#f0c674;">We upgraded how birth times are handled. Please <a onclick="showBirthForm()" style="text-decoration:underline;cursor:pointer;">re-confirm your birth details</a> so your chart is exact.</div>';
             }
             currentReadingScope = (r.image_scope && r.image_scope !== 'all') ? r.image_scope : 'all';
+            var poolLine = document.getElementById('resonance-pool-line');
+            if (poolLine) {
+                poolLine.textContent = (currentReadingScope === 'all')
+                    ? 'The Oracle looked at all 260 photographs and chose these for you.'
+                    : 'The Oracle looked at every photograph in the ' + (SCOPE_NAMES[currentReadingScope] || currentReadingScope) + ' gallery and chose these for you.';
+            }
             if (r.image_scope && r.image_scope !== 'all') {
-                var scopeNames = {'summer-of-love':'Summer of Love','nrps':'New Riders of the Purple Sage','marshall-tucker':'Marshall Tucker Band','record-plant':'Record Plant','magic-love-bus':'Magic Love Bus'};
                 var scopeDiv = document.createElement('div');
                 scopeDiv.style.cssText = 'margin:10px 0 4px;font-size:0.95rem;color:#d8d3c9;';
-                scopeDiv.innerHTML = 'Reading scoped to the <strong>' + (scopeNames[r.image_scope] || r.image_scope) + '</strong> archive. <a href="/ask.html" style="color:#d4af37;text-decoration:underline;">Ask across all five galleries</a>';
+                scopeDiv.innerHTML = 'Reading scoped to the <strong>' + (SCOPE_NAMES[r.image_scope] || r.image_scope) + '</strong> archive. <a href="/ask.html" style="color:#d4af37;text-decoration:underline;">Ask across all five galleries</a>';
                 var anchorEl = document.getElementById('reading-images') || document.getElementById('reading-card') || document.body;
                 anchorEl.insertBefore ? anchorEl.insertBefore(scopeDiv, anchorEl.firstChild) : anchorEl.appendChild(scopeDiv);
             }
@@ -1317,10 +1322,11 @@
             else if (spread > 0.2) strengthWord = 'distinctly';
             else strengthWord = 'from a close field';
 
+            var poolPhrase = (currentReadingScope === 'all') ? '260 photographs' : 'the ' + (SCOPE_NAMES[currentReadingScope] || currentReadingScope) + ' gallery';
             if (strengthWord === 'from a close field') {
-                confLine.textContent = 'Selected ' + strengthWord + ' of 197 photographs.';
+                confLine.textContent = 'Selected from a close field of ' + poolPhrase + '.';
             } else {
-                confLine.textContent = 'These three stood out ' + strengthWord + ' from 197 photographs.';
+                confLine.textContent = 'These three stood out ' + strengthWord + ' from ' + poolPhrase + '.';
             }
 
             var contactLabels = {
@@ -1346,6 +1352,7 @@
 
         var currentReadingId = null;
         var currentReadingScope = 'all';
+        var SCOPE_NAMES = {'summer-of-love':'Summer of Love','nrps':'New Riders of the Purple Sage','marshall-tucker':'Marshall Tucker Band','record-plant':'Record Plant','magic-love-bus':'Magic Love Bus'};
 
         var GALLERY_META = {
             'summer-of-love':   { name: 'Summer of Love',                base: 'https://pub-a262b95b94f54c69bed5d3ac1e07da4b.r2.dev' },
