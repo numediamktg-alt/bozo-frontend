@@ -345,10 +345,10 @@
         }
 
         function showSubscribePrompt(container, email) {
-            container.innerHTML = '<div class="card card-highlight" style="max-width:450px;margin:0 auto;text-align:center;"><h2 class="welcome-title">&#128652; Get On The Bus!</h2><p class="welcome-subtitle">One Alexander Hamilton per month.<br>Personalized readings tuned to YOUR cosmic frequency.<br><span style="font-size:0.9rem;color:var(--text-dim);">No contract. Cancel anytime.</span></p><p class="subscribe-email">' + email + '</p><button id="checkout-btn" class="submit-btn">Subscribe - $10/month</button><a href="#" id="change-email" class="change-email">Use a different email</a></div>';
+            container.innerHTML = '<div class="card card-highlight" style="max-width:450px;margin:0 auto;text-align:center;"><h2 class="welcome-title">&#128652; Get On The Bus!</h2><p class="welcome-subtitle">One Alexander Hamilton per month.<br>Personalized readings tuned to YOUR cosmic frequency.<br><span style="font-size:0.9rem;color:var(--text-dim);">No contract. Cancel anytime.</span></p><p class="subscribe-email">' + email + '</p><button id="checkout-btn" class="submit-btn">Subscribe - $9.95/month</button><a href="#" id="change-email" class="change-email">Use a different email</a></div>';
             document.getElementById('checkout-btn').addEventListener('click', async function() {
                 var btn = document.getElementById('checkout-btn'); btn.textContent = 'Redirecting to Stripe...'; btn.disabled = true;
-                try { var r = await createCheckout(email); window.location.href = r.checkout_url; } catch(err) { alert('Could not connect to payment. Please try again.'); btn.textContent = 'Subscribe - $10/month'; btn.disabled = false; }
+                try { var r = await createCheckout(email); window.location.href = r.checkout_url; } catch(err) { alert('Could not connect to payment. Please try again.'); btn.textContent = 'Subscribe - $9.95/month'; btn.disabled = false; }
             });
             document.getElementById('change-email').addEventListener('click', function(e) { e.preventDefault(); localStorage.removeItem('bozo_email'); showLoginForm(container); });
         }

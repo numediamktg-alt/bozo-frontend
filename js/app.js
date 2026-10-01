@@ -161,7 +161,7 @@ function showSubscribePrompt(container) {
             <p style="font-size: 1.2rem; margin: 24px 0;">One Alexander Hamilton per month.</p>
             <form id="checkout-form">
                 <div class="form-group"><input type="email" name="email" required placeholder="Enter your email" value="${localStorage.getItem('bozo_email') || ''}"></div>
-                <button type="submit" class="btn btn-primary">Subscribe - $10/month</button>
+                <button type="submit" class="btn btn-primary">Subscribe - $9.95/month</button>
             </form>
         </div>`;
     
