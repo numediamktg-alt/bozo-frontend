@@ -789,7 +789,7 @@
         <p class="footer-copy">
             <strong>ThisOldHippie.com</strong><br>
             &copy;2026 Charles Paul Jones. All Rights Reserved.<br>
-            Contact: <a href="mailto:oracle@thisoldhippie.com" style="color:inherit;">oracle@thisoldhippie.com</a><br>
+            Contact: <button type="button" class="toh-email-btn" data-toh-email>Show email</button><br>
             <a href="how-it-works.html" style="color:var(--text-dim);">Algorithm</a> &middot; <a href="the-board.html" style="color:var(--text-dim);">The Board</a> &middot; Patent Pending
         </p>
     </footer>
@@ -820,5 +820,6 @@ fetch('https://bozo-oracle-production.up.railway.app/api/board')
     document.getElementById('board-count').textContent = '';
   });
 </script>
+<script src="/js/contact-reveal.js" defer></script>
 </body>
 </html>
