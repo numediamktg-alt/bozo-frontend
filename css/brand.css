@@ -1,0 +1,92 @@
+/* Shared header branding. The frame hides only the PNG's transparent padding. */
+a.site-brand {
+    position: relative;
+    display: block;
+    flex: 0 0 auto;
+    width: 280px;
+    max-width: 100%;
+    height: 50px;
+    overflow: hidden;
+    text-decoration: none;
+}
+
+a.site-brand img {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width: none;
+    transform: translateY(-50%);
+}
+
+a.site-brand:focus-visible {
+    outline: 2px solid #c49ae3;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+.header {
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.header .nav-pills {
+    flex-wrap: wrap;
+}
+
+.header > .nav-pills {
+    flex: 1 1 0;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+.header > .nav-pills a {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+.header-inner {
+    gap: 16px;
+}
+
+#gallery-nav a.gn-home.site-brand {
+    width: 250px;
+    height: 44px;
+    padding: 0;
+    margin-right: 12px;
+    border-radius: 0;
+}
+
+#gallery-nav a.gn-home.site-brand:hover {
+    background: transparent;
+}
+
+.lg-toolbar {
+    margin-top: 64px;
+}
+
+@media (max-width: 480px) {
+    a.site-brand {
+        width: 250px;
+        height: 44px;
+    }
+
+    #gallery-nav a.gn-home.site-brand {
+        width: 220px;
+        height: 40px;
+        margin-right: 4px;
+    }
+
+    .header-inner {
+        min-width: 0;
+    }
+
+    .header .nav-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+}

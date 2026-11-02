@@ -2078,6 +2078,8 @@ html, body {
   ]
 }
 </script>
+    <link rel="stylesheet" href="../css/brand.css">
+<script src="../js/gallery-manifest.js"></script>
 </head>
 <body>
 
@@ -2148,7 +2150,7 @@ html, body {
 </div>
 
 <nav id="gallery-nav" style="display:none" aria-label="Gallery navigation">
-  <a href="https://thisoldhippie.com/" class="gn-home">THIS OLD HIPPIE</a>
+  <a href="../index.html" class="gn-home site-brand"><img src="../images/thisoldhippie-logo-peace.png" alt="ThisOldHippie.Com — Home" width="2172" height="724" decoding="async"></a>
   <a href="/summer-of-love/" class="gn-current">Summer of Love</a>
   <a href="/nrps/">New Riders</a>
   <a href="/marshall-tucker/">Marshall Tucker</a>
@@ -2588,11 +2590,7 @@ html, body {
 
   // ── Initialize ──
   function init() {
-    fetch(R2_BASE + '/manifest.json?t=' + Date.now())
-      .then(function(resp) {
-        if (!resp.ok) throw new Error('No manifest');
-        return resp.json();
-      })
+    loadGalleryManifest(R2_BASE)
       .then(function(data) {
         manifest = data.images || data;
         if (manifest.length === 0) return;
@@ -2612,7 +2610,7 @@ html, body {
       })
       .catch(function(e) {
         console.error('Could not load manifest:', e);
-        $loading.querySelector('.spinner').style.background = '#8a3030';
+        showGalleryLoadError($loading);
       });
   }
 
@@ -2620,6 +2618,7 @@ html, body {
   $enterBtn.addEventListener('click', startGallery);
 
   function startGallery() {
+    if (!manifest.length) return;
     $titleCard.classList.add('fade-out');
     setTimeout(function() {
       $titleCard.style.display = 'none';
